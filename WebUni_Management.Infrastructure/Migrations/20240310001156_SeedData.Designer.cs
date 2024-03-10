@@ -12,8 +12,8 @@ using WebUni_Management.Data;
 namespace WebUni_Management.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240306171658_IdentityUserExtension")]
-    partial class IdentityUserExtension
+    [Migration("20240310001156_SeedData")]
+    partial class SeedData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -104,12 +104,10 @@ namespace WebUni_Management.Infrastructure.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -146,12 +144,10 @@ namespace WebUni_Management.Infrastructure.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -159,6 +155,36 @@ namespace WebUni_Management.Infrastructure.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("WebUni_Management.Infrastructure.Data.Models.Admin", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasComment("Admin identifier");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)")
+                        .HasComment("Admin identifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Admins");
+
+                    b.HasComment("Admin");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            UserId = "b242640e-291a-4de7-9701-e3e8e0afb0c9"
+                        });
                 });
 
             modelBuilder.Entity("WebUni_Management.Infrastructure.Data.Models.ApplicationUser", b =>
@@ -179,6 +205,10 @@ namespace WebUni_Management.Infrastructure.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("InitialPassword")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsApproved")
                         .HasColumnType("bit");
@@ -227,6 +257,104 @@ namespace WebUni_Management.Infrastructure.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "b242640e-291a-4de7-9701-e3e8e0afb0c9",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "3cb831fc-0c74-4a12-8849-3f4ce104a978",
+                            Email = "admin@gmail.com",
+                            EmailConfirmed = true,
+                            InitialPassword = "",
+                            IsApproved = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@GMAIL.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHBzHw8an+oUnA7vffhdiHDnu6UXJt5fkDeHOacAHcYsEjYFrndEEKXy2Tt8MzMD6A==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "b6a6e389-561a-4167-b71e-2a6a54e106c5",
+                            TwoFactorEnabled = false,
+                            UserName = "00000001"
+                        },
+                        new
+                        {
+                            Id = "0e90dbeb-6468-4abc-9599-b4757e3874aa",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "3dd014cc-8f52-4cb6-a813-e270619e8b1c",
+                            Email = "student@gmail.com",
+                            EmailConfirmed = true,
+                            InitialPassword = "",
+                            IsApproved = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "STUDENT@GMAIL.COM",
+                            NormalizedUserName = "12345678",
+                            PasswordHash = "AQAAAAEAACcQAAAAEL1A1DBggwytI10kS5qoFDHmKd3/WGjGTEkBOFjHr7IaS7NkhZGcObPr7SESj5Jttg==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "e032b298-7059-4535-809f-14beda39ad3f",
+                            TwoFactorEnabled = false,
+                            UserName = "12345678"
+                        });
+                });
+
+            modelBuilder.Entity("WebUni_Management.Infrastructure.Data.Models.Student", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Age")
+                        .HasColumnType("int")
+                        .HasComment("Student age");
+
+                    b.Property<string>("FacultyNumber")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)")
+                        .HasComment("Student faculty number");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)")
+                        .HasComment("Student first name");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)")
+                        .HasComment("Student last name");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasComment("Student phone number");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)")
+                        .HasComment("User id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Students");
+
+                    b.HasComment("Student entity");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Age = 20,
+                            FacultyNumber = "12345678",
+                            FirstName = "Yoana",
+                            LastName = "Yotova",
+                            PhoneNumber = "0890320424",
+                            UserId = "0e90dbeb-6468-4abc-9599-b4757e3874aa"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -278,6 +406,28 @@ namespace WebUni_Management.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("WebUni_Management.Infrastructure.Data.Models.Admin", b =>
+                {
+                    b.HasOne("WebUni_Management.Infrastructure.Data.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WebUni_Management.Infrastructure.Data.Models.Student", b =>
+                {
+                    b.HasOne("WebUni_Management.Infrastructure.Data.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

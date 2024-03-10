@@ -102,12 +102,10 @@ namespace WebUni_Management.Infrastructure.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -144,12 +142,10 @@ namespace WebUni_Management.Infrastructure.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -208,6 +204,10 @@ namespace WebUni_Management.Infrastructure.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("InitialPassword")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsApproved")
                         .HasColumnType("bit");
 
@@ -261,17 +261,98 @@ namespace WebUni_Management.Infrastructure.Migrations
                         {
                             Id = "b242640e-291a-4de7-9701-e3e8e0afb0c9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d0be78af-2043-49dc-862e-48c1611d7641",
+                            ConcurrencyStamp = "8fe29ef0-1836-4bae-bcb9-d711a87a2808",
                             Email = "admin@gmail.com",
-                            EmailConfirmed = false,
+                            EmailConfirmed = true,
+                            InitialPassword = "",
                             IsApproved = true,
                             LockoutEnabled = false,
-                            NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGoafXQ5cGOzzLeMGEkualDseLXyBpFIAP4T6yLiFoYs/NPS0FRDraH6bb1vdwwoWA==",
+                            NormalizedEmail = "ADMIN@GMAIL.COM",
+                            NormalizedUserName = "00000001",
+                            PasswordHash = "AQAAAAEAACcQAAAAEOjP4JGlFifGx8T6GTwoq9ILsOfgN0R+NrIGA/wW0klS7oEJH4vFZ5KQt9E6RJ+B5w==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8bcf6aee-a0bd-4cd0-8b21-8a2b30d5129b",
+                            SecurityStamp = "66ca5005-90d9-4476-a7ef-5a47f5ee9247",
                             TwoFactorEnabled = false,
-                            UserName = "00001234"
+                            UserName = "00000001"
+                        },
+                        new
+                        {
+                            Id = "0e90dbeb-6468-4abc-9599-b4757e3874aa",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "9f0f561b-6afd-4702-8720-32c83f732a88",
+                            Email = "student@gmail.com",
+                            EmailConfirmed = true,
+                            InitialPassword = "",
+                            IsApproved = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "STUDENT@GMAIL.COM",
+                            NormalizedUserName = "12345678",
+                            PasswordHash = "AQAAAAEAACcQAAAAEF1haWyQ+iE4yu1DAHe9enJWtFycOVCU1BVPcpfWOSyKEvm42Fw49B+fp4VtygV3lg==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "9a4431dd-e6e3-4359-a689-283dc8de6b4b",
+                            TwoFactorEnabled = false,
+                            UserName = "12345678"
+                        });
+                });
+
+            modelBuilder.Entity("WebUni_Management.Infrastructure.Data.Models.Student", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Age")
+                        .HasColumnType("int")
+                        .HasComment("Student age");
+
+                    b.Property<string>("FacultyNumber")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)")
+                        .HasComment("Student faculty number");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)")
+                        .HasComment("Student first name");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)")
+                        .HasComment("Student last name");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasComment("Student phone number");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)")
+                        .HasComment("User id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Students");
+
+                    b.HasComment("Student entity");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Age = 20,
+                            FacultyNumber = "12345678",
+                            FirstName = "Yoana",
+                            LastName = "Yotova",
+                            PhoneNumber = "0890320424",
+                            UserId = "0e90dbeb-6468-4abc-9599-b4757e3874aa"
                         });
                 });
 
@@ -327,6 +408,17 @@ namespace WebUni_Management.Infrastructure.Migrations
                 });
 
             modelBuilder.Entity("WebUni_Management.Infrastructure.Data.Models.Admin", b =>
+                {
+                    b.HasOne("WebUni_Management.Infrastructure.Data.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WebUni_Management.Infrastructure.Data.Models.Student", b =>
                 {
                     b.HasOne("WebUni_Management.Infrastructure.Data.Models.ApplicationUser", "User")
                         .WithMany()
