@@ -9,12 +9,13 @@ using WebUni_Management.Infrastructure.Data.Models;
 
 namespace WebUni_Management.Infrastructure.SeedDb
 {
-    public class UsersConfiguration : IEntityTypeConfiguration<ApplicationUser>
+    public class StudentsConfiguration : IEntityTypeConfiguration<Student>
     {
-        public void Configure(EntityTypeBuilder<ApplicationUser> builder)
+        public void Configure(EntityTypeBuilder<Student> builder)
         {
             var data = new SeedData();
-            builder.HasData(new ApplicationUser[] {data.AdminUser, data.StudentUser});
+            
+            builder.HasData(new Student[] { data.Student });
         }
     }
 }

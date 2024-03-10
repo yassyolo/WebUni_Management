@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using static WebUni_Management.Infrastructure.Data.Constants.ModelConstants.Student;
+using static WebUni_Management.Infrastructure.Data.Constants.ModelConstants;
 
 namespace WebUni_Management.Infrastructure.Data.Models
 {
@@ -36,6 +36,6 @@ namespace WebUni_Management.Infrastructure.Data.Models
 
         [Comment("User id")]
         [ForeignKey(nameof(User))]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
     }
 }

@@ -15,9 +15,12 @@ namespace WebUni_Management.Data
         {
             builder.ApplyConfiguration(new UsersConfiguration());
             builder.ApplyConfiguration(new AdminsConfiguration());
+            builder.ApplyConfiguration(new StudentsConfiguration());
             base.OnModelCreating(builder);
         }
 
         public DbSet<Admin> Admins { get; set; } = null!;
+
+        public DbSet<Student> Students { get; set; } = null!;
     }
 }
