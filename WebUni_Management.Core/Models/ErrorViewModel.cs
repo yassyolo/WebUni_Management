@@ -1,4 +1,4 @@
-namespace WebUni_Management.Models
+namespace WebUni_Management.Core.Models
 {
     public class ErrorViewModel
     {

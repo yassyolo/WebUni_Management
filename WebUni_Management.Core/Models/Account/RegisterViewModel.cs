@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using static WebUni_Management.Models.Constants.MessageConstants;
+using static WebUni_Management.Core.Models.Constants.MessageConstants;
 
 using static WebUni_Management.Infrastructure.Data.Constants.ModelConstants;
 
-namespace WebUni_Management.Models.Account
+namespace WebUni_Management.Core.Models.Account
 {
     public class RegisterViewModel
     {

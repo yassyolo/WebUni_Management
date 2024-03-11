@@ -1,0 +1,33 @@
+﻿@model WebUni_Management.Core.Models.Account.ManageAccountViewModel
+@{
+	ViewBag.Message = "Manage your account";
+}
+<h1>@ViewBag.Message</h1>
+<form asp-controller="Account" asp-action="ManageAccount" method="post">
+    <div class="form-group">
+        <label asp-for="FirstName">First Name:</label>
+        <input asp-for="FirstName" class="form-control" />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="LastName">Last Name:</label>
+        <input asp-for="LastName" class="form-control" />
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Age">Age:</label>
+        <input asp-for="Age" class="form-control" />
+        <span asp-validation-for="Age" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PhoneNumber">Phone Number:</label>
+        <input asp-for="PhoneNumber" class="form-control" />
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="FacultyNumber">Faculty Number:</label>
+        <input asp-for="FacultyNumber" class="form-control" />
+        <span asp-validation-for="FacultyNumber" class="text-danger"></span>
+    </div>
+    <button type="submit" id="submit" class="btn btn-primary">Submit</button>
+</form>
