@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using WebUni_Management.Models;
+using WebUni_Management.Core.Models;
 
 namespace WebUni_Management.Controllers
 {
