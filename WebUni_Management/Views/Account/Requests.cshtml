@@ -1,0 +1,39 @@
+﻿@model IEnumerable<WebUni_Management.Core.Models.Account.RequestsViewModel>
+@{
+	ViewBag.Message = "Pending Requests";
+}
+<h1>@ViewBag.Message</h1>
+<div class="wrapper">
+    <div class="container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">UserName</th>
+                    <th scope="col">Password</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            @foreach (var item in Model)
+            {
+                <tbody>
+                    <tr>
+                        <td>@item.UserName</td>
+                        <td>@item.InitialPassword</td>
+                        <td>@item.Email</td>
+                        <td>
+                            <form asp-controller="Account" asp-action="ApproveRequest" method="post">
+                                <input type="hidden" name="username" value="@item.UserName" />
+                                <button type="submit" class="btn btn-success">Accept</button>
+                            </form>
+                            <form asp-controller="Account" asp-action="DiscardRequest" method="post">
+                                <input type="hidden" name="username" value="@item.UserName" />
+                                <button type="submit" class="btn btn-danger">Discard</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            }
+        </table>
+    </div>
+</div>

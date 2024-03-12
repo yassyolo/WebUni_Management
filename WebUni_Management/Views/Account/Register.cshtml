@@ -1,9 +1,9 @@
 ﻿@model WebUni_Management.Core.Models.Account.RegisterViewModel
 @{
-	ViewBag.Title = "Register";
+	ViewBag.Message = "Register";
 }
 <h1>ViewBag.Message</h1>
-
+<div class="container">
 <form asp-controller="Account" asp-action="Register" method="post">
     <div class="form-group">
         <label for="email">Email:</label>
@@ -22,8 +22,50 @@
     </div>
     <button type="submit" id="submit" class="btn btn-primary">Register</button>
 </form>
+    </div>
+<style>
+    .container {
+        max-width: 1170px;
+        margin: auto;
+        position: relative; /* Change from fixed to relative */
+        top: 10px; /* Adjust this value to move the form down */
+        z-index: 100; /* Make sure this is higher than other elements */
+    }
 
 
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        font-weight: bold;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .text-danger {
+        color: #dc3545;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+    </style>
 @section Scripts
 {
     <script src="~/js/Account/Register.js"></script>
