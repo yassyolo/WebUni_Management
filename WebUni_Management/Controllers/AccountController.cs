@@ -76,9 +76,13 @@ namespace WebUni_Management.Controllers
                 }
 
                 var result = await signInManager.PasswordSignInAsync(model.Username, model.Password, true, false);
-                if (result.Succeeded)
+                if (result.Succeeded && await userManager.IsInRoleAsync(user, "Student"))
                 {
-                    return RedirectToAction(nameof(HomeController.Index), "Home");
+                    return RedirectToAction(nameof(ManageAccount));
+                }
+                else if (result.Succeeded && await userManager.IsInRoleAsync(user, "Admin"))
+                {
+                    return RedirectToAction(nameof(Requests));
                 }
             }
             else
@@ -106,13 +110,14 @@ namespace WebUni_Management.Controllers
         { 
             if(ModelState.IsValid)
             {
-                var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var user= await accountService.FindUserByIdAsync(userId);
 
                 if(user == null)
                 {
                     return RedirectToAction(nameof(Login));
                 }
-                await accountService.UpdateUserAsync(user, model);
+                await accountService.UpdateUserAsync(userId, model);
             }
             else
             {
@@ -120,6 +125,59 @@ namespace WebUni_Management.Controllers
             }
             return View(model);
         }
-       
+        [HttpGet]
+        public async Task<IActionResult> Requests()
+        {
+            var model = await accountService.GetRequestsAsync();
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> ApproveRequest(string username)
+        {
+            var user = await userManager.FindByNameAsync(username);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with username '{username}'.");
+            }
+
+            user.IsApproved = true;
+
+            if (username.StartsWith("0"))
+            {
+                await userManager.AddToRoleAsync(user, "Admin");
+            }
+            else
+            {
+                await userManager.AddToRoleAsync(user, "Student");
+            }
+
+            var result = await userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                throw new InvalidOperationException($"Unexpected error occurred setting IsApproved for user with ID '{user.Id}'.");
+            }
+
+            return RedirectToAction(nameof(Requests)); 
+        }
+        [HttpPost]
+        public async Task<IActionResult> DiscardRequest(string username)
+        {
+            var user = await userManager.FindByNameAsync(username);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with username '{username}'.");
+            }
+
+            var result = await userManager.DeleteAsync(user);
+
+            
+            if (!result.Succeeded)
+            {
+                throw new InvalidOperationException($"Unexpected error occurred setting IsApproved for user with ID '{user.Id}'.");
+            }
+
+            return RedirectToAction(nameof(Requests));
+        }
+
     }
 }
