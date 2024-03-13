@@ -36,6 +36,6 @@ namespace WebUni_Management.Infrastructure.Data.Models
 
         [Comment("User id")]
         [ForeignKey(nameof(User))]
-        public string UserId { get; set; }
+        public string UserId { get; set; } = string.Empty;
     }
 }

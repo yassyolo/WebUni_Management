@@ -14,13 +14,20 @@ namespace WebUni_Management.Infrastructure.SeedDb
         public ApplicationUser StudentUser { get; set; }
         public Admin Admin { get; set; }
         public Student Student { get; set; }
+        public IdentityRole AdminRole { get; set; }
+        public IdentityRole StudentRole { get; set; }
+        public IdentityUserRole<string> AdminUserRole { get; set; }
+        public IdentityUserRole<string> StudentUserRole { get; set; }
+
 
         public SeedData()
         {
             SeedUsers();
             SeedAdmin();
             SeedStudent();
+            SeedUserRoles();
         }
+
         private void SeedUsers()
         {
             var hasher = new PasswordHasher<ApplicationUser>();
@@ -49,7 +56,6 @@ namespace WebUni_Management.Infrastructure.SeedDb
                 IsApproved= true
             };
             StudentUser.PasswordHash = hasher.HashPassword(StudentUser, "student123");
-            
         }
         private void SeedAdmin()
         {
@@ -74,6 +80,38 @@ namespace WebUni_Management.Infrastructure.SeedDb
             };
         }
 
+        /*private void SeedRoles()
+        {
+            AdminRole = new IdentityRole
+            {
+                Id = "02853dfe-8461-47a5-b545-8aab884099a3",
+                Name = "Admin",
+                NormalizedName = "ADMINISTRATOR".ToUpper()
+            };
 
+            StudentRole = new IdentityRole
+            {
+                Id = "25b7786d-75f0-42a0-94a5-64eef4ca93a6",
+                Name = "Student",
+                NormalizedName = "STUDENT".ToUpper()
+            };
+        }*/
+        private void SeedUserRoles()
+        {
+            AdminUserRole = new IdentityUserRole<string>
+            {
+                UserId = AdminUser.Id,
+                RoleId = "02853dfe-8461-47a5-b545-8aab884099a3" // AdminRole ID
+            };
+
+            StudentUserRole = new IdentityUserRole<string>
+            {
+                UserId = StudentUser.Id,
+                RoleId = "25b7786d-75f0-42a0-94a5-64eef4ca93a6" // StudentRole ID
+            };
+        }
     }
 }
+
+  
+

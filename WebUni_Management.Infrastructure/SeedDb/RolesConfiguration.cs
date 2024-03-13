@@ -6,18 +6,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WebUni_Management.Infrastructure.Data.Models;
-using WebUni_Management.Infrastructure.Migrations;
 
 namespace WebUni_Management.Infrastructure.SeedDb
 {
-    public class UsersConfiguration : IEntityTypeConfiguration<ApplicationUser>
+    public class RolesConfiguration : IEntityTypeConfiguration<IdentityRole>
     {
-        public void Configure(EntityTypeBuilder<ApplicationUser> builder)
+        public void Configure(EntityTypeBuilder<IdentityRole> builder)
         {
             var data = new SeedData();
-            builder.HasData(new ApplicationUser[] { data.AdminUser, data.StudentUser });
+            builder.HasData(new IdentityRole[] { data.AdminRole, data.StudentRole });
         }
-
     }
 }
