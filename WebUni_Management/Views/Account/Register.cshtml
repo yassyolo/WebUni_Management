@@ -2,21 +2,22 @@
 @{
 	ViewBag.Message = "Register";
 }
-<h1>ViewBag.Message</h1>
-<div class="container">
+<h1>@ViewBag.Message</h1>
+<div class="register-container">
+    <h6 class="welcome-message">Welcome to the Web University Student Management Platform. To start the journey make a profile first.</h6>
 <form asp-controller="Account" asp-action="Register" method="post">
     <div class="form-group">
-        <label for="email">Email:</label>
+            <label for="email" class="form-label">Email</label>
         <input asp-for="Email" class="form-control" />
         <span asp-validation-for="Email" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label for="username">Username:</label>
+            <label for="Username" class="form-label">Username</label>
         <input asp-for="UserName" class="form-control" />
         <span asp-validation-for="UserName" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label for="password">Password:</label>
+            <label for="password" class="form-label">Password</label>
         <input asp-for="InitialPassword" type="password" class="form-control" />
         <span asp-validation-for="InitialPassword" class="text-danger"></span>
     </div>
@@ -24,25 +25,34 @@
 </form>
     </div>
 <style>
-    .container {
-        max-width: 1170px;
+    .register-container {
+        height: 440px;
+        width: 550px;
+        background-color: white;
         margin: auto;
-        position: relative; /* Change from fixed to relative */
-        top: 10px; /* Adjust this value to move the form down */
-        z-index: 100; /* Make sure this is higher than other elements */
+        border: 2px solid #e91e63;
+        border-radius: 8px;
+        padding: 5px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 10px;
     }
 
-
     .form-group {
-        margin-bottom: 20px;
+        padding-top: 15px;
+        margin-bottom: 10px;
+        align-items: center;
     }
 
     .form-label {
         font-weight: bold;
+        text-align: center;
     }
 
     .form-control {
-        width: 100%;
+        width: 500px;
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 4px;
@@ -53,19 +63,25 @@
     }
 
     .btn-primary {
-        background-color: #007bff;
-        border-color: #007bff;
-        color: #fff;
+        background-color: #fec7b4;
+        border-color: #fec7b4;
+        color: black;
         padding: 10px 20px;
         border-radius: 4px;
         cursor: pointer;
     }
 
-    .btn-primary:hover {
-        background-color: #0056b3;
-        border-color: #0056b3;
+        .btn-primary:hover {
+            background-color: #fc819e;
+            border-color: #fc819e;
+        }
+
+    .welcome-message {
+        text-align: center;
     }
-    </style>
+</style>
+
+
 @section Scripts
 {
     <script src="~/js/Account/Register.js"></script>

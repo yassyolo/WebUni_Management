@@ -4,7 +4,7 @@
 }
 <h1>@ViewBag.Message</h1>
 <div class="wrapper">
-    <div class="container">
+    <div class="requests-container">
         <table class="table">
             <thead>
                 <tr>
@@ -24,7 +24,7 @@
                         <td>
                             <form asp-controller="Account" asp-action="ApproveRequest" method="post">
                                 <input type="hidden" name="username" value="@item.UserName" />
-                                <button type="submit" class="btn btn-success">Accept</button>
+                                <button type="submit" class="btn btn-primary">Accept</button>
                             </form>
                             <form asp-controller="Account" asp-action="DiscardRequest" method="post">
                                 <input type="hidden" name="username" value="@item.UserName" />
@@ -37,3 +37,56 @@
         </table>
     </div>
 </div>
+<style>
+    
+
+    .requests-container {
+        height: 600px;
+        width: 1100px;
+        background-color: white;
+        margin: auto;
+        border: 2px solid #e91e63;
+        border-radius: 8px;
+        padding: 1px;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .table th,
+    .table td {
+        border: 1px solid #ccc;
+        padding: 8px;
+    }
+    .btn-primary {
+        background-color: #28a745;
+        border: 1px solid #28a745;
+        color: black;
+        padding: 7px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        display:flex;
+    }
+
+    .btn-primary:hover {
+        background-color: #0D9276;
+        border-color: #0D9276;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border: 1px solid #dc3545;
+        color: black;
+        padding: 7px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        display:flex;
+    }
+
+    .btn-danger:hover {
+            background-color: #e91e63;
+            border-color: #e91e63;
+    }
+</style>

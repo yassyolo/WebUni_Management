@@ -4,16 +4,78 @@
 }
 <h1>@ViewBag.Title</h1>
 
-<form asp-controller="Account" asp-action="Login" method="post">
-    <div class="mb-3">
-        <label for="Username" class="form-label">Username</label>
-        <input asp-for="Username" id="Username" class="form-control" />
-        <span asp-validation-for="Username" class="text-danger"></span>
-    </div>
-    <div class="mb-3">
-        <label for="Password" class="form-label">Password</label>
-        <input asp-for="Password" id="Password" class="form-control" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-success">Submit</button>
-</form>
+<div class="login-container">
+    <h6 class="login-message">Don't have an account. <a href="@Url.Action("Register", "Account")">Click here</a> to register.</h6>
+	<div class="login-form">
+		<form asp-controller="Account" asp-action="Login" method="post">
+			<div class="mb-3">
+				<label for="Username" class="form-label">Username</label>
+				<input asp-for="Username" id="Username" class="form-control" />
+				<span asp-validation-for="Username" class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<label for="Password" class="form-label">Password</label>
+				<input asp-for="Password" id="Password" class="form-control" />
+				<span asp-validation-for="Password" class="text-danger"></span>
+			</div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+		</form>
+        </div>
+	</div>
+<style>
+    .login-container {
+        height: 300px;
+        width: 550px;
+        background-color: white;
+        margin: auto;
+        border: 2px solid #e91e63;
+        border-radius: 8px;
+        padding: 5px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .form-group {
+        padding-top: 15px;
+        margin-bottom: 10px;
+        align-items: center;
+    }
+
+    .form-label {
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .form-control {
+        width: 500px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .text-danger {
+        color: #dc3545;
+    }
+
+    .btn-primary {
+        background-color: #fec7b4;
+        border-color: #fec7b4;
+        color: black;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        .btn-primary:hover {
+            background-color: #fc819e;
+            border-color: #fc819e;
+        }
+
+    .login-message {
+        text-align: center;
+    }
+</style>
+

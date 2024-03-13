@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using WebUni_Management.Infrastructure.Data.Models
+@inject SignInManager<ApplicationUser> SignInManager
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -40,7 +43,23 @@
                     <li class="menu-item menu-item-has-children">
                         <a asp-controller="Account" asp-action="">Account<i class="plus"></i></a>
                         <ul class="sub-menu">
-                           <li class="menu-item"><a asp-controller="Account" asp-action="Register">Register</a></li>
+                            @if(!SignInManager.IsSignedIn(User))
+                            {
+                               <li class="menu-item"><a asp-controller="Account" asp-action="Register">Register</a></li>
+                            }
+                            else 
+                            {
+                               if (User.IsInRole("Admin"))
+                               {
+                                   <li class="menu-item"><a asp-controller="Account" asp-action="Requests">Manage Requests</a></li>
+                               }
+                               else
+                               {
+                                   <li class="menu-item"><a asp-controller="Account" asp-action="ManageAccount">Manage Account</a></li>
+                               }
+                            }
+                                <li class="menu-item"><a asp-controller="Account" asp-action="Login">Login</a></li>
+                                <li class="menu-item"><a asp-controller="Account" asp-action="Logout">Logout</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -55,8 +74,6 @@
     </header>
    <section class="home-section"></section>
     
-    
-
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2024 - WebApplication7 

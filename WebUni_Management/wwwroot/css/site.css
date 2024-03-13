@@ -23,6 +23,7 @@ body{
     background-position: top;
     background-size: cover;
     opacity: 0.5;
+    background-attachment: fixed;
 }
 ul{
     list-style:none;
