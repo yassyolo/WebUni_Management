@@ -38,13 +38,15 @@ namespace WebUni_Management.Controllers
                     UserName = model.UserName,
                     Email = model.Email,
                     IsApproved = false,
-                    InitialPassword = model.InitialPassword
+                    InitialPassword = model.InitialPassword,
+                    
                 };
 
                 var result = await userManager.CreateAsync(user, model.InitialPassword);
 
                 if (result.Succeeded) 
                 {
+                    await userManager.AddPasswordAsync(user, model.InitialPassword);
                     return RedirectToAction(nameof(HomeController.Index), "Home");
                 }
 
@@ -90,13 +92,12 @@ namespace WebUni_Management.Controllers
                 ModelState.AddModelError(string.Empty, "Invalid Username or Password.");
             }
             return View(model);
-
         }
 
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
-            return RedirectToAction(nameof(Login));
+            return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
         [HttpGet]
