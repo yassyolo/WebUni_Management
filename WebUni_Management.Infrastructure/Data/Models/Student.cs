@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using static WebUni_Management.Infrastructure.Data.Constants.ModelConstants;
+using static WebUni_Management.Infrastructure.Data.Constants.ModelConstants.Student;
 
 namespace WebUni_Management.Infrastructure.Data.Models
 {
@@ -37,5 +37,8 @@ namespace WebUni_Management.Infrastructure.Data.Models
         [Comment("User id")]
         [ForeignKey(nameof(User))]
         public string UserId { get; set; } = string.Empty;
+
+        [Comment("Rented books")]
+        public IEnumerable<Book>? RentedBooks { get; set; } = new List<Book>();
     }
 }

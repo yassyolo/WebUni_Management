@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebUni_Management.Data;
 
@@ -11,9 +12,10 @@ using WebUni_Management.Data;
 namespace WebUni_Management.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240317150829_SeedLibrary")]
+    partial class SeedLibrary
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -288,7 +290,7 @@ namespace WebUni_Management.Infrastructure.Migrations
                         {
                             Id = "b242640e-291a-4de7-9701-e3e8e0afb0c9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "fd1328a8-3b4d-40b6-8d8e-45ed682f14e9",
+                            ConcurrencyStamp = "91e59b14-3e32-4044-b22b-a66fe0d001c6",
                             Email = "admin@gmail.com",
                             EmailConfirmed = true,
                             InitialPassword = "",
@@ -296,9 +298,9 @@ namespace WebUni_Management.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "00000001",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGUlW2f3YDq8gzDN+egSj7Mz73KRfuDcnSrlLAG36LhZjDOLJNTJYoaM97/Y1wQMlQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEEaiTNKNr9S4Hyd2k65lvB9FrPcqDYB5UX5OMlTuIwK7ghww5MSLASur2nwRpu+nFQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4f610bc7-7b88-42d2-aefa-910d132ea220",
+                            SecurityStamp = "9eb0c512-3d3d-4da8-8506-3e12643ebdd3",
                             TwoFactorEnabled = false,
                             UserName = "00000001"
                         },
@@ -306,7 +308,7 @@ namespace WebUni_Management.Infrastructure.Migrations
                         {
                             Id = "0e90dbeb-6468-4abc-9599-b4757e3874aa",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4b6bbaf8-c26f-4fca-9e97-c41901ed133a",
+                            ConcurrencyStamp = "992cc882-3e16-4ff8-b3bc-98a3ca68beeb",
                             Email = "student@gmail.com",
                             EmailConfirmed = true,
                             InitialPassword = "",
@@ -314,9 +316,9 @@ namespace WebUni_Management.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "STUDENT@GMAIL.COM",
                             NormalizedUserName = "12345678",
-                            PasswordHash = "AQAAAAEAACcQAAAAEBZs2XQUAu6jua9gp+VXZ1HrWvk5KtECJqXOzE9FzLi5Q8lPNNkffpwxsG8V7e2gxQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECGR+s8zT3t6ztFOPKHvxw/4A5kXKto27u37FRuUZ3eS7Qt5w+8m7tKp4OpDnvWg8Q==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "69392bf2-8d7a-43e5-b9a1-540694e5ffb3",
+                            SecurityStamp = "d26df063-022a-43ec-b2df-2434931de4ed",
                             TwoFactorEnabled = false,
                             UserName = "12345678"
                         });
@@ -352,11 +354,7 @@ namespace WebUni_Management.Infrastructure.Migrations
                         .HasComment("Is book rented");
 
                     b.Property<int?>("LibraryId")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(1)
-                        .HasComment("Library identifier");
+                        .HasColumnType("int");
 
                     b.Property<string>("PublishYear")
                         .IsRequired()
@@ -398,7 +396,6 @@ namespace WebUni_Management.Infrastructure.Migrations
                             Description = "'Math for Scientists: Refreshing the Essentials' offers a concise yet comprehensive review of fundamental mathematical concepts essential for scientists.Co - authored by Branislava Ćurčić - Blake and Natalia Maria, this book serves as a valuable resource for refreshing and reinforcing mathematical skills necessary for scientific inquiry.",
                             ImageUrl = "https://m.media-amazon.com/images/I/617vHgW8ZhL._SY522_.jpg",
                             IsRented = true,
-                            LibraryId = 1,
                             PublishYear = "2017",
                             RentalDate = new DateTime(2024, 2, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RenterId = 1,
@@ -411,7 +408,6 @@ namespace WebUni_Management.Infrastructure.Migrations
                             Description = "Master Math effortlessly with this comprehensive guide. Ideal for beginners and intermediates, it features step-by-step explanations, practice questions, and chapter summaries for confident learning. No separate workbooks needed!",
                             ImageUrl = "https://m.media-amazon.com/images/I/71EUTt1F2vL._SY522_.jpg",
                             IsRented = false,
-                            LibraryId = 1,
                             PublishYear = "2018",
                             Title = "Mathematics: A Complete Introduction"
                         },
@@ -422,7 +418,6 @@ namespace WebUni_Management.Infrastructure.Migrations
                             Description = "'Simplified Statistics and Probability' is a comprehensive book designed for high school and college students. It offers clear explanations, numerous examples, and practice exercises with answers for self-assessment, enhancing understanding and proficiency in the subject.",
                             ImageUrl = "https://m.media-amazon.com/images/I/61CANeMV8wL._SY522_.jpg",
                             IsRented = false,
-                            LibraryId = 1,
                             PublishYear = "2018",
                             Title = "Simplified Statistics and Probability: A Mathematics Book for High Schools and Colleges"
                         },
@@ -433,7 +428,6 @@ namespace WebUni_Management.Infrastructure.Migrations
                             Description = "'Basic Organic Chemistry' covers fundamental concepts, organic molecules, functional groups, nomenclature, acids/bases, stereochemistry, amino acids, proteins, carbohydrates, alcohols, ethers, and spectroscopy, offering insights for understanding organic reactions.",
                             ImageUrl = "https://m.media-amazon.com/images/I/813VoAjptdL._SY522_.jpg",
                             IsRented = false,
-                            LibraryId = 1,
                             PublishYear = "2019",
                             Title = "Basic Organic Chemistry"
                         },
@@ -444,7 +438,6 @@ namespace WebUni_Management.Infrastructure.Migrations
                             Description = "'Engineering Physics' caters to first-year undergraduates at Jawaharlal Nehru Technical University. Covering crystallography, quantum mechanics, metals, dielectrics, semiconductors, superconductivity, lasers, holography, nanotechnology, and optics, it employs clear pedagogy for comprehensive learning.",
                             ImageUrl = "https://m.media-amazon.com/images/I/81p+3Q5hsvL._SY522_.jpg",
                             IsRented = false,
-                            LibraryId = 1,
                             PublishYear = "2010",
                             Title = "Engineering Physics"
                         });
@@ -559,11 +552,6 @@ namespace WebUni_Management.Infrastructure.Migrations
                         {
                             BookId = 4,
                             AuthorId = 5
-                        },
-                        new
-                        {
-                            BookId = 5,
-                            AuthorId = 6
                         });
                 });
 
@@ -774,11 +762,9 @@ namespace WebUni_Management.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebUni_Management.Infrastructure.Data.Models.Library", "Library")
+                    b.HasOne("WebUni_Management.Infrastructure.Data.Models.Library", null)
                         .WithMany("Books")
-                        .HasForeignKey("LibraryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LibraryId");
 
                     b.HasOne("WebUni_Management.Infrastructure.Data.Models.Student", null)
                         .WithMany("RentedBooks")
@@ -786,8 +772,6 @@ namespace WebUni_Management.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Category");
-
-                    b.Navigation("Library");
                 });
 
             modelBuilder.Entity("WebUni_Management.Infrastructure.Data.Models.BookByBookAuthor", b =>
