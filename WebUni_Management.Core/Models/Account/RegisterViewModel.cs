@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using static WebUni_Management.Core.Models.Constants.MessageConstants;
 
-using static WebUni_Management.Infrastructure.Data.Constants.ModelConstants;
+using static WebUni_Management.Infrastructure.Data.Constants.ModelConstants.Student;
 
 namespace WebUni_Management.Core.Models.Account
 {

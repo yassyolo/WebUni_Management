@@ -34,8 +34,12 @@
                         <li class="menu-item"><a asp-controller="Events" asp-action="MyEvents">My Events</a></li>
                        </ul>
                     </li>
-                    <li class="menu-item">
-                        <a asp-controller="Library" asp-action="Index">Library</a>
+                    <li class="menu-item menu-item-has-children">
+                            <a asp-controller="Library" asp-action="Index">Library<i class="plus"></i></a>
+                            <ul class="sub-menu">
+                                <li class="menu-item"><a asp-controller="Library" asp-action="Index">Our Library</a></li>
+                                <li class="menu-item"><a asp-controller="Library" asp-action="MyEvents">Books</a></li>
+                            </ul>
                     </li>
                     <li class="menu-item">
                         <a asp-controller="Student" asp-action="">Personal info</a>
@@ -74,11 +78,11 @@
     </header>
    <section class="home-section"></section>
     
-    <footer class="border-top footer text-muted">
+    @*@<footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2024 - WebApplication7 
         </div>
-    </footer>
+    </footer>*@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
