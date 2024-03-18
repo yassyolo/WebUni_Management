@@ -14,6 +14,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<ILibraryService, LibraryService>();
+            services.AddScoped<IPersonalInfoService, PersonalInfoService>();
 
             return services;
         }
