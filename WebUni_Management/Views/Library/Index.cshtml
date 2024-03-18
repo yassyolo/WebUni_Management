@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WebUni_Management.Core.Models.Library.BookInfoViewModel>
+﻿@model WebUni_Management.Core.Models.Library.LibraryInfoViewModel
 @{
     ViewBag.Title = "Welcome to the Web Uni Library!";
 }
@@ -13,8 +13,11 @@
         </div>
     </div>
 
+    <div class="message">
+        <h3>Check our recent book:</h3>
+    </div>
     <div class="flip-card-container">
-        @foreach (var item in Model)
+        @foreach (var item in Model.BookInfoViewModel)
         {
             <div class="flip-card">
                 <div class="flip-card-inner">
@@ -24,7 +27,29 @@
                     <div class="flip-card-back">
                         <h6>@item.Title</h6>
                         <h6>@item.Category</h6>
-                        <form asp-controller="Library" asp-action="Details" method="post">
+                        <form asp-controller="Library" asp-action="Details" asp-route-id="@item.Id" method="get">
+                            <button type="submit" class="btn btn-danger">Details</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+        
+    </div>
+    <div class="message">
+        <h3>Check our study rooms:</h3>
+    </div>
+    <div class="flip-card-rooms-container">
+        @foreach (var item in Model.StudyRoomInfo)
+        {
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <img src="@item.ImageUrl" alt="Avatar">
+                    </div>
+                    <div class="flip-card-back">
+                        <h6>@item.Capacity</h6>
+                        <form asp-controller="Library" asp-action="Details" asp-route-id="@item.Id" method="get">
                             <button type="submit" class="btn btn-danger">Details</button>
                         </form>
                     </div>
@@ -32,9 +57,20 @@
             </div>
         }
     </div>
+    
 </div>
 
 <style>
+    .message{
+		margin-top: 20px 20px 20px 20px;
+    }
+    .flip-card-rooms-container{
+        display:flex;
+        flex-direction: row;
+justify-content: center;
+gap: 20px;
+    }
+
     .flip-card-container {
         display: flex;
         flex-direction: row; /* Display cards horizontally */
@@ -42,9 +78,14 @@
         gap: 20px; /* Add some space between the cards */
     }
 
+    .flip-card-front img {
+        width: 100%; /* Make the image fill the entire space of the front face */
+        height: 100%; /* Make the image fill the entire space of the front face */
+    }
+
     .flip-card {
         width: 300px;
-        height: 200px;
+        height: 300px;
         border: 1px solid #f1f1f1;
         perspective: 1000px; /* Remove this if you don't want the 3D effect */
     }
@@ -66,12 +107,12 @@
         position: absolute;
         width: 100%;
         height: 100%;
-        -webkit-backface-visibility: hidden; /* Safari */
+        
         backface-visibility: hidden;
     }
 
     .flip-card-front {
-        background-color: #bbb;
+        /*background-color: #bbb;*/
         color: black;
     }
 
@@ -82,7 +123,7 @@
     }
 
     .index-library-container {
-        height: 800px;
+        height: 1000px;
         width: 1120px;
         background-color: white;
         margin: auto;

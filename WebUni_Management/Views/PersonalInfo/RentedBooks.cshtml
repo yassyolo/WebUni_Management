@@ -1,0 +1,32 @@
+﻿@using System.Security.Claims
+@model IEnumerable<WebUni_Management.Core.Models.Library.BookInfoViewModel>
+@{
+    ViewBag.Title = "My Rented Books";
+}
+<h6>@ViewBag.Message</h6>
+<div class="rentedbook-container">
+    <h6>View your rented book here and collect them in the uni library on the spot.</h6>
+    <div class="flip-card-container">
+        @foreach (var book in Model)
+        {
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <img src="@book.ImageUrl" alt="Book Cover">
+                    </div>
+                    <div class="flip-card-back">
+                        <h6>@book.Title</h6>
+                        <h6>@book.Category</h6>
+                        <h6>@book.Author</h6>
+                        <form asp-controller="Library" asp-action="Details" asp-route-id="@book.Id" method="get">
+                            <button type="submit" class="btn btn-danger">Details</button>
+                        </form>
+                        <form asp-controller="PersonalInfo" asp-action="RemoveRent" asp-route-id="@book.Id" method="get">
+                            <button type="submit" class="btn btn-danger">Remove Rent</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

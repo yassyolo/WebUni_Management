@@ -1,0 +1,56 @@
+﻿@model WebUni_Management.Core.Models.Library.BookDetailsViewModel
+@{
+   ViewBag.Title = "Book Details";
+}
+
+<h6>@ViewBag.Message</h6>
+<div class="details-container">
+	<div class="book-img">
+		<img src="@Model.ImageUrl" alt="Book Cover"/>
+	</div>
+	<div class="book-description">
+        <h2>Title: @Model.Title</h2>
+		<h5>Author: @Model.Author</h5>
+		<h5>Category: @Model.Category</h5>		
+		<h5>Published in: @Model.PublishYear</h5>
+		<h5>Description: @Model.Description</h5>
+		@if (Model.IsRented == false)
+		{
+			<form asp-controller="Library" asp-action="Rent" asp-route-id="@Model.Id" method="get">
+				<button type="submit" class="btn btn-danger">Rent</button>
+			</form>
+		}
+		<form asp-controller="Library" asp-action="AllShowcase" method="post">
+			<button type="submit" class="btn btn-danger">Back</button>
+		</form>
+	</div>
+</div>
+<style>
+.details-container {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-around;
+		align-items: center;
+		margin-top: 20px;
+	}
+	.book-img {
+		width: 300px;
+		height: 300px;
+	}
+	.book-img img {
+		width: 100%;
+		height: 100%;
+	}
+	.book-description {
+		width: 500px;
+	}
+	.book-description h2 {
+		color: #e91e63;
+	}
+	.book-description h5 {
+		color: #e91e63;
+	}
+	.book-description button {
+		margin-top: 10px;
+	}
+</style>

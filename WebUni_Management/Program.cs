@@ -43,6 +43,9 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllerRoute(
+	name: "default",
+	pattern: "{controller=Library}/{action=Details}/{id?}");
 
 app.MapControllerRoute(
     name: "ApproveRequest",

@@ -1,0 +1,191 @@
+﻿    @model WebUni_Management.Core.Models.Library.AllBooksQueryModel
+@{
+    ViewBag.Message = "Choose from our many books and indulge in the reading!";
+}
+
+<div class="all-showcase-container">
+    <div class="all-showcase-message">
+        <h6>@ViewBag.Message</h6>
+        <h3>Feel free to search any book!</h3>
+    </div>
+    <div class="all-search-engine">
+        <form class="form-search-engine" asp-controller="Library" asp-action="AllShowcase" method="get">
+        <div class="category-search">
+			<label asp-for="Category"></label>
+			<select asp-for="Category" class="form-control">
+				<option value="">All</option>
+				@foreach (var category in Model.Categories)
+				{
+					<option value="@category">@category</option>
+				}
+			</select>
+        </div>
+        <div class="search-term">
+            <label asp-for="SearchTerm"></label>
+            <input asp-for="SearchTerm" class="form-control" placeholder="...">
+        </div>
+        <div class="submit">
+          <button type="submit" class="btn btn-primary search-btn">Search</button>
+        </div>
+       </form>
+    </div>
+
+    @{
+        var previousPage = Model.CurrentPage - 1;
+        if (previousPage < 1)
+        {
+            previousPage = 1;
+        }
+
+        var maxPage = Math.Ceiling((double)Model.TotalBooksCount /
+        Model.BooksPerPage);
+    }
+    <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
+       asp-controller="Library"
+       asp-action="AllShowcase"
+       asp-route-currentPage="@previousPage"
+       asp-route-category="@Model.Category"
+       asp-route-searchTerm="@Model.SearchTerm"
+       ><<</a>
+    @{
+        var shouldButtonBeDisabled = Model.CurrentPage == maxPage ||
+        !Model.Books.Any();
+    }
+    <a class="btn btn-primary
+           @(shouldButtonBeDisabled ? "disabled" : string.Empty)"
+       asp-controller="Library"
+       asp-action="AllShowcase"
+       asp-route-currentPage="@(Model.CurrentPage + 1)"
+       asp-route-category="@Model.Category"
+       asp-route-searchTerm="@Model.SearchTerm"
+      >>></a>
+
+    @if (!Model.Books.Any())
+    {
+        <h2 class="text-center">No houses found by the given criteria!</h2>
+    }
+
+    <div class="flip-card-container">
+        @foreach (var book in Model.Books)
+        {
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <img src="@book.ImageUrl" alt="Book Cover">
+                    </div>
+                    <div class="flip-card-back">
+                        <h6>@book.Title</h6>
+                        <h6>@book.Category</h6>
+                        @if (book.IsRented == false)
+                        {
+                            <form asp-controller="Library" asp-action="Rent" asp-route-id="@book.Id" method="get">
+                                <button type="submit" class="btn btn-danger">Rent</button>
+                            </form>
+                        }
+                        <form asp-controller="Library" asp-action="Details" asp-route-id="@book.Id" method="get">
+                            <button type="submit" class="btn btn-danger">Details</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+    
+</div>
+
+<style>
+    .all-search-engine{
+        margin-bottom: 20px;
+        justify-content:center;
+        width:80%;
+        display:flex;
+        gap: 20px;
+    }
+    .category-search{
+        width: 40%;
+        float: left;
+        margin-right: 8%;
+    }
+    .search-term{
+		width: 40%;
+		float: left;
+	}
+    .submit{
+        float: left;
+        margin-left: 4%;
+        width: 8%;
+        margin-top: 24px;
+    }
+
+    .form-search-engine{
+		width: 100%;
+	}
+    .all-showcase-container {
+        
+        width: 1130px;
+        height: 800px;
+        background-color: white;
+        margin: auto;
+        border: 2px solid #e91e63;
+        border-radius: 8px;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Center the content horizontally */
+    }
+
+    .all-showcase-message {
+        margin-bottom: 20px;
+    }
+
+    .flip-card-container {
+        display: flex;
+        flex-wrap: wrap; /* Allow cards to wrap to the next row if necessary */
+        justify-content: center; /* Center the cards horizontally */
+        gap: 20px;
+    }
+
+    .flip-card {
+        width: 300px;
+        height: 300px;
+        border: 1px solid #f1f1f1;
+        perspective: 1000px;
+    }
+
+    .flip-card-front {
+        color: black;
+    }
+
+    .flip-card-back {
+        background-color: dodgerblue;
+        color: white;
+        transform: rotateY(180deg); /* Initially hide the back face */
+    }
+
+    .flip-card:hover .flip-card-inner {
+        transform: rotateY(180deg);
+    }
+
+    .flip-card-front, .flip-card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+    }
+
+    .flip-card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.8s;
+        transform-style: preserve-3d;
+    }
+
+    .flip-card-front img {
+        width: 100%; /* Make the image fill the entire space of the front face */
+        height: 100%; /* Make the image fill the entire space of the front face */
+    }
+</style>
+
