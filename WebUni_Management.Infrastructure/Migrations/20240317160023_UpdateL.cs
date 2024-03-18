@@ -8,6 +8,7 @@ namespace WebUni_Management.Infrastructure.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+
             migrationBuilder.DropForeignKey(
                 name: "FK_Books_Library_LibraryId",
                 table: "Books");

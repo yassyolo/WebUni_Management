@@ -14,7 +14,12 @@ namespace WebUni_Management.Infrastructure.SeedDb
     {
         public void Configure(EntityTypeBuilder<Book> builder)
         {
-            builder
+			builder
+				.HasOne(b => b.Renter) // Specify the navigation property
+				.WithMany()    // Specify the inverse navigation property
+				.HasForeignKey(b => b.RenterId) // Specify the foreign key property
+				.IsRequired(false);
+			builder
             .HasOne(x => x.Library)
            .WithMany(x => x.Books)
            .HasForeignKey(x => x.LibraryId);

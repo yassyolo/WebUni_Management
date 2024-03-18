@@ -40,5 +40,8 @@ namespace WebUni_Management.Infrastructure.Data.Models
 
         [Comment("Rented books")]
         public IEnumerable<Book>? RentedBooks { get; set; } = new List<Book>();
+
+        [Comment("Rented rooms")]
+        public IEnumerable<StudyRoom>? RentedStudyRooms { get; set; } = new List<StudyRoom>();
     }
 }

@@ -25,7 +25,7 @@ namespace WebUni_Management.Infrastructure.Repository
             return GetDbSet<T>();
         }
 
-        private IQueryable<T> GetDbSet<T>() where T : class
+        private DbSet<T> GetDbSet<T>() where T : class
         {
             return context.Set<T>();
         }
@@ -39,5 +39,10 @@ namespace WebUni_Management.Infrastructure.Repository
         {
             return await context.SaveChangesAsync();
         }
-    }
+
+		public async Task<T?> GetById<T>(object id) where T : class
+		{
+			return await GetDbSet<T>().FindAsync(id);
+		}
+	}
 }

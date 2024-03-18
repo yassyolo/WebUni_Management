@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebUni_Management.Data;
 
@@ -11,9 +12,10 @@ using WebUni_Management.Data;
 namespace WebUni_Management.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240318172456_DropRenterId")]
+    partial class DropRenterId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -288,7 +290,7 @@ namespace WebUni_Management.Infrastructure.Migrations
                         {
                             Id = "b242640e-291a-4de7-9701-e3e8e0afb0c9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5b9c20f7-0624-4028-9eb0-eb59d1f35d28",
+                            ConcurrencyStamp = "ff2bba3e-5539-4143-ac72-ce6ea169a480",
                             Email = "admin@gmail.com",
                             EmailConfirmed = true,
                             InitialPassword = "",
@@ -296,9 +298,9 @@ namespace WebUni_Management.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "00000001",
-                            PasswordHash = "AQAAAAEAACcQAAAAELUHPvgP8YpP2jL5Q3RPdnzlqC+bOwPnCPl6k2qhntOtBghYUa+yAZ/HXYrFdlCZUg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEATjZkoL+MzNOTVfR5fkk04IiYBF4fmaKtChGJUlxDAvaBwXrPyVxg5zFU1/485Pag==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ba9b8efd-896b-49bb-9086-98dde78a38db",
+                            SecurityStamp = "da7f95b2-a836-4b7b-9ce0-b0f00f180dc4",
                             TwoFactorEnabled = false,
                             UserName = "00000001"
                         },
@@ -306,7 +308,7 @@ namespace WebUni_Management.Infrastructure.Migrations
                         {
                             Id = "0e90dbeb-6468-4abc-9599-b4757e3874aa",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "148033d0-9851-460f-803a-752806f99cf2",
+                            ConcurrencyStamp = "30306c81-ebc9-4078-9a76-bfbbc3e9b6d5",
                             Email = "student@gmail.com",
                             EmailConfirmed = true,
                             InitialPassword = "",
@@ -314,9 +316,9 @@ namespace WebUni_Management.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "STUDENT@GMAIL.COM",
                             NormalizedUserName = "12345678",
-                            PasswordHash = "AQAAAAEAACcQAAAAEM5k/VZpVFIHTRPHMJ05knXWQzDNBdFCnCVGO8TjaJZO8s5a9f07Ni5uJL92maQgTA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEM+KgL9jtz3BAw6az3sxiIfEumitWXTlMJWjEvk6nlw4+TDtgYXk/zpiU4NX9RrYjg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "59961437-1670-427d-b49c-041dadd08354",
+                            SecurityStamp = "2892f0a3-1b32-4df2-a2d5-0f8eed86d99c",
                             TwoFactorEnabled = false,
                             UserName = "12345678"
                         });
@@ -368,10 +370,6 @@ namespace WebUni_Management.Infrastructure.Migrations
                         .HasColumnType("datetime2")
                         .HasComment("Rent date of the book");
 
-                    b.Property<string>("RenterId")
-                        .HasColumnType("nvarchar(450)")
-                        .HasComment("Book renter identifier");
-
                     b.Property<int?>("StudentId")
                         .HasColumnType("int");
 
@@ -386,8 +384,6 @@ namespace WebUni_Management.Infrastructure.Migrations
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("LibraryId");
-
-                    b.HasIndex("RenterId");
 
                     b.HasIndex("StudentId");
 
@@ -406,7 +402,6 @@ namespace WebUni_Management.Infrastructure.Migrations
                             LibraryId = 1,
                             PublishYear = "2017",
                             RentalDate = new DateTime(2024, 2, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            RenterId = "0e90dbeb-6468-4abc-9599-b4757e3874aa",
                             Title = "Math for Scientists: Refreshing the Essentials"
                         },
                         new
@@ -694,122 +689,6 @@ namespace WebUni_Management.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("WebUni_Management.Infrastructure.Data.Models.StudyRoom", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasComment("Study room identifier");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("Capacity")
-                        .HasColumnType("int")
-                        .HasComment("Study room capacity");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)")
-                        .HasComment("Study room description");
-
-                    b.Property<int>("Floor")
-                        .HasColumnType("int")
-                        .HasComment("Study room floor location");
-
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)")
-                        .HasComment("Study room image URL");
-
-                    b.Property<bool>("IsRented")
-                        .HasColumnType("bit")
-                        .HasComment("Is study room rented");
-
-                    b.Property<int?>("LibraryId")
-                        .IsRequired()
-                        .HasColumnType("int")
-                        .HasComment("Library identifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(110)
-                        .HasColumnType("nvarchar(110)")
-                        .HasComment("Study room name");
-
-                    b.Property<DateTime?>("RentalDate")
-                        .HasColumnType("datetime2")
-                        .HasComment("Rent date of the room");
-
-                    b.Property<string>("RenterId")
-                        .HasColumnType("nvarchar(450)")
-                        .HasComment("Study room renter identifier");
-
-                    b.Property<int?>("StudentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LibraryId");
-
-                    b.HasIndex("RenterId");
-
-                    b.HasIndex("StudentId");
-
-                    b.ToTable("StudyRooms");
-
-                    b.HasComment("Study room entity");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Capacity = 3,
-                            Description = "Comfortable, productive space for focused work & collaboration. Equipped with modern amenities to support efficient work sessions. To enhance concentration, the room is designed with sound-absorbing materials to minimize distractions from outside noise.",
-                            Floor = 1,
-                            ImageUrl = "https://www.houzz.com/photos/calender-transitional-home-office-dallas-phvw-vp~129507155",
-                            IsRented = false,
-                            LibraryId = 1,
-                            Name = "Cozy Study Room for Three, a Heaven for Productivity"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Capacity = 5,
-                            Description = "Discover a Serene Study Haven: Our spacious room comfortably accommodates up to 5 people, offering ergonomic seating, ample desk space, and abundant natural light to foster productivity and concentration. Delight in the quiet ambiance and conducive environment for collaborative projects, group discussions, or solitary study sessions. Elevate your learning experience in this peaceful retreat designed for academic excellence and intellectual pursuits.",
-                            Floor = 2,
-                            ImageUrl = "https://www.houzz.com/photos/white-and-airy-contemporary-home-office-new-york-phvw-vp~114130821",
-                            IsRented = false,
-                            LibraryId = 1,
-                            Name = "Study Nook, space for 5, fostering productivity and creativity"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Capacity = 10,
-                            Description = "Step into our expansive study sanctuary designed to accommodate up to 10 individuals. With abundant space, ergonomic furnishings, and a tranquil atmosphere, this room fosters focused study sessions, collaborative brainstorming, and group projects. Elevate your academic pursuits in this premium environment tailored for productivity and intellectual growth.",
-                            Floor = 3,
-                            ImageUrl = "https://www.houzz.com/photos/eclectic-and-colorful-greensboro-nc-transitional-home-office-phvw-vp~106627929",
-                            IsRented = false,
-                            LibraryId = 1,
-                            Name = "Elite Learning Oasis, The Grand Study Room for 10"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Capacity = 1,
-                            Description = "Escape to your own secluded sanctuary for uninterrupted focus and productivity. Our single study room, designed for one individual, offers a tranquil environment with ergonomic furnishings and ample natural light. Dive into your studies, research, or creative projects in complete privacy, free from distractions. Maximize your productivity and achieve your academic or professional goals in this serene haven tailored just for you.",
-                            Floor = 1,
-                            ImageUrl = "https://www.houzz.com/photos/contemporary-home-office-contemporary-home-office-san-diego-phvw-vp~127035222",
-                            IsRented = true,
-                            LibraryId = 1,
-                            Name = "Solitude Haven, Private Study Retreat",
-                            RentalDate = new DateTime(2024, 2, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            RenterId = "0e90dbeb-6468-4abc-9599-b4757e3874aa"
-                        });
-                });
-
             modelBuilder.Entity("BookBookAuthor", b =>
                 {
                     b.HasOne("WebUni_Management.Infrastructure.Data.Models.BookAuthor", null)
@@ -901,10 +780,6 @@ namespace WebUni_Management.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebUni_Management.Infrastructure.Data.Models.ApplicationUser", "Renter")
-                        .WithMany()
-                        .HasForeignKey("RenterId");
-
                     b.HasOne("WebUni_Management.Infrastructure.Data.Models.Student", null)
                         .WithMany("RentedBooks")
                         .HasForeignKey("StudentId");
@@ -912,8 +787,6 @@ namespace WebUni_Management.Infrastructure.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("Library");
-
-                    b.Navigation("Renter");
                 });
 
             modelBuilder.Entity("WebUni_Management.Infrastructure.Data.Models.BookByBookAuthor", b =>
@@ -946,27 +819,6 @@ namespace WebUni_Management.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("WebUni_Management.Infrastructure.Data.Models.StudyRoom", b =>
-                {
-                    b.HasOne("WebUni_Management.Infrastructure.Data.Models.Library", "Library")
-                        .WithMany("StudyRooms")
-                        .HasForeignKey("LibraryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebUni_Management.Infrastructure.Data.Models.ApplicationUser", "Renter")
-                        .WithMany()
-                        .HasForeignKey("RenterId");
-
-                    b.HasOne("WebUni_Management.Infrastructure.Data.Models.Student", null)
-                        .WithMany("RentedStudyRooms")
-                        .HasForeignKey("StudentId");
-
-                    b.Navigation("Library");
-
-                    b.Navigation("Renter");
-                });
-
             modelBuilder.Entity("WebUni_Management.Infrastructure.Data.Models.BookCategory", b =>
                 {
                     b.Navigation("Books");
@@ -975,15 +827,11 @@ namespace WebUni_Management.Infrastructure.Migrations
             modelBuilder.Entity("WebUni_Management.Infrastructure.Data.Models.Library", b =>
                 {
                     b.Navigation("Books");
-
-                    b.Navigation("StudyRooms");
                 });
 
             modelBuilder.Entity("WebUni_Management.Infrastructure.Data.Models.Student", b =>
                 {
                     b.Navigation("RentedBooks");
-
-                    b.Navigation("RentedStudyRooms");
                 });
 #pragma warning restore 612, 618
         }

@@ -13,11 +13,11 @@ namespace WebUni_Management.Infrastructure.SeedDb
     {
         public void Configure(EntityTypeBuilder<Student> builder)
         {
-            builder
+            /*builder
                     .HasMany(s => s.RentedBooks)
                     .WithOne()
                     .HasForeignKey(book => book.RenterId)
-                    .OnDelete(DeleteBehavior.Restrict);
+                    .OnDelete(DeleteBehavior.Restrict);*/
             var data = new SeedData();
             
             builder.HasData(new Student[] { data.Student });

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -51,10 +52,14 @@ namespace WebUni_Management.Infrastructure.Data.Models
         [Comment("Is book rented")]
         public bool IsRented { get; set; }
 
-        [Comment("Book renter id")]
-        public int? RenterId { get; set; }
+        [Comment("Book renter")]
+        [ForeignKey(nameof(RenterId))]
+        public ApplicationUser? Renter { get; set; }
 
-        [Comment("Rent date of the book")]
+        [Comment("Book renter identifier")]
+        public string? RenterId { get; set; }
+
+		[Comment("Rent date of the book")]
         public DateTime? RentalDate { get; set; }
 
         [Comment("Library identifier")]
@@ -62,6 +67,10 @@ namespace WebUni_Management.Infrastructure.Data.Models
 
         [Comment("Library")]
         [ForeignKey(nameof(LibraryId))]
-        public Library Library { get; set; } = null!;  
+        public Library Library { get; set; } = null!;
+
+        [Comment("Rental time") ]
+        [DefaultValue(RentalTimeDefaultValue)]
+        public int RentalTime { get; set; }
     }
 }

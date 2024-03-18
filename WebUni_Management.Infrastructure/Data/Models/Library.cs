@@ -17,5 +17,8 @@ namespace WebUni_Management.Infrastructure.Data.Models
 
         [Comment("Books in the library")]
         public IEnumerable<Book> Books { get; set; } = new List<Book>();
+
+        [Comment("Study rooms in the library")]
+        public IEnumerable<StudyRoom> StudyRooms { get; set; } = new List<StudyRoom>();
     }
 }

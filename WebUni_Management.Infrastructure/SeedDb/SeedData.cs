@@ -41,6 +41,11 @@ namespace WebUni_Management.Infrastructure.SeedDb
         public BookByBookAuthor MathBook3ByBookAuthor4 { get; set; }
         public BookByBookAuthor ChemistryBookByBookAuthor5 { get; set; }
         public BookByBookAuthor PhysicsBookByBookAuthor6 { get; set; }
+        public StudyRoom BigStudyRoom { get; set; }
+        public StudyRoom SmallStudyRoom { get; set; }
+        public StudyRoom MediumStudyRoom { get; set; }
+        public StudyRoom SingleStudyRoom { get; set; }
+
         public SeedData()
         {
             SeedUsers();
@@ -52,6 +57,7 @@ namespace WebUni_Management.Infrastructure.SeedDb
             SeedBooks();
             SeedBookAuthors();
             SeedBookByBookAuthors();
+            SeedStudyRooms();
         }
         private void SeedUsers()
         {
@@ -197,7 +203,7 @@ namespace WebUni_Management.Infrastructure.SeedDb
                 PublishYear = "2017",
                 Description = "'Math for Scientists: Refreshing the Essentials' offers a concise yet comprehensive review of fundamental mathematical concepts essential for scientists.Co - authored by Branislava Ćurčić - Blake and Natalia Maria, this book serves as a valuable resource for refreshing and reinforcing mathematical skills necessary for scientific inquiry.",
                 IsRented = true,
-                RenterId = Student.Id,
+                RenterId = StudentUser.Id,
                 RentalDate = new DateTime(2024, 2, 16),
                 LibraryId = Library.Id
             };
@@ -285,6 +291,55 @@ namespace WebUni_Management.Infrastructure.SeedDb
             };
         }
 
+        private void SeedStudyRooms()
+        {
+            SmallStudyRoom = new StudyRoom
+            {
+                Id = 1,
+                Name = "Cozy Study Room for Three, a Heaven for Productivity",
+                Description = "Comfortable, productive space for focused work & collaboration. Equipped with modern amenities to support efficient work sessions. To enhance concentration, the room is designed with sound-absorbing materials to minimize distractions from outside noise.",
+                Capacity = 3,
+                IsRented = false,
+                LibraryId = Library.Id,
+                Floor = 1,
+                ImageUrl = "https://www.houzz.com/photos/calender-transitional-home-office-dallas-phvw-vp~129507155"
+            };
+            MediumStudyRoom = new StudyRoom
+            {
+                Id = 2,
+                Name = "Study Nook, space for 5, fostering productivity and creativity",
+                Description = "Discover a Serene Study Haven: Our spacious room comfortably accommodates up to 5 people, offering ergonomic seating, ample desk space, and abundant natural light to foster productivity and concentration. Delight in the quiet ambiance and conducive environment for collaborative projects, group discussions, or solitary study sessions. Elevate your learning experience in this peaceful retreat designed for academic excellence and intellectual pursuits.",
+                Capacity = 5,
+                IsRented = false,
+                LibraryId = Library.Id,
+                Floor = 2,
+                ImageUrl = "https://www.houzz.com/photos/white-and-airy-contemporary-home-office-new-york-phvw-vp~114130821"
+            };
+           BigStudyRoom = new StudyRoom
+            {
+                Id = 3,
+                Name = "Elite Learning Oasis, The Grand Study Room for 10",
+                Description = "Step into our expansive study sanctuary designed to accommodate up to 10 individuals. With abundant space, ergonomic furnishings, and a tranquil atmosphere, this room fosters focused study sessions, collaborative brainstorming, and group projects. Elevate your academic pursuits in this premium environment tailored for productivity and intellectual growth.",
+                Capacity = 10,
+                IsRented = false,
+                LibraryId = Library.Id,
+                Floor = 3,
+                ImageUrl = "https://www.houzz.com/photos/eclectic-and-colorful-greensboro-nc-transitional-home-office-phvw-vp~106627929"
+           };
+            SingleStudyRoom = new StudyRoom
+            {
+                Id = 4,
+                Name = "Solitude Haven, Private Study Retreat",
+                Description = "Escape to your own secluded sanctuary for uninterrupted focus and productivity. Our single study room, designed for one individual, offers a tranquil environment with ergonomic furnishings and ample natural light. Dive into your studies, research, or creative projects in complete privacy, free from distractions. Maximize your productivity and achieve your academic or professional goals in this serene haven tailored just for you.",
+                Capacity = 1,
+                IsRented = true,
+                RenterId = StudentUser.Id,
+                RentalDate = new DateTime(2024, 2, 16),
+                LibraryId = Library.Id,
+                Floor = 1,
+                ImageUrl = "https://www.houzz.com/photos/contemporary-home-office-contemporary-home-office-san-diego-phvw-vp~127035222"
+            };
+        }
     }
 }
 

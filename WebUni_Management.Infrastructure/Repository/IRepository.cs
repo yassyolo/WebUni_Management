@@ -14,5 +14,6 @@ namespace WebUni_Management.Infrastructure.Repository
 
         Task AddAsync<T>(T entity) where T : class;
         Task<int> SaveChangesAsync();
-    }
+		Task<T?> GetById<T>(object id) where T : class;
+	}
 }

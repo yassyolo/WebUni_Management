@@ -28,6 +28,19 @@ namespace WebUni_Management.Infrastructure.Data.Constants
             public const int BookDescriptionMinLength = 10;
             public const int BookDescriptionMaxLength = 400;
             public const int BookImageUrlMaxLength = 255;
+            public const int RentalTimeDefaultValue = 2;
+        }
+        public class StudyRoom
+        {
+            public const int RoomNameMinLength = 2;
+            public const int RoomNameMaxLength = 110;
+            public const int RoomDescriptionMinLength = 10;
+            public const int RoomDescriptionMaxLength = 500;
+            public const int RoomImageUrlMaxLength = 255;
+            public const int RoomFloorMinValue = 0;
+            public const int RoomFloorMaxValue = 3;
+            public const int RoomCapacityMinValue = 1;
+            public const int RoomCapacityMaxValue = 10;
         }
        
             
