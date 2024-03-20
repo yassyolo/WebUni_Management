@@ -11,11 +11,20 @@ namespace WebUni_Management.Core.Contracts
     {
         Task<AllBooksQueryModel> AllBooksAsync(string? category = null, string? searchTerm = null, int currentPage = 1, int housesPerPage = 1);
         Task<IEnumerable<string>> AllCategorisNamesAsync();
-        Task<BookDetailsViewModel?> BookDetailsAsync();
+        Task<IEnumerable<BookCategoryViewModel>> AllCategoriesForEditAsync();
+        Task<BookDetailsViewModel?> BookDetailsAsync(int id);
         Task<bool> BookExistsByIdAsync(int id);
-		Task<bool> IsBookRentedAsync(int id);
-		Task<IEnumerable<BookInfoViewModel>> LastThreeBooksAsync();
+        Task<EditBookViewModel> GetEditFormBookModelAsync(int id);
+        Task<bool> IsBookRentedAsync(int id);
+        Task<IEnumerable<BookInfoViewModel>> LastThreeBooksAsync();
         Task<IEnumerable<StudyRoomInfo>> LastThreeStudyRoomsAsync();
         Task RentBookAsync(int id, string userId);
-	}
+        Task<bool> CategoryExistsById(int id);
+        Task EditBookAsync(int id, EditBookViewModel model);
+        Task<AllRoomsQueryModel> AllRoomsAsync(int? capacity = null, string? searchTerm = null, int currentPage = 1, int roomsPerPage = 1);
+        Task<bool> RoomExistsByIdAsync(int id);
+        Task<RoomShowcaseViewModel?> GetRoomDetailsByIdAsync(int id);
+        Task<EditRoomViewModel?> GetEditRoomAsync(int id);
+        Task AddBookAsync(EditBookViewModel model);
+    }
 }

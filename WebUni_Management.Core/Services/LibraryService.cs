@@ -57,14 +57,17 @@ namespace WebUni_Management.Core.Services
             return await repository.AllReadOnly<BookCategory>().Select(x => x.Name).ToListAsync();        
         }
 
-        public async Task<BookDetailsViewModel?> BookDetailsAsync()
+        public async Task<BookDetailsViewModel?> BookDetailsAsync(int id)
+
         {
+            var author = await GetAuthor(id);
             return await repository.AllReadOnly<Book>()
+                .Where(x => x.Id == id)
                 .Select(x => new BookDetailsViewModel
                 {
                     Id = x.Id,
                     Title = x.Title,
-                    Author = string.Join(", ", x.Author.Select(x => x.FirstName + " " + x.LastName)),
+                    Authors = author,
                     ImageUrl = x.ImageUrl,
                     Category = x.Category.Name,
                     Description = x.Description,
@@ -78,25 +81,79 @@ namespace WebUni_Management.Core.Services
             return await repository.AllReadOnly<Book>().AnyAsync(x => x.Id == id);
         }
 
-		public async Task<bool> IsBookRentedAsync(int id)
+        public async Task<EditBookViewModel> GetEditFormBookModelAsync(int id)
+        { 
+            var author = await GetAuthor(id);
+            var book = await repository.AllReadOnly<Book>()
+                .Where(x => x.Id == id)
+                .Select(x => new EditBookViewModel
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    ImageUrl = x.ImageUrl,
+                    PublishYear = x.PublishYear,
+                    Description = x.Description,
+                    CategoryId = x.CategoryId,
+                    Author = author
+                }).FirstOrDefaultAsync();
+            if(book == null)
+            {
+                throw new InvalidOperationException("Book not found");
+            }
+            
+            book.Categories = await AllCategoriesForEditAsync();
+            return book;
+        }
+        public async Task<IEnumerable<BookCategoryViewModel>> AllCategoriesForEditAsync()
+        {
+            return await repository.AllReadOnly<BookCategory>()
+                .Select(x => new BookCategoryViewModel()
+                {
+                    Id = x.Id,
+                    Name = x.Name
+                })
+                .ToListAsync();
+        }
+
+        public async Task<bool> IsBookRentedAsync(int id)
 		{
 			return await repository.AllReadOnly<Book>().Where(x => x.Id == id).Select(x => x.IsRented).FirstOrDefaultAsync();
 		}
 
 		public async Task<IEnumerable<BookInfoViewModel>> LastThreeBooksAsync()
         {
-           return await repository.AllReadOnly<Book>()
+            
+           var books= await repository.AllReadOnly<Book>()
+
                 .OrderByDescending(x => x.Id)
                 .Take(3)
                 .Select(x => new BookInfoViewModel
                 {
                     Id = x.Id,
                     Title = x.Title,
-                    Author = string.Join(", ", x.Author.Select(x => x.FirstName + " " + x.LastName)),
+                   
                     Category = x.Category.Name,
                     ImageUrl = x.ImageUrl
                 })
+                
                 .ToListAsync();
+            foreach (var book in books)
+            {
+                book.Author = await GetAuthor(book.Id);
+            }
+            return books;
+        }
+        private async Task<string> GetAuthor(int id)
+        {
+            var authorViewModels = await repository.AllReadOnly<BookByBookAuthor>()
+                .Where(x => x.BookId == id)
+                .Select(x => new AuthorViewModel
+                {
+                    FirstName = x.Author.FirstName,
+                    LastName = x.Author.LastName
+                })
+                .ToListAsync();
+            return string.Join(", ", authorViewModels.Select(a => $"{a.FirstName} {a.LastName}"));
         }
 
         public async Task<IEnumerable<StudyRoomInfo>> LastThreeStudyRoomsAsync()
@@ -127,5 +184,130 @@ namespace WebUni_Management.Core.Services
             book.IsRented = true;
             await repository.SaveChangesAsync();
 		}
-	}
+
+        public async Task<bool> CategoryExistsById(int id)
+        {
+            return await repository.AllReadOnly<BookCategory>()
+           .AnyAsync(x => x.Id == id);
+        }
+
+        public async Task EditBookAsync(int id, EditBookViewModel model)
+        {
+            var book = repository.All<Book>().FirstOrDefault(x => x.Id == id);
+            if(book == null)
+            {
+                throw new InvalidOperationException("Book not found");
+            }
+            book.Title = model.Title;
+            book.ImageUrl = model.ImageUrl;
+            book.PublishYear = model.PublishYear;
+            book.Description = model.Description;
+            book.CategoryId = model.CategoryId;
+            await repository.SaveChangesAsync();
+        }
+
+        public async Task<AllRoomsQueryModel> AllRoomsAsync(int? capacity = null, string? searchTerm = null, int currentPage = 1, int roomsPerPage = 1)
+        {
+            var rooms = repository.AllReadOnly<StudyRoom>();
+
+            if (capacity != 0 && capacity.HasValue)
+            {
+                rooms = rooms.Where(x => x.Capacity == capacity);
+            }
+
+            if (searchTerm != null)
+            {
+                var searchTermToLower = searchTerm.ToLower();
+                rooms = rooms.Where(x => x.Name.Contains(searchTermToLower) || x.Description.Contains(searchTermToLower));
+            }
+            var roomsToShow = await rooms.Skip((currentPage - 1) * roomsPerPage).Take(roomsPerPage).OrderByDescending(x => x.Id)
+                .Select(x => new RoomShowcaseViewModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Description = x.Description,
+                    ImageUrl = x.ImageUrl,
+                    Capacity = x.Capacity,
+                    IsRented = x.IsRented,
+                    Floor = x.Floor,
+                }).ToListAsync();
+           return new AllRoomsQueryModel
+            {
+                StudyRooms = roomsToShow,
+                TotalRooms = await rooms.CountAsync()
+            };
+        }
+
+        public async Task<bool> RoomExistsByIdAsync(int id)
+        {
+            return await repository.AllReadOnly<StudyRoom>().AnyAsync(x => x.Id == id);
+        }
+
+        public async Task<RoomShowcaseViewModel?> GetRoomDetailsByIdAsync(int id)
+        {
+            return await repository.AllReadOnly<StudyRoom>().Where(x => x.Id == id)
+                .Select(x => new RoomShowcaseViewModel 
+                { 
+                    Id = x.Id, 
+                    Name = x.Name,
+                    Description = x.Description,
+                    ImageUrl = x.ImageUrl,
+                    Capacity = x.Capacity,
+                    IsRented = x.IsRented,
+                    Floor = x.Floor,
+                }).FirstOrDefaultAsync();
+        }
+
+        public async Task<EditRoomViewModel?> GetEditRoomAsync(int id)
+        {
+            return await repository.AllReadOnly<StudyRoom>().Where(x => x.Id == id)
+                .Select(x => new EditRoomViewModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Description = x.Description,
+                    ImageUrl = x.ImageUrl,
+                    Capacity = x.Capacity,
+                    Floor = x.Floor,
+                    IsRented = x.IsRented
+                }).FirstOrDefaultAsync();
+        }
+
+        public async Task AddBookAsync(EditBookViewModel model)
+        {
+            var book = new Book
+            {
+                Title = model.Title,
+                ImageUrl = model.ImageUrl,                
+                CategoryId = model.CategoryId,
+                PublishYear = model.PublishYear,
+                Description = model.Description,
+            };
+
+            var authors = model.Author.Split(", ").ToArray();
+            foreach (var author in authors)
+            {
+                var names = author.Split(" ").ToArray();
+                var existingAuthor = await repository.All<BookAuthor>()
+                    .Where(x => x.FirstName == names[0] || x.LastName == names[1])
+                    .FirstOrDefaultAsync();
+                if(existingAuthor == null)
+                {
+                    existingAuthor = new BookAuthor
+                    {
+                        FirstName = names[0],
+                        LastName = names[1],
+                    };
+                    var bookBybokAuthor = new BookByBookAuthor
+                    {
+                        AuthorId = existingAuthor.Id,
+                        BookId = book.Id
+                    };
+                    await repository.AddAsync(existingAuthor);
+                }
+            }
+            await repository.AddAsync(book);
+            await repository.SaveChangesAsync();
+        }
+    }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using WebUni_Management.Core.Contracts;
 
@@ -16,6 +17,7 @@ namespace WebUni_Management.Controllers
 		{
 			return View();
 		}
+		[Authorize(Roles = "Student")]
 		public async Task<IActionResult> RentedBooks(string userId) 
 		{ 
 			if(await personalInfoService.UserWithIdExistsAsync(userId) == false)
@@ -39,7 +41,7 @@ namespace WebUni_Management.Controllers
 			await personalInfoService.RemoveBookRentAsync(id, userId);
 			return RedirectToAction("RentedBooks", new { userId = userId });
 		}
-		public async Task<IActionResult> CheckRemainingRentTime(int id)
+		/*public async Task<IActionResult> CheckRemainingRentTime(int id)
 		{
             if (await personalInfoService.RentedBookExistsByIdAsync(id) == false)
             {
@@ -50,6 +52,6 @@ namespace WebUni_Management.Controllers
             {
                 return BadRequest();
             }
-        }
+        }*/
 	}
 }
