@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -61,5 +62,9 @@ namespace WebUni_Management.Infrastructure.Data.Models
         [Comment("Library")]
         [ForeignKey(nameof(LibraryId))]
         public Library Library { get; set; } = null!;
-    }
+
+		[Comment("Rental time")]
+		[DefaultValue(RoomRentalTimeDefaultValue)]
+		public int RentalTime { get; set; }
+	}
 }

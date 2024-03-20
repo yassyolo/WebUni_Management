@@ -43,7 +43,10 @@ namespace WebUni_Management.Infrastructure.Data.Constants
             public const int RoomFloorMaxValue = 3;
             public const int RoomCapacityMinValue = 1;
             public const int RoomCapacityMaxValue = 10;
-        }
+            public const int RoomRentalTimeDefaultValue = 1;
+
+		public int RentalTime { get; set; }
+		}
         public class Canteen
         {
             public const int DishNameMinLength = 2;
