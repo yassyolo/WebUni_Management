@@ -1,39 +1,38 @@
-﻿@model WebUni_Management.Core.Models.Library.BookDetailsViewModel
+﻿@model WebUni_Management.Core.Models.Library.RoomShowcaseViewModel
 @{
-   ViewBag.Title = "Book Details";
+	ViewBag.Title = "Book Details";
 }
 
 <h6>@ViewBag.Message</h6>
 <div class="details-container">
 	<div class="book-img">
-		<img src="@Model.ImageUrl" alt="Book Cover"/>
+		<img src="@Model.ImageUrl" alt="Book Cover" />
 	</div>
 	<div class="book-description">
-		<h3><b>Title:</b> @Model.Title</h3>
-		<h5><b>Author:</b> @Model.Authors</h5>
-		<h5><b>Category:</b> @Model.Category</h5>
-		<h5><b>Published in:</b> @Model.PublishYear</h5>
+		<h3><b>Title:</b> @Model.Name</h3>
+		<h5><b>Category:</b> @Model.Capacity</h5>
+		<h5><b>Published in:</b> @Model.Floor</h5>
 		<h5><b>Description:</b> @Model.Description</h5>
 		@if (Model.IsRented == false)
 		{
-			<form asp-controller="Library" asp-action="Rent" asp-route-id="@Model.Id" method="get">
+			<form asp-controller="Library" asp-action="RentRoom" asp-route-id="@Model.Id" method="get">
 				<button type="submit" class="btn btn-danger">Rent</button>
 			</form>
 		}
 		@if (User.IsInRole("Admin"))
 		{
-			<form asp-controller="Library" asp-action="Edit" asp-route-id="@Model.Id" method="get">
+			<form asp-controller="Library" asp-action="EditRoom" asp-route-id="@Model.Id" method="get">
 				<button type="submit" class="btn btn-danger">Edit</button>
 			</form>
 		}
-		<form asp-controller="Library" asp-action="AllBooksShowcase" method="post">
+		<form asp-controller="Library" asp-action="AllRoomsShowcase" method="post">
 			<button type="submit" class="btn btn-primary">Back</button>
 		</form>
 	</div>
 </div>
 <style>
 	.details-container {
-		height:650px;
+		height: 650px;
 		width: 1130px;
 		background-color: white;
 		margin: auto;
@@ -45,20 +44,23 @@
 		padding-top: 5px;
 		padding: 10px;
 	}
+
 	.book-img {
-		margin-top:20px;
+		margin-top: 20px;
 		margin-right: 30px;
-		margin-left:30px;
+		margin-left: 30px;
 		width: 330px;
 		height: 430px;
 		float: left;
 	}
-	.book-img img {
-		width: 100%;
-		height: 100%;
+
+		.book-img img {
+			width: 100%;
+			height: 100%;
 			border: 1px solid #e91e63;
 			border-radius: 3px;
-	}
+		}
+
 	.book-description {
 		margin-top: 20px;
 		width: 600px;
@@ -73,9 +75,10 @@
 		.book-description h5 {
 			color: black; /* Keep the color of other elements black */
 		}
-	.book-description button {
-		margin-top: 10px;
-	}
+
+		.book-description button {
+			margin-top: 10px;
+		}
 
 	.btn-primary {
 		background-color: #fc819e;

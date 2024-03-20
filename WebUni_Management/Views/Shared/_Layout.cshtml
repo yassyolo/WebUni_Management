@@ -35,11 +35,23 @@
                         <li class="menu-item"><a asp-controller="Events" asp-action="MyEvents">My Events</a></li>
                        </ul>
                     </li>
+                        <li class="menu-item menu-item-has-children">
+                            <a asp-controller="Menu" asp-action="Index">Canteen<i class="plus"></i></a>
+                            <ul class="sub-menu">
+                                <li class="menu-item"><a asp-controller="Menu" asp-action="Index">Our Canteen</a></li>
+                               
+                            </ul>
+                        </li>
                     <li class="menu-item menu-item-has-children">
                             <a asp-controller="Library" asp-action="Index">Library<i class="plus"></i></a>
                             <ul class="sub-menu">
                                 <li class="menu-item"><a asp-controller="Library" asp-action="Index">Our Library</a></li>
-                                <li class="menu-item"><a asp-controller="Library" asp-action="AllShowcase">Books</a></li>
+                                <li class="menu-item"><a asp-controller="Library" asp-action="AllBooksShowcase">Books</a></li>
+                                <li class="menu-item"><a asp-controller="Library" asp-action="AllRoomsShowcase">Study Rooms</a></li>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                <li class="menu-item"><a asp-controller="Library" asp-action="ManageIndex">Manage Items</a></li>
+                                }
                             </ul>
                     </li>
                         <li class="menu-item menu-item-has-children">

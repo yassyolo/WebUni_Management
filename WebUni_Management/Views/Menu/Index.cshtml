@@ -1,0 +1,57 @@
+﻿@model IEnumerable<WebUni_Management.Core.Models.Menu.MenuItemsViewModel>
+@{
+ViewBag.Title = "Menu";
+}
+
+<div class="menu-index-container">
+	<div class="welcome-message">
+		<div class="image-holder">
+			<src img="https://assets-global.website-files.com/62e628ccdd3aacd9841de18b/62ead78b6f662a4cb7295ab6_Carousel%3ACanteen.jpg" alt="canteen"></src>
+		</div>
+		<div class="library-message">
+			<h2>@ViewBag.Title</h2>
+			<h5>Explore our vast collection of delicious meals and beverages. Whether you're a student, a professor, or a visitor, our menu has something for everyone. Enjoy browsing through our catalog and discovering new tastes. Happy eating and don't hesitate to ask our friendly staff for recommendations or assistance.</h5</div>
+	</div>
+	<div class="daily-menu">
+        @foreach (var item in Model)
+		{
+			<div class="menu-item">
+				<h2>@item.Name----@item.Price</h2>
+				<p>@item.Price</p>
+				<p>@item.Category</p>
+			</div>
+		}
+	</div>
+</div>
+<style>
+.menu-index-container {
+        height: 900px;
+        width: 1130px;
+        background-color: white;
+        margin: auto;
+        border: 2px solid #e91e63;
+        border-radius: 8px;
+        display: flex;
+		align-content: center;
+        flex-direction: row;
+        padding-top: 5px;
+        padding: 10px;
+    }
+	.welcome-message{
+		display:flex;
+		height: 100%;
+		float:left;
+        width: 40%;
+		margin-right:30px;
+	}
+	.daily-menu{
+float:right;
+width:40%;
+height:100%;
+display:flex;
+flex-direction:column
+	}
+	
+
+	
+</style>

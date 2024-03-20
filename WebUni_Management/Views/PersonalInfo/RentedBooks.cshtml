@@ -3,30 +3,63 @@
 @{
     ViewBag.Title = "My Rented Books";
 }
-<h6>@ViewBag.Message</h6>
+<h2>@ViewBag.Message</h2>
 <div class="rentedbook-container">
-    <h6>View your rented book here and collect them in the uni library on the spot.</h6>
+    <h2>View your rented book here and collect them in the uni library on the spot via qr code.</h2>
     <div class="flip-card-container">
         @foreach (var book in Model)
         {
-            <div class="flip-card">
-                <div class="flip-card-inner">
-                    <div class="flip-card-front">
-                        <img src="@book.ImageUrl" alt="Book Cover">
-                    </div>
-                    <div class="flip-card-back">
-                        <h6>@book.Title</h6>
-                        <h6>@book.Category</h6>
-                        <h6>@book.Author</h6>
-                        <form asp-controller="Library" asp-action="Details" asp-route-id="@book.Id" method="get">
-                            <button type="submit" class="btn btn-danger">Details</button>
-                        </form>
-                        <form asp-controller="PersonalInfo" asp-action="RemoveRent" asp-route-id="@book.Id" method="get">
-                            <button type="submit" class="btn btn-danger">Remove Rent</button>
-                        </form>
-                    </div>
+            <div class="card">
+                <img src="@book.ImageUrl" class="card-img" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">@book.Title--@book.Title</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <form asp-controller="Library" asp-action="Details" asp-route-id="@book.Id" method="get">
+                        <button type="submit" class="btn btn-danger">Details</button>
+                    </form>
+                    <form asp-controller="PersonalInfo" asp-action="RemoveRent" asp-route-id="@book.Id" method="get">
+                        <button type="submit" class="btn btn-danger">Remove Rent</button>
+                    </form>
                 </div>
             </div>
+                        
+       
         }
     </div>
 </div>
+<style>
+    .card-img
+    {
+        height:45%;
+        
+    }
+
+    .card-title
+    {
+        color: #e91e63;
+        height: 25%;
+        margin:auto;
+
+    }
+
+    .card-text{
+		height: 15%;
+	}
+    .rentedbook-container {
+		height: 800px;
+		width: 1130px;
+		background-color: white;
+		margin: auto;
+		border: 2px solid #e91e63;
+		border-radius: 8px;
+		display: flex;
+		flex-direction: column;
+		align-content: space-between;
+		padding-top: 5px;
+		padding: 10px;
+	}
+	.card{
+        width:300px;
+        height:100%;
+    }
+</style>

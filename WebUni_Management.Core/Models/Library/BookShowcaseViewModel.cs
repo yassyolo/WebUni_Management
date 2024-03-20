@@ -15,6 +15,7 @@ namespace WebUni_Management.Core.Models.Library
         public string Category { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public string PublishYear { get; set; } = string.Empty;
+
         public bool IsRented { get; set; }  
     }
 }

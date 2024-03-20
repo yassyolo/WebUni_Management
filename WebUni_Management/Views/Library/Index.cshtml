@@ -1,20 +1,21 @@
 ﻿@model WebUni_Management.Core.Models.Library.LibraryInfoViewModel
 @{
-    ViewBag.Title = "Welcome to the Web Uni Library!";
+    ViewBag.Title = "Welcome to the Web University Library!";
 }
 <div class="index-library-container">
     <div class="index-library-text">
         <div class="image-holder">
             <img class="library-photo" src="@Url.Content("~/images/library.jpg")" alt="Library Photo" />
         </div>
-        <div class="text-info">
+        <div class="library-text-info">
             <h2>@ViewBag.Title</h2>
             <h5>Explore our vast collection of books covering a wide range of topics and genres. Whether you're a student, a researcher, or an avid reader, our library has something for everyone. Enjoy browsing through our catalog and discovering new knowledge. Happy reading and don't hesitate to ask our knowledgeable staff for recommendations or assistance.</h5>
         </div>
     </div>
 
     <div class="message">
-        <h3>Check our recent book:</h3>
+        <h6>Check our recent books in the collection:</h6>
+        <p>*Flip the image to unleash details</p>
     </div>
     <div class="flip-card-container">
         @foreach (var item in Model.BookInfoViewModel)
@@ -22,13 +23,15 @@
             <div class="flip-card">
                 <div class="flip-card-inner">
                     <div class="flip-card-front">
-                        <img src="@item.ImageUrl" alt="Avatar">
+                        <img src="@item.ImageUrl" alt="Book Cover">
                     </div>
                     <div class="flip-card-back">
-                        <h6>@item.Title</h6>
-                        <h6>@item.Category</h6>
+                        <h5>TITLE: @item.Title</h5>
+                        <br />
+                        <h5>AUTHOR(S): @item.Author </h5>
+                        <br />
                         <form asp-controller="Library" asp-action="Details" asp-route-id="@item.Id" method="get">
-                            <button type="submit" class="btn btn-danger">Details</button>
+                            <button type="submit" class="btn">Details</button>
                         </form>
                     </div>
                 </div>
@@ -37,20 +40,25 @@
         
     </div>
     <div class="message">
-        <h3>Check our study rooms:</h3>
+        <h6>Check our cozy study rooms and indulge in reading:</h6>
+        <p>*Flip the image to unleash details</p>
     </div>
-    <div class="flip-card-rooms-container">
+    <div class="flip-card-container">
         @foreach (var item in Model.StudyRoomInfo)
         {
-            <div class="flip-card">
+            <div class="flip-card-room">
                 <div class="flip-card-inner">
                     <div class="flip-card-front">
-                        <img src="@item.ImageUrl" alt="Avatar">
+                        <img src="@item.ImageUrl" alt="Study Room" />
+
                     </div>
                     <div class="flip-card-back">
-                        <h6>@item.Capacity</h6>
+                        <h5>NAME: @item.Name</h5>
+                        <br />
+                        <h5>ROOM CAPACITY: @item.Capacity</h5>
+                        <br />
                         <form asp-controller="Library" asp-action="Details" asp-route-id="@item.Id" method="get">
-                            <button type="submit" class="btn btn-danger">Details</button>
+                            <button type="submit" class="btn btn-primary">Details</button>
                         </form>
                     </div>
                 </div>
@@ -61,34 +69,89 @@
 </div>
 
 <style>
-    .message{
-		margin-top: 20px 20px 20px 20px;
+
+    .index-library-container {
+        height: 1100px;
+        width: 1130px;
+        background-color: white;
+        margin: auto;
+        border: 2px solid #e91e63;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        padding-top: 5px;
+        padding: 10px;
     }
-    .flip-card-rooms-container{
-        display:flex;
+
+    .index-library-text {
+        height:250px;
+        display: flex;
         flex-direction: row;
-justify-content: center;
-gap: 20px;
+        align-content: center;
+    }
+
+    .image-holder {     
+        height:80%;
+        margin-bottom: 20px;
+        margin-left: 30px;
+        margin-right: 40px;
+    }
+
+    .library-photo {
+        width: 100%; 
+        height: 100%;
+        border: 1px solid #e91e63;
+        border-radius: 3px;
+    }
+
+    .library-text-info {
+        width: 70%;       
+        max-width: 650px; 
+        color: black;
+        margin-bottom: 20px; 
+    }
+
+    .library-text-info h2 {
+        color: #e91e63;
+    }
+
+    .message{
+       color: #e91e63;
+	   margin-bottom:20px;
     }
 
     .flip-card-container {
         display: flex;
-        flex-direction: row; /* Display cards horizontally */
-        justify-content: center; /* Center the cards horizontally */
-        gap: 20px; /* Add some space between the cards */
-    }
-
-    .flip-card-front img {
-        width: 100%; /* Make the image fill the entire space of the front face */
-        height: 100%; /* Make the image fill the entire space of the front face */
+        flex-direction: row; 
+        justify-content: center; 
+        gap: 20px;
     }
 
     .flip-card {
-        width: 300px;
+        width: 250px;
         height: 300px;
-        border: 1px solid #f1f1f1;
-        perspective: 1000px; /* Remove this if you don't want the 3D effect */
+        border: 1px solid #e91e63;
+        border-radius: 3px;
+        perspective: 1000px; 
+        margin-bottom:20px;
     }
+
+    .flip-card-room
+    {
+        width:300px;
+        height:300px;
+        border: 1px solid #e91e63;
+        border-radius: 3px;
+        perspective: 1000px;
+    }
+
+    .flip-card-room:hover .flip-card-inner {
+        transform: rotateY(180deg);
+    }
+    .flip-card-front img {
+        width: 100%;
+        height: 100%;
+    }    
 
     .flip-card-inner {
         position: relative;
@@ -107,61 +170,26 @@ gap: 20px;
         position: absolute;
         width: 100%;
         height: 100%;
-        
+        color: black;
         backface-visibility: hidden;
     }
 
-    .flip-card-front {
-        /*background-color: #bbb;*/
-        color: black;
-    }
-
     .flip-card-back {
-        background-color: dodgerblue;
-        color: white;
+        background-color: #fc819e;
         transform: rotateY(180deg);
     }
 
-    .index-library-container {
-        height: 1000px;
-        width: 1120px;
-        background-color: white;
-        margin: auto;
-        border: 2px solid #e91e63;
-        border-radius: 8px;
-        display: flex;
-        flex-direction:column;
-        padding-top: 5px;
-
-        padding: 10px; /* Add padding to create space around the content */
-    }
-
-    .image-holder {
-        width: 80%;
-        max-width: 400px; /* Limit maximum width */
-        /* Center the image */
-         /* Add space between image and text */
-         margin-bottom:20px;
-    }
-
-    .library-photo {
-        width: 100%; /* Make the image responsive */
-        height: 100%;
-        border: 1px solid #e91e63;
-        border-radius: 2px;
-
-    }
-
-    .text-info {
-        width: 80%;
-        max-width: 500px; /* Limit maximum width */
+    .btn {
+        background-color: #C1F2B0;
+        border-color: #C1F2B0;
         color: black;
-        margin-bottom: 20px; /* Add space between image and text */
-    }
-    .index-library-text{
-		display: flex;
-		flex-direction: row;
-		justify-content: space-evenly;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
     }
 
+    .btn:hover {
+            background-color: #65B741;
+            border-color: #65B741;
+    }
 </style>

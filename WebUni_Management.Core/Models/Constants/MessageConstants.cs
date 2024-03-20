@@ -8,6 +8,10 @@
         public const string InvalidAgeErrorMessage = "Invalid age. Should be between {2} and {1} years.";
         public const string InvalidFacultyNumber = "Invalid faculty number. Should be {1} characters long.";
         public const string InvalidPhoneNumber = "Invalid phone number.";
+        public const string MaxLengthErrorMessage = "The {0} field must be with a minimum length of {2} and a maximum length of {1} characters.";
+        public const string InvalidPublishYear = "Invalid publish year. Should be {1} characters long.";
+        public const string InvalidFloor = "Invalid floor. Should be between {2} and {1}.";
+        public const string InvalidCapacity = "Invalid capacity. Should be between {2} and {1}.";
 
     }
 }

@@ -1,0 +1,79 @@
+﻿
+@{
+	ViewBag.Message = "Manage Library Items";
+}
+
+<h2>@ViewBag.Message</h2>
+<div class="manage-container">
+	<div class="add-manage">
+		<form asp-controller="Library" asp-action="AddBook" method="get">
+			<h2>Add book:</h2>
+			<button type="submit" class="btn btn-addbook">Add Book</button>
+		</form>
+		<form asp-controller="Library" asp-action="AddRoom" method="get">
+			<h2>Add room:</h2>
+			<button type="submit" class="btn btn-primary">Add Room</button>
+		</form>
+	</div>
+	<div class="rent-manage">
+		<form asp-controller="Library" asp-action="ManageBookRent" method="post">
+			<h2>Manage book rent:</h2>
+			<button type="submit" class="btn btn-primary">Manage Book Rent</button>
+		</form>
+		<form asp-controller="Library" asp-action="ManageRoomRent" method="post">
+			<h2>Manage room rent:</h2>
+			<button type="submit" class="btn btn-primary">Manage Room Rent</button>
+		</form>
+	</div>
+</div>
+
+<style>
+	.manage-container {
+		height: 400px;
+		width: 1130px;
+		background-color: white;
+		margin: auto;
+		border: 2px solid #e91e63;
+		border-radius: 8px;
+		display: flex;
+		flex-direction: column;
+		align-content: space-between;
+		justify-content:center;
+		padding-top: 5px;
+		padding: 5px;
+		place-items:center;
+	}
+
+	.add-manage{
+		gap: 200px;
+		
+	}
+
+	.rent-manage{
+		gap: 40px;
+	}
+
+	.add-manage,
+	.rent-manage {
+
+		 display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 90%;
+		height: 50%;
+	}
+
+	.btn {
+		background-color: #fc819e;
+		border-color: #fc819e;
+		color: black;
+		border-radius: 4px;
+		padding: 8px 16px;
+		cursor: pointer;
+	}
+
+		.btn:hover {
+			background-color: #e91e63;
+			border-color: #e91e63;
+		}
+</style>
