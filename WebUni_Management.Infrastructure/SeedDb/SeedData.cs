@@ -45,6 +45,13 @@ namespace WebUni_Management.Infrastructure.SeedDb
         public StudyRoom SmallStudyRoom { get; set; }
         public StudyRoom MediumStudyRoom { get; set; }
         public StudyRoom SingleStudyRoom { get; set; }
+        public Dish Salad1 { get; set; }
+        public Dish Salad2 { get; set; }
+        public Dish MainDish1 { get; set; }
+        public Dish MainDish2 { get; set; }
+        public Dish Dessert1 { get; set; }
+        public Dish Dessert2 { get; set; }
+        public Menu Menu { get; set; }
 
         public SeedData()
         {
@@ -58,7 +65,10 @@ namespace WebUni_Management.Infrastructure.SeedDb
             SeedBookAuthors();
             SeedBookByBookAuthors();
             SeedStudyRooms();
+            SeedMenu();
+            SeedDishes();
         }
+
         private void SeedUsers()
         {
             var hasher = new PasswordHasher<ApplicationUser>();
@@ -302,7 +312,7 @@ namespace WebUni_Management.Infrastructure.SeedDb
                 IsRented = false,
                 LibraryId = Library.Id,
                 Floor = 1,
-                ImageUrl = "https://www.houzz.com/photos/calender-transitional-home-office-dallas-phvw-vp~129507155"
+                ImageUrl = "https://st.hzcdn.com/simgs/pictures/home-offices/calender-allen-architecture-llc-img~cd81328d0bb27f02_8-0752-1-86bb54d.jpg"
             };
             MediumStudyRoom = new StudyRoom
             {
@@ -313,7 +323,7 @@ namespace WebUni_Management.Infrastructure.SeedDb
                 IsRented = false,
                 LibraryId = Library.Id,
                 Floor = 2,
-                ImageUrl = "https://www.houzz.com/photos/white-and-airy-contemporary-home-office-new-york-phvw-vp~114130821"
+                ImageUrl = "https://st.hzcdn.com/simgs/pictures/home-offices/white-and-airy-jennifer-pacca-interiors-img~387173790a9ee6b8_8-4497-1-a0376b0.jpg"
             };
            BigStudyRoom = new StudyRoom
             {
@@ -324,7 +334,7 @@ namespace WebUni_Management.Infrastructure.SeedDb
                 IsRented = false,
                 LibraryId = Library.Id,
                 Floor = 3,
-                ImageUrl = "https://www.houzz.com/photos/eclectic-and-colorful-greensboro-nc-transitional-home-office-phvw-vp~106627929"
+                ImageUrl = "https://st.hzcdn.com/simgs/pictures/home-offices/eclectic-and-colorful-greensboro-nc-jessica-dauray-interiors-elements-of-style-img~362195d10a0dcf59_8-0725-1-24dcf75.jpg"
            };
             SingleStudyRoom = new StudyRoom
             {
@@ -337,7 +347,66 @@ namespace WebUni_Management.Infrastructure.SeedDb
                 RentalDate = new DateTime(2024, 2, 16),
                 LibraryId = Library.Id,
                 Floor = 1,
-                ImageUrl = "https://www.houzz.com/photos/contemporary-home-office-contemporary-home-office-san-diego-phvw-vp~127035222"
+                ImageUrl = "https://st.hzcdn.com/simgs/pictures/home-offices/contemporary-home-office-tazz-lighting-inc-img~259113440b895f26_8-5371-1-da12f0e.jpg"
+            };
+        }
+        private void SeedMenu()
+        {
+            Menu = new Menu
+            {
+                Id = 1,
+                Date = new DateTime(2024, 2, 20)
+            };
+        }
+        private void SeedDishes()
+        {
+            Salad1 = new Dish
+            {
+                Id = 1,
+                Name = "Greek Salad",
+                Category = "Salad",
+                Price = 1.00m,
+                MenuId = Menu.Id
+            };
+            Salad2 = new Dish
+            {
+                Id = 2,
+                Name = "Caesar Salad",
+                Category = "Salad",
+                Price = 1.50m,
+                MenuId = Menu.Id
+            };
+            MainDish1 = new Dish
+            {
+                Id = 3,
+                Name = "Spaghetti Carbonara",
+                Category = "Main Dish",
+                Price = 2.00m,
+                MenuId = Menu.Id
+            };
+            MainDish2 = new Dish
+            {
+                Id = 4,
+                Name = "Chicken Alfredo",
+                Category = "Main Dish",
+                Price = 2.50m,
+                MenuId = Menu.Id
+            };
+            Dessert1 = new Dish
+            {
+                Id = 5,
+                Name = "Tiramisu",
+                Category = "Dessert",
+                Price = 1.00m,
+                MenuId = Menu.Id
+            };
+            Dessert2 = new Dish
+            {
+                Id = 6,
+                Name = "Cheesecake",
+                Category = "Dessert",
+                Price = 1.50m,
+                MenuId = Menu.Id
             };
         }
     }

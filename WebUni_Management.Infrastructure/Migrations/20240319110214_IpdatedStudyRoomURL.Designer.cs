@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebUni_Management.Data;
 
@@ -11,9 +12,10 @@ using WebUni_Management.Data;
 namespace WebUni_Management.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240319110214_IpdatedStudyRoomURL")]
+    partial class IpdatedStudyRoomURL
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -288,7 +290,7 @@ namespace WebUni_Management.Infrastructure.Migrations
                         {
                             Id = "b242640e-291a-4de7-9701-e3e8e0afb0c9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "284da03d-a2b1-4e9f-8afa-279021950c87",
+                            ConcurrencyStamp = "5a2e5b08-77a8-4399-99ea-9288ef40d750",
                             Email = "admin@gmail.com",
                             EmailConfirmed = true,
                             InitialPassword = "",
@@ -296,9 +298,9 @@ namespace WebUni_Management.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "00000001",
-                            PasswordHash = "AQAAAAEAACcQAAAAECKw1ctnloXOm6Qe0yPBCDoKG7MwLj5QYiTVubr5z4oFeFWomeyZ+tif4iIUn+F/pA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIgMcf17SB5wrxZAV+g5WsT8s+o1PAwLZDS5KEV0JtmhA7QUzDG8zCnh0JPgZb/7Iw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "06ab7db0-ada3-43b3-a4b0-c1dfe8425b51",
+                            SecurityStamp = "eae81e42-a81a-495e-ad92-e0cf50f09aa4",
                             TwoFactorEnabled = false,
                             UserName = "00000001"
                         },
@@ -306,7 +308,7 @@ namespace WebUni_Management.Infrastructure.Migrations
                         {
                             Id = "0e90dbeb-6468-4abc-9599-b4757e3874aa",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e615d62c-890a-4b34-bbe6-89ebc5b4d519",
+                            ConcurrencyStamp = "1d65e173-756b-4d92-b231-75a5b655258f",
                             Email = "student@gmail.com",
                             EmailConfirmed = true,
                             InitialPassword = "",
@@ -314,9 +316,9 @@ namespace WebUni_Management.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "STUDENT@GMAIL.COM",
                             NormalizedUserName = "12345678",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKNttpMVxUJydzAp+NQvuX3DMKBkS7lVhExRwodl/CvlVen8exbTNZK5EY+LQMJxNQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEOvuBvszHw/SzmH/y6Sk9nZMHPfPcifTlCa5jdczGlOZQXEFsFP3MBUJC7bYTpCNZA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "dc64f32e-2a19-4677-8bda-0612f8c84ebe",
+                            SecurityStamp = "0ca23a04-9213-47ce-8563-792c4a9b999b",
                             TwoFactorEnabled = false,
                             UserName = "12345678"
                         });
@@ -620,94 +622,6 @@ namespace WebUni_Management.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("WebUni_Management.Infrastructure.Data.Models.Dish", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasComment("Dish identifier");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)")
-                        .HasComment("Dish category");
-
-                    b.Property<int>("MenuId")
-                        .HasColumnType("int")
-                        .HasComment("Menu identifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(70)
-                        .HasColumnType("nvarchar(70)")
-                        .HasComment("Dish name");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)")
-                        .HasComment("Dish price");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MenuId");
-
-                    b.ToTable("Dishes");
-
-                    b.HasComment("Canteen dish entity");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Category = "Salad",
-                            MenuId = 1,
-                            Name = "Greek Salad",
-                            Price = 1.00m
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Category = "Salad",
-                            MenuId = 1,
-                            Name = "Caesar Salad",
-                            Price = 1.50m
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Category = "Main Dish",
-                            MenuId = 1,
-                            Name = "Spaghetti Carbonara",
-                            Price = 2.00m
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Category = "Main Dish",
-                            MenuId = 1,
-                            Name = "Chicken Alfredo",
-                            Price = 2.50m
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Category = "Dessert",
-                            MenuId = 1,
-                            Name = "Tiramisu",
-                            Price = 1.00m
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Category = "Dessert",
-                            MenuId = 1,
-                            Name = "Cheesecake",
-                            Price = 1.50m
-                        });
-                });
-
             modelBuilder.Entity("WebUni_Management.Infrastructure.Data.Models.Library", b =>
                 {
                     b.Property<int>("Id")
@@ -727,33 +641,6 @@ namespace WebUni_Management.Infrastructure.Migrations
                         new
                         {
                             Id = 1
-                        });
-                });
-
-            modelBuilder.Entity("WebUni_Management.Infrastructure.Data.Models.Menu", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasComment("Canteen identifier");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2")
-                        .HasComment("Canteen date");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Menu");
-
-                    b.HasComment("Menu entity");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Date = new DateTime(2024, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -1059,17 +946,6 @@ namespace WebUni_Management.Infrastructure.Migrations
                     b.Navigation("Book");
                 });
 
-            modelBuilder.Entity("WebUni_Management.Infrastructure.Data.Models.Dish", b =>
-                {
-                    b.HasOne("WebUni_Management.Infrastructure.Data.Models.Menu", "Menu")
-                        .WithMany("Dishes")
-                        .HasForeignKey("MenuId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Menu");
-                });
-
             modelBuilder.Entity("WebUni_Management.Infrastructure.Data.Models.Student", b =>
                 {
                     b.HasOne("WebUni_Management.Infrastructure.Data.Models.ApplicationUser", "User")
@@ -1112,11 +988,6 @@ namespace WebUni_Management.Infrastructure.Migrations
                     b.Navigation("Books");
 
                     b.Navigation("StudyRooms");
-                });
-
-            modelBuilder.Entity("WebUni_Management.Infrastructure.Data.Models.Menu", b =>
-                {
-                    b.Navigation("Dishes");
                 });
 
             modelBuilder.Entity("WebUni_Management.Infrastructure.Data.Models.Student", b =>

@@ -27,7 +27,8 @@ namespace WebUni_Management.Data
             builder.ApplyConfiguration(new BookAuthorsConfiguration());
             builder.ApplyConfiguration(new BooksByBookAuthorConfiguration());
             builder.ApplyConfiguration(new StudyRoomConfiguration());
-            
+            builder.ApplyConfiguration(new DishConfiguration());
+            builder.ApplyConfiguration(new MenuConfiguration());
             base.OnModelCreating(builder);
         }
 
@@ -39,5 +40,7 @@ namespace WebUni_Management.Data
         public DbSet<BookByBookAuthor> BookByBookAuthors { get; set; } = null!;
         public DbSet<Library> Library { get; set; } = null!;
         public DbSet<StudyRoom> StudyRooms { get; set; } = null!;
+        public DbSet<Dish> Dishes { get; set; } = null!;
+        public DbSet<Menu> Menu { get; set; } = null!;
     }
 }
