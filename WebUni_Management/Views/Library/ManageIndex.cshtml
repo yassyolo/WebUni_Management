@@ -2,6 +2,13 @@
 @{
 	ViewBag.Message = "Manage Library Items";
 }
+@if(TempData["Alert"] != null)
+{
+	<div class="alert alert-success">
+		@TempData["Alert"]
+	</div>
+}
+
 
 <h2>@ViewBag.Message</h2>
 <div class="manage-container">

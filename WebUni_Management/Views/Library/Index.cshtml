@@ -26,9 +26,9 @@
                         <img src="@item.ImageUrl" alt="Book Cover">
                     </div>
                     <div class="flip-card-back">
-                        <h5>TITLE: @item.Title</h5>
+                        <h6><strong>TITLE:</strong> @item.Title</h6>
                         <br />
-                        <h5>AUTHOR(S): @item.Author </h5>
+                        <h6><strong>AUTHOR:</strong> @item.Author </h6>
                         <br />
                         <form asp-controller="Library" asp-action="Details" asp-route-id="@item.Id" method="get">
                             <button type="submit" class="btn">Details</button>
@@ -53,9 +53,9 @@
 
                     </div>
                     <div class="flip-card-back">
-                        <h5>NAME: @item.Name</h5>
+                        <h6><strong>NAME:</strong> @item.Name</h6>
                         <br />
-                        <h5>ROOM CAPACITY: @item.Capacity</h5>
+                        <h6><strong>CAPACITY:</strong> @item.Capacity</h6>
                         <br />
                         <form asp-controller="Library" asp-action="Details" asp-route-id="@item.Id" method="get">
                             <button type="submit" class="btn btn-primary">Details</button>

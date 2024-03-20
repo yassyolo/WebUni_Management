@@ -57,9 +57,7 @@
            asp-action="AllRoomsShowcase"
            asp-route-currentPage="@(Model.CurrentPage + 1)"
            asp-route-capacity="@Model.Capacity"
-           asp-route-searchTerm="@Model.SearchTerm">
-            >>
-        </a>
+           asp-route-searchTerm="@Model.SearchTerm">>></a>
     </div>
 
     @if (!Model.StudyRooms.Any())
@@ -78,7 +76,7 @@
                     <div class="flip-card-back">
                         <h6>@room.Name</h6>
                         <h6>@room.Capacity</h6>
-                        @if (room.IsRented == false)
+                        @if (room.IsRented == false && User.IsInRole("Student"))
                         {
                             <form asp-controller="Library" asp-action="RentRoom" asp-route-id="@room.Id" method="get">
                                 <button type="submit" class="btn btn-danger">Rent</button>
@@ -209,6 +207,10 @@
         background-color: #fc819e;
         transform: rotateY(180deg);
     }
+
+        .flip-card-back form {
+            margin-top: 10px;
+        }
 
     .btn-primary {
         background-color: #fc819e;

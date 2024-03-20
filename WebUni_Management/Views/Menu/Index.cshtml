@@ -15,12 +15,16 @@ ViewBag.Title = "Menu";
 	<div class="daily-menu">
         @foreach (var item in Model)
 		{
-			<div class="menu-item">
+			<div class="daily-menu-item">
 				<h2>@item.Name----@item.Price</h2>
-				<p>@item.Price</p>
 				<p>@item.Category</p>
 			</div>
 		}
+	</div>
+	<div class="download">
+<form asp-controller="Menu" asp-action="DownloadMenu" method="get">
+			<button type="submit" class="btn btn-primary">Download Menu</button>
+		</form>
 	</div>
 </div>
 <style>
@@ -44,6 +48,13 @@ ViewBag.Title = "Menu";
         width: 40%;
 		margin-right:30px;
 	}
+	.image-holder img{
+		z-index:100;
+		width:100%;
+		height:100%;
+		border: 1px solid #e91e63;
+		border-radius: 3px;
+	}
 	.daily-menu{
 float:right;
 width:40%;
@@ -51,7 +62,7 @@ height:100%;
 display:flex;
 flex-direction:column
 	}
-	
+	.daily-menu-item
 
 	
 </style>

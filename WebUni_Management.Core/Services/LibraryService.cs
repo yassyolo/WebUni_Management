@@ -45,10 +45,14 @@ namespace WebUni_Management.Core.Services
                     PublishYear = x.PublishYear,
                     IsRented = x.IsRented
                 }).ToListAsync();
+            foreach (var book in booksToShow)
+            {
+                await GetAuthor(book.Id);
+            }
             return new AllBooksQueryModel
             {
                 Books = booksToShow,
-                TotalBooksCount = await books.CountAsync(),
+                TotalBooksCount = await books.CountAsync()
             };
         }
 
@@ -58,7 +62,6 @@ namespace WebUni_Management.Core.Services
         }
 
         public async Task<BookDetailsViewModel?> BookDetailsAsync(int id)
-
         {
             var author = await GetAuthor(id);
             return await repository.AllReadOnly<Book>()
@@ -191,12 +194,36 @@ namespace WebUni_Management.Core.Services
            .AnyAsync(x => x.Id == id);
         }
 
+        //todo
+
         public async Task EditBookAsync(int id, EditBookViewModel model)
         {
             var book = repository.All<Book>().FirstOrDefault(x => x.Id == id);
             if(book == null)
             {
                 throw new InvalidOperationException("Book not found");
+            }
+            var authors = model.Author.Split(", ");
+            foreach (var author in authors)
+            {
+                var names = author.Split(" ");
+                var existingAuthor = await repository.All<BookAuthor>()
+                    .Where(x => x.FirstName == names[0] && x.LastName == names[1])
+                    .FirstOrDefaultAsync();
+                if(existingAuthor == null)
+                {
+                    existingAuthor = new BookAuthor
+                    {
+                        FirstName = names[0],
+                        LastName = names[1],
+                    };
+                    var bookBybokAuthor = new BookByBookAuthor
+                    {
+                        AuthorId = existingAuthor.Id,
+                        BookId = book.Id
+                    };
+                    await repository.AddAsync(existingAuthor);
+                }
             }
             book.Title = model.Title;
             book.ImageUrl = model.ImageUrl;
@@ -215,7 +242,7 @@ namespace WebUni_Management.Core.Services
                 rooms = rooms.Where(x => x.Capacity == capacity);
             }
 
-            if (searchTerm != null)
+            if (searchTerm != null && searchTerm != "")
             {
                 var searchTermToLower = searchTerm.ToLower();
                 rooms = rooms.Where(x => x.Name.Contains(searchTermToLower) || x.Description.Contains(searchTermToLower));
@@ -309,5 +336,73 @@ namespace WebUni_Management.Core.Services
             await repository.AddAsync(book);
             await repository.SaveChangesAsync();
         }
-    }
+
+        public async Task AddRoomAsync(EditRoomViewModel model)
+        {
+            var room = new StudyRoom
+            {
+                Name = model.Name,
+                Description = model.Description,
+                Capacity = model.Capacity,
+                Floor = model.Floor,
+                ImageUrl = model.ImageUrl,
+                LibraryId = 1
+            };
+            await repository.AddAsync(room);
+            await repository.SaveChangesAsync();
+        }
+
+        public async Task<ManageRentViewModel> ManageBookRentAsync()
+        {
+            var books = repository.All<Book>().Where(x => x.RenterId != null);
+            int booksToReturn = 0;
+            
+            foreach(var book in books) 
+            {
+                DateTime rentalTime = DateTime.Now.AddMonths(-book.RentalTime);
+                TimeSpan remainingTime = rentalTime - book.RentalDate.Value;
+                int remainingDays = remainingTime.Days;
+                if(remainingDays < 0 || remainingDays == 0)
+                {
+                    book.IsRented = false;
+                    book.RentalDate = null;
+                    book.RenterId = null;
+                    booksToReturn++;
+                }               
+            }
+            await repository.SaveChangesAsync();
+            var model = new ManageRentViewModel
+            {
+                TotalBookRented = booksToReturn
+            };
+            return model;
+
+        }
+
+		public async Task<ManageRentViewModel> ManageRoomRentAsync()
+		{
+			var rooms = repository.All<StudyRoom>().Where(x => x.RenterId != null);
+            int roomsToReturn = 0;
+
+            foreach (var room in rooms)
+            {
+                var rentalTime = DateTime.Now.AddDays(-room.RentalTime);
+                var remainingTime = rentalTime - room.RentalDate.Value;
+                var remainingDays = remainingTime.Days;
+				if (remainingDays > 0 || remainingDays == 0)
+				{
+					room.IsRented = false;
+					room.RentalDate = null;
+					room.RenterId = null;
+					roomsToReturn++;
+				}
+			}
+			await repository.SaveChangesAsync();
+			var model = new ManageRentViewModel
+			{
+				TotalRoomsRented = roomsToReturn
+			};
+			return model;
+		}
+	}
 }

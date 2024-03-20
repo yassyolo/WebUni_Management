@@ -26,5 +26,8 @@ namespace WebUni_Management.Core.Contracts
         Task<RoomShowcaseViewModel?> GetRoomDetailsByIdAsync(int id);
         Task<EditRoomViewModel?> GetEditRoomAsync(int id);
         Task AddBookAsync(EditBookViewModel model);
-    }
+        Task AddRoomAsync(EditRoomViewModel model);
+        Task<ManageRentViewModel> ManageBookRentAsync();
+		Task<ManageRentViewModel> ManageRoomRentAsync();
+	}
 }

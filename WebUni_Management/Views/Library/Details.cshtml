@@ -14,16 +14,16 @@
 		<h5><b>Category:</b> @Model.Category</h5>
 		<h5><b>Published in:</b> @Model.PublishYear</h5>
 		<h5><b>Description:</b> @Model.Description</h5>
-		@if (Model.IsRented == false)
+		@if (Model.IsRented == false && User.IsInRole("Student"))
 		{
 			<form asp-controller="Library" asp-action="Rent" asp-route-id="@Model.Id" method="get">
-				<button type="submit" class="btn btn-danger">Rent</button>
+				<button type="submit" class="btn btn-primary">Rent</button>
 			</form>
 		}
 		@if (User.IsInRole("Admin"))
 		{
 			<form asp-controller="Library" asp-action="Edit" asp-route-id="@Model.Id" method="get">
-				<button type="submit" class="btn btn-danger">Edit</button>
+				<button type="submit" class="btn btn-primary">Edit</button>
 			</form>
 		}
 		<form asp-controller="Library" asp-action="AllBooksShowcase" method="post">
