@@ -27,6 +27,7 @@ namespace WebUni_Management.Controllers
 			var model = await personalInfoService.MyRentedBooksAsync(userId);
 			return View(model);
 		}
+		[Authorize(Roles = "Student")]
 		public async Task<IActionResult> RemoveRent(int id)
 		{
 			if(await personalInfoService.RentedBookExistsByIdAsync(id) == false)
@@ -41,17 +42,5 @@ namespace WebUni_Management.Controllers
 			await personalInfoService.RemoveBookRentAsync(id, userId);
 			return RedirectToAction("RentedBooks", new { userId = userId });
 		}
-		/*public async Task<IActionResult> CheckRemainingRentTime(int id)
-		{
-            if (await personalInfoService.RentedBookExistsByIdAsync(id) == false)
-            {
-                return BadRequest();
-            }
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (await personalInfoService.UserWithIdHasRentedBookAsync(id, userId) == false)
-            {
-                return BadRequest();
-            }
-        }*/
 	}
 }

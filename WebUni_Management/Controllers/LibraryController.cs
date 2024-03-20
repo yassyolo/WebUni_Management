@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Reflection.Metadata.Ecma335;
 using System.Security.Claims;
@@ -15,7 +16,7 @@ namespace WebUni_Management.Controllers
         {
             libraryService = _libraryService;
         }
-
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var model = new LibraryInfoViewModel();
@@ -23,6 +24,7 @@ namespace WebUni_Management.Controllers
             model.StudyRoomInfo = await libraryService.LastThreeStudyRoomsAsync();
             return View(model);
         }
+        [AllowAnonymous]
         public async Task<IActionResult> AllBooksShowcase([FromQuery] AllBooksQueryModel query)
         {
             var model = await libraryService.AllBooksAsync(query.Category, query.SearchTerm, query.CurrentPage, query.BooksPerPage);
@@ -33,6 +35,7 @@ namespace WebUni_Management.Controllers
             return View(query);
         }
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
             if (await libraryService.BookExistsByIdAsync(id) == false)
@@ -42,7 +45,8 @@ namespace WebUni_Management.Controllers
             var model = await libraryService.BookDetailsAsync(id);
             return View(model);
         }
-        public async Task<IActionResult> Rent(int id)
+		[Authorize(Roles = "Student")]
+		public async Task<IActionResult> Rent(int id)
         {
             if (await libraryService.BookExistsByIdAsync(id) == false)
             {
@@ -57,7 +61,8 @@ namespace WebUni_Management.Controllers
             return RedirectToAction("RentedBooks", "PersonalInfo", new { userId = userId });
         }
         [HttpGet]
-        public async Task<IActionResult> Edit(int id)
+		[Authorize(Roles = "Admin")]
+		public async Task<IActionResult> Edit(int id)
         {
             if (await libraryService.BookExistsByIdAsync(id) == false)
             {
@@ -68,7 +73,8 @@ namespace WebUni_Management.Controllers
             return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, EditBookViewModel model)
+		[Authorize(Roles = "Admin")]
+		public async Task<IActionResult> Edit(int id, EditBookViewModel model)
         {
             if (await libraryService.BookExistsByIdAsync(id) == false)
             {
@@ -87,6 +93,7 @@ namespace WebUni_Management.Controllers
             return RedirectToAction(nameof(AllBooksShowcase));
         }
         [HttpGet]
+        [AllowAnonymous]
         public async Task< IActionResult> AllRoomsShowcase([FromQuery] AllRoomsQueryModel query)
         {
             var model = await libraryService.AllRoomsAsync(query.Capacity, query.SearchTerm, query.CurrentPage, query.RoomsPerPage);
@@ -94,8 +101,9 @@ namespace WebUni_Management.Controllers
             query.TotalRooms = model.TotalRooms;
             query.StudyRooms = model.StudyRooms;
 
-            return View(model);
+            return View(query);
         }
+        [AllowAnonymous]
         public async Task<IActionResult> DetailsRoom(int id)
         {
             if(await libraryService.RoomExistsByIdAsync(id) == false)
@@ -106,7 +114,8 @@ namespace WebUni_Management.Controllers
             var model = await libraryService.GetRoomDetailsByIdAsync(id);
             return View(model);
         }
-        public async Task<IActionResult> EditRoom(int id)
+		[Authorize(Roles = "Admin")]
+		public async Task<IActionResult> EditRoom(int id)
         {
             if (await libraryService.RoomExistsByIdAsync(id) == false)
             {
@@ -115,19 +124,23 @@ namespace WebUni_Management.Controllers
             var model = await libraryService.GetEditRoomAsync(id);
             return View(model);
         }
-        public IActionResult ManageIndex()
+		[Authorize(Roles = "Admin")]
+		public IActionResult ManageIndex()
         {
+            var message = TempData["Alert"];
             return View();
         }
         [HttpGet]
-        public async Task<IActionResult> AddBook()
+		[Authorize(Roles = "Admin")]
+		public async Task<IActionResult> AddBook()
         {
             var model = new EditBookViewModel();
             model.Categories = await libraryService.AllCategoriesForEditAsync();
             return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> AddBook(EditBookViewModel model)
+		[Authorize(Roles = "Admin")]
+		public async Task<IActionResult> AddBook(EditBookViewModel model)
         {
 
             if(ModelState.IsValid == false)
@@ -141,7 +154,43 @@ namespace WebUni_Management.Controllers
             await libraryService.AddBookAsync(model);
             return RedirectToAction(nameof(AllBooksShowcase));
         }
+        [HttpGet]
+		[Authorize(Roles = "Admin")]
+		public IActionResult AddRoom()
+        {
+            var model = new EditRoomViewModel();
+            return View(model);
+        }
+        [HttpPost]
+		[Authorize(Roles = "Admin")]
+		public async Task<IActionResult> AddRoom(EditRoomViewModel model)
+        {
+            if(ModelState.IsValid == false)
+            {
+                return View(model);
+            }
+
+            await libraryService.AddRoomAsync(model);
+            return RedirectToAction(nameof(ManageIndex));
+
+        }
+		[Authorize(Roles = "Admin")]
+		public async Task<IActionResult> ManageBookRent()
+        {
+            var model = await libraryService.ManageBookRentAsync();
+
+            TempData["Alert"] = $"{model.TotalBookRented} Book Items Rent managed successfully!";
+            return RedirectToAction(nameof(ManageIndex));
+        }
+		[Authorize(Roles = "Admin")]
+		public async Task<IActionResult> ManageRoomRent()
+		{
+			var model = await libraryService.ManageRoomRentAsync();
+
+			TempData["Alert"] = $"{model.TotalRoomsRented} Room Items Rent managed successfully!";
+			return RedirectToAction(nameof(ManageIndex));
+		}
 
 
-    }
+	}
 }
