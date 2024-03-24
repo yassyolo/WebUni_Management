@@ -56,8 +56,15 @@ namespace WebUni_Management.Infrastructure.Data.Constants
             public const string DishPriceMinValue = "0.00";
             public const string DishPriceMaxValue = "10.00";
         }
-       
-            
-        
+       public class NewsArticle
+        {
+            public const int NewsTitleMinLength = 2;
+            public const int NewsTitleMaxLength = 200;
+            public const int NewsContentMinLength = 10;
+            public const int NewsContentMaxLength = 1300;
+            public const int NewsImageUrlMinLength = 0;
+            public const int NewsImageUrlMaxLength = 255;
+        }
+                    
     }
 }

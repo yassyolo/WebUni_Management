@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebUni_Management.Data;
 
@@ -11,9 +12,10 @@ using WebUni_Management.Data;
 namespace WebUni_Management.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240324160525_SeedNews")]
+    partial class SeedNews
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -288,7 +290,7 @@ namespace WebUni_Management.Infrastructure.Migrations
                         {
                             Id = "b242640e-291a-4de7-9701-e3e8e0afb0c9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1079695e-3b1a-4447-a16e-bc538718fc65",
+                            ConcurrencyStamp = "81c4877a-50dc-4864-9225-471e90faf779",
                             Email = "admin@gmail.com",
                             EmailConfirmed = true,
                             InitialPassword = "",
@@ -296,9 +298,9 @@ namespace WebUni_Management.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "00000001",
-                            PasswordHash = "AQAAAAEAACcQAAAAEL+RZXu74vvtvQj6RM2hQK4jigz5FQJLhxudriOXvl10XUD12BOVovzU+baoSFQSFg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDpHxVonNz2h1aUhP3F+ycIbb18zV8WVymBWs9KQGaGv/bLOxj3hG12YxIqZsXNeLg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "cf6e4d78-4942-45d4-94a7-21c8243b1456",
+                            SecurityStamp = "eb65bd3c-88b0-41a7-a308-154688e7f11f",
                             TwoFactorEnabled = false,
                             UserName = "00000001"
                         },
@@ -306,7 +308,7 @@ namespace WebUni_Management.Infrastructure.Migrations
                         {
                             Id = "0e90dbeb-6468-4abc-9599-b4757e3874aa",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "bed40286-dc1a-418d-9a18-131583cc210e",
+                            ConcurrencyStamp = "46ef610e-1506-4bdb-bae8-b65b7038bf24",
                             Email = "student@gmail.com",
                             EmailConfirmed = true,
                             InitialPassword = "",
@@ -314,9 +316,9 @@ namespace WebUni_Management.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "STUDENT@GMAIL.COM",
                             NormalizedUserName = "12345678",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKvLgw4LJkAUoO36iskzfssE5apwMRPSGo5O47ENDfubeqU+qPutDEjHXrUVeAO0+w==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKgWo16Neknj2Wp2mJsLp2E0oTJhiaQlEVntFlh3Vn9Nam/4gT4N1qU+gNJTBpe1TA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "370bdb0e-2f1e-4dec-830a-d8d4bc877ebb",
+                            SecurityStamp = "db7a1d0f-8baf-43bb-9b83-02fa60991b6e",
                             TwoFactorEnabled = false,
                             UserName = "12345678"
                         });
@@ -807,8 +809,8 @@ namespace WebUni_Management.Infrastructure.Migrations
                         {
                             Id = 2,
                             Content = "In a significant stride towards enhancing educational opportunities, a local programming firm has stepped forward to sponsor a state-of-the-art computer facility. This initiative aims to empower students with access to cutting-edge technology and resources, thereby enriching their learning experience.\r\n\r\nWith the new facility, students can delve deeper into computer science and technology, exploring programming languages, software development, and digital literacy. The firm's sponsorship ensures that students receive a quality education, equipping them with essential skills for the modern workforce.\r\n\r\nThrough this partnership, the community sees the fusion of education and industry, paving the way for innovation and growth. It's a testament to the firm's commitment to nurturing talent and fostering development at the grassroots level.",
-                            ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Contemporary_Computer_Lab.jpg/1920px-Contemporary_Computer_Lab.jpg",
-                            PublishedOn = new DateTime(2024, 3, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://www.iq.harvard.edu/sites/projects.iq.harvard.edu/files/styles/os_files_xlarge/public/harvard-iqss/files/img_0338.jpeg?m=1585165451&itok=V7MO9V-b",
+                            PublishedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "Local Programming Firm Sponsors Computer Facility, Elevating Education Standards"
                         },
                         new

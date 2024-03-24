@@ -29,6 +29,8 @@ namespace WebUni_Management.Data
             builder.ApplyConfiguration(new StudyRoomConfiguration());
             builder.ApplyConfiguration(new DishConfiguration());
             builder.ApplyConfiguration(new MenuConfiguration());
+            builder.ApplyConfiguration(new NewsArticleConfiguration());
+            builder.ApplyConfiguration(new NewsArticleReadStatusConfiguration());
             base.OnModelCreating(builder);
         }
 
@@ -42,5 +44,7 @@ namespace WebUni_Management.Data
         public DbSet<StudyRoom> StudyRooms { get; set; } = null!;
         public DbSet<Dish> Dishes { get; set; } = null!;
         public DbSet<Menu> Menu { get; set; } = null!;
+        public DbSet<NewsArticle> NewsArticles { get; set;} = null!;
+        public DbSet<NewsArticleReadStatus> NewsArticleReadStatus { get; set;} = null!; 
     }
 }
