@@ -22,8 +22,12 @@
             </div>
             <nav class="nav-menu">
                 <ul class="menu">
-                    <li class="menu-item">
-                        <a asp-controller="Home" asp-action="Index">Home</a>
+                        <li class="menu-item menu-item-has-children">
+                            <a asp-controller="Home" asp-action="Index">Home<i class="plus"></i></a>
+                            <ul class="sub-menu">
+                                <li class="menu-item"><a asp-controller="Home" asp-action="Index">Our University</a></li>
+                                
+                            </ul>
                     </li>
                     <li class="menu-item">
                         <a asp-controller="News" asp-action="Index">News</a>
