@@ -135,6 +135,7 @@ namespace WebUni_Management.Controllers
         [HttpPost]
         public async Task<IActionResult> ApproveRequest(string username)
         {
+            //todo: role exists
             var user = await userManager.FindByNameAsync(username);
             if (user == null)
             {
