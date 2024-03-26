@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,5 +36,16 @@ namespace WebUni_Management.Infrastructure.Data.Models
         [Comment("News article published on")]
         [DataType(DataType.Date)]
         public DateTime PublishedOn { get; set; }
+
+        [Comment("News article author")]
+        [MaxLength(NewsAuthorMaxLength)]
+        [ForeignKey(nameof(AuthorId))]
+        public Student? Author { get; set; } = null!;
+
+        [Comment("News article author identifier")]
+        public int? AuthorId { get; set; }
+
+        [Comment("Is article approved for publishing")]
+        public bool? IsApproved { get; set; }
     }
 }

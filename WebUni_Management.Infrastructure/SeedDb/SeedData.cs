@@ -58,6 +58,10 @@ namespace WebUni_Management.Infrastructure.SeedDb
         public NewsArticle NewsArticle4 { get; set; }
         public NewsArticleReadStatus NewsArticle1ReadStatus { get; set; }
         public NewsArticleReadStatus NewsArticle2ReadStatus { get; set; }
+        public Event Event1 { get; set; }
+        public Event Event2 { get; set; }
+        public Event Event3 { get; set; }
+        public EventParticipant EventParticipant1 { get; set; }
 
         public SeedData()
         {
@@ -75,6 +79,8 @@ namespace WebUni_Management.Infrastructure.SeedDb
             SeedDishes();
             SeedNewsArticles();
             SeedNewsArticleReadStatus();
+            SeedEvents();
+            SeedEventParticipants();
         }
 
         private void SeedUsers()
@@ -425,7 +431,9 @@ namespace WebUni_Management.Infrastructure.SeedDb
                 Title = "New Study Term Begins: Students Prepare for Month-Long Exams",
                 Content = "With the start of a new study term, students are gearing up for a month-long examination period. Across educational institutions, there's a mix of anticipation and determination as learners of all ages prepare to showcase their knowledge.\r\n\r\nProfessors are finalizing exam schedules, ensuring students are ready for comprehensive assessments. Students are employing various study techniques, from late-night sessions to group study, to maximize their performance.\r\n\r\nThroughout the month, students will face challenges, but with determination, they're poised to excel. It's a time of growth and resilience as students strive for success in their academic endeavors.",
                 PublishedOn = new DateTime(2024, 3, 24),
-                ImageUrl = "https://www.inspiringinterns.com/blog/wp-content/uploads/2017/05/time-481447-1200x849.jpg"
+                ImageUrl = "https://www.inspiringinterns.com/blog/wp-content/uploads/2017/05/time-481447-1200x849.jpg",
+                AuthorId = Student.Id,
+                IsApproved = true
             };
             NewsArticle2 = new NewsArticle
             {
@@ -469,6 +477,51 @@ namespace WebUni_Management.Infrastructure.SeedDb
             };
         }
 
+        private void SeedEvents()
+        {
+            Event1 = new Event
+            {
+                Id = 1,
+                Name = "Exploring the Power of C#",
+                Description = "Embark on a journey into the realm of software development with our captivating seminar on \"Why Choose C#.\" Led by a seasoned industry expert, this seminar delves deep into the myriad benefits and advantages of utilizing C# as your programming language of choice. From its robust object-oriented design to its versatility in application development, C# offers unparalleled opportunities for both novice and seasoned developers alike. Join us as we uncover the power and potential of C#, and discover why it remains a top choice in the ever-evolving landscape of technology. Reserve your seat now for an enlightening experience you won't want to miss!",
+                StartTime = new DateTime(2024, 4, 15, 14, 0, 0),
+                EndTime = new DateTime(2024, 4, 15, 16, 0, 0),
+                ImageUrl = "https://ardounco.sirv.com/WP_content.bytehide.com/2022/03/why-learn-csharp.png",
+                GuestParticipant = "John Doe",
+                Capacity = 50,
+            };
+            Event2 = new Event
+            {
+                Id = 2,
+                Name = "Exploring Embedded Technologies and IoT Seminar",
+                Description = "Join me for an insightful seminar where I delve into the fascinating world of embedded technologies and the Internet of Things (IoT). Discover how embedded systems are revolutionizing various industries, from smart homes to industrial automation. Learn about the latest trends, challenges, and opportunities in the realm of IoT, and explore real-world applications that are shaping the future of technology. Whether you're a seasoned engineer or an enthusiast curious about the possibilities of connected devices, this seminar promises to expand your knowledge and inspire innovation.",
+                StartTime = new DateTime(2024, 5, 2, 15, 0, 0),
+                EndTime = new DateTime(2024, 5, 2, 18, 0, 0),
+                ImageUrl = "https://builtin.com/sites/www.builtin.com/files/styles/og/public/2022-08/connected-devices-internet-of-things-iot-devices.png",
+                GuestParticipant = "Jane Dimova",
+                Capacity = 65,
+            };
+            Event3 = new Event
+            {
+                Id = 3,
+                Name = "Unveiling the Role of QA Tester: Ensuring Quality in Software Development",
+                Description = "Join us for an illuminating seminar as we explore the profession of QA (Quality Assurance) Tester and its pivotal role in ensuring the quality of software products. Gain insights into the responsibilities, methodologies, and best practices employed by QA testers to identify bugs, verify functionality, and enhance user experience. Discover how QA testing contributes to the success of software projects by mitigating risks and improving product reliability. Whether you're an aspiring QA tester or simply curious about the behind-the-scenes of software development, this seminar offers a comprehensive overview of the QA profession and its significance in delivering high-quality software.",
+                StartTime = new DateTime(2024, 3, 30, 11, 0, 0),
+                EndTime = new DateTime(2024, 3, 30, 15, 0, 0),
+                ImageUrl = "https://testpro.io/wp-content/uploads/2023/11/qa-tester.jpg",
+                GuestParticipant = "Boris Cholakov",
+                Capacity = 30,
+            };
+        }
+
+        private void SeedEventParticipants()
+        {
+            EventParticipant1 = new EventParticipant
+            {
+                EventId = Event1.Id,
+                ParticipantId = StudentUser.Id
+            };
+        }
     }
 }
 

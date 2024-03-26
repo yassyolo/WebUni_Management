@@ -31,6 +31,8 @@ namespace WebUni_Management.Data
             builder.ApplyConfiguration(new MenuConfiguration());
             builder.ApplyConfiguration(new NewsArticleConfiguration());
             builder.ApplyConfiguration(new NewsArticleReadStatusConfiguration());
+            builder.ApplyConfiguration(new EventConfiguration());
+            builder.ApplyConfiguration(new EventParticipantConfiguration());
             base.OnModelCreating(builder);
         }
 
@@ -46,5 +48,8 @@ namespace WebUni_Management.Data
         public DbSet<Menu> Menu { get; set; } = null!;
         public DbSet<NewsArticle> NewsArticles { get; set;} = null!;
         public DbSet<NewsArticleReadStatus> NewsArticleReadStatus { get; set;} = null!; 
+
+        public DbSet<Event> Events { get; set; } = null!;
+        public DbSet<EventParticipant> EventParticipant { get; set; } = null!;
     }
 }

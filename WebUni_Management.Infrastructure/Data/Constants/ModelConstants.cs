@@ -64,6 +64,21 @@ namespace WebUni_Management.Infrastructure.Data.Constants
             public const int NewsContentMaxLength = 1300;
             public const int NewsImageUrlMinLength = 0;
             public const int NewsImageUrlMaxLength = 255;
+            public const int NewsAuthorMaxLength = 40;
+            public const int NewsAuthorMinLength = 2;
+        }
+        public class Event 
+        { 
+            public const int EventNameMinLength = 2;
+            public const int EventNameMaxLength = 110;
+            public const int EventDescriptionMinLength = 10;
+            public const int EventDescriptionMaxLength = 1100;
+            public const int EventImageUrlMinLength = 0;
+            public const int EventImageUrlMaxLength = 255;
+            public const int EventCapacityMinValue = 1;
+            public const int EventCapacityMaxValue = 100;
+            public const int GuestParticipantMaxLength = 40;
+            public const int GuestParticipantMinLength = 2;
         }
                     
     }

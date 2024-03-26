@@ -43,5 +43,8 @@ namespace WebUni_Management.Infrastructure.Data.Models
 
         [Comment("Rented rooms")]
         public IEnumerable<StudyRoom>? RentedStudyRooms { get; set; } = new List<StudyRoom>();
+
+        [Comment("News articles by the student")]
+        public IEnumerable<NewsArticle>? NewsArticles { get; set; } = new List<NewsArticle>();
     }
 }

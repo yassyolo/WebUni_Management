@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebUni_Management.Data;
 
@@ -11,9 +12,10 @@ using WebUni_Management.Data;
 namespace WebUni_Management.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240325113544_SeedNewsAuthor")]
+    partial class SeedNewsAuthor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -288,7 +290,7 @@ namespace WebUni_Management.Infrastructure.Migrations
                         {
                             Id = "b242640e-291a-4de7-9701-e3e8e0afb0c9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7ee0645c-2a22-49b7-8868-c467f72e493d",
+                            ConcurrencyStamp = "c63c7141-c3d4-4279-b24b-48013a5b8816",
                             Email = "admin@gmail.com",
                             EmailConfirmed = true,
                             InitialPassword = "",
@@ -296,9 +298,9 @@ namespace WebUni_Management.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "00000001",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOOYLzWgBNmp7CQ/afEmlSMRkEZ4Kp9OSRGcV1eRrJJWu10bq1TT8n37u6CIGX7Q4w==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELg4B9QhKHm+A/07MYvV+ofr9D+lcPGo0eUA+0JueZcijwxSNgdEHDZpyei4TMdElw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e5733f17-ec15-4360-b3a9-77f08dc06ea5",
+                            SecurityStamp = "dd4ee375-3b9d-4336-9aef-fb141a359aa7",
                             TwoFactorEnabled = false,
                             UserName = "00000001"
                         },
@@ -306,7 +308,7 @@ namespace WebUni_Management.Infrastructure.Migrations
                         {
                             Id = "0e90dbeb-6468-4abc-9599-b4757e3874aa",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9db9eab0-65e8-42f1-b7f9-c10ad28e3c30",
+                            ConcurrencyStamp = "b42e87ce-97e5-4876-b925-b235969dfc52",
                             Email = "student@gmail.com",
                             EmailConfirmed = true,
                             InitialPassword = "",
@@ -314,9 +316,9 @@ namespace WebUni_Management.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "STUDENT@GMAIL.COM",
                             NormalizedUserName = "12345678",
-                            PasswordHash = "AQAAAAEAACcQAAAAEATGBwisZBVsw44SLT9vLk9Dd3S8YyGVdUIYIrSYmqJaoMSotjXDMrjsT2sWYvHA0A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEACwqKuooOsgo9Q4/io/Q6sS8rjPJh6gQIkBUZGlPBZ6RGoHHaPyVXF2VGdLqUMyzw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "69dfbd1a-a4a2-42db-9a43-b4c2d6d2e091",
+                            SecurityStamp = "cb1df92c-3ccf-475f-86b9-332c8ec93bce",
                             TwoFactorEnabled = false,
                             UserName = "12345678"
                         });
@@ -708,119 +710,6 @@ namespace WebUni_Management.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("WebUni_Management.Infrastructure.Data.Models.Event", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasComment("Event identifier");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("Capacity")
-                        .HasColumnType("int")
-                        .HasComment("Event capacity");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(1100)
-                        .HasColumnType("nvarchar(1100)")
-                        .HasComment("Event description");
-
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("datetime2")
-                        .HasComment("Event end time");
-
-                    b.Property<string>("GuestParticipant")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)")
-                        .HasComment("Guest participant for the event");
-
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)")
-                        .HasComment("Event image URL");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(110)
-                        .HasColumnType("nvarchar(110)")
-                        .HasComment("Event name");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime2")
-                        .HasComment("Event start time");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Events");
-
-                    b.HasComment("Event entity");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Capacity = 50,
-                            Description = "Embark on a journey into the realm of software development with our captivating seminar on \"Why Choose C#.\" Led by a seasoned industry expert, this seminar delves deep into the myriad benefits and advantages of utilizing C# as your programming language of choice. From its robust object-oriented design to its versatility in application development, C# offers unparalleled opportunities for both novice and seasoned developers alike. Join us as we uncover the power and potential of C#, and discover why it remains a top choice in the ever-evolving landscape of technology. Reserve your seat now for an enlightening experience you won't want to miss!",
-                            EndTime = new DateTime(2024, 4, 15, 16, 0, 0, 0, DateTimeKind.Unspecified),
-                            GuestParticipant = "John Doe",
-                            ImageUrl = "https://ardounco.sirv.com/WP_content.bytehide.com/2022/03/why-learn-csharp.png",
-                            Name = "Exploring the Power of C#",
-                            StartTime = new DateTime(2024, 4, 15, 14, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Capacity = 65,
-                            Description = "Join me for an insightful seminar where I delve into the fascinating world of embedded technologies and the Internet of Things (IoT). Discover how embedded systems are revolutionizing various industries, from smart homes to industrial automation. Learn about the latest trends, challenges, and opportunities in the realm of IoT, and explore real-world applications that are shaping the future of technology. Whether you're a seasoned engineer or an enthusiast curious about the possibilities of connected devices, this seminar promises to expand your knowledge and inspire innovation.",
-                            EndTime = new DateTime(2024, 5, 2, 18, 0, 0, 0, DateTimeKind.Unspecified),
-                            GuestParticipant = "Jane Dimova",
-                            ImageUrl = "https://builtin.com/sites/www.builtin.com/files/styles/og/public/2022-08/connected-devices-internet-of-things-iot-devices.png",
-                            Name = "Exploring Embedded Technologies and IoT Seminar",
-                            StartTime = new DateTime(2024, 5, 2, 15, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Capacity = 30,
-                            Description = "Join us for an illuminating seminar as we explore the profession of QA (Quality Assurance) Tester and its pivotal role in ensuring the quality of software products. Gain insights into the responsibilities, methodologies, and best practices employed by QA testers to identify bugs, verify functionality, and enhance user experience. Discover how QA testing contributes to the success of software projects by mitigating risks and improving product reliability. Whether you're an aspiring QA tester or simply curious about the behind-the-scenes of software development, this seminar offers a comprehensive overview of the QA profession and its significance in delivering high-quality software.",
-                            EndTime = new DateTime(2024, 3, 30, 15, 0, 0, 0, DateTimeKind.Unspecified),
-                            GuestParticipant = "Boris Cholakov",
-                            ImageUrl = "https://testpro.io/wp-content/uploads/2023/11/qa-tester.jpg",
-                            Name = "Unveiling the Role of QA Tester: Ensuring Quality in Software Development",
-                            StartTime = new DateTime(2024, 3, 30, 11, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
-                });
-
-            modelBuilder.Entity("WebUni_Management.Infrastructure.Data.Models.EventParticipant", b =>
-                {
-                    b.Property<int>("EventId")
-                        .HasColumnType("int")
-                        .HasComment("Event identifier");
-
-                    b.Property<string>("ParticipantId")
-                        .HasColumnType("nvarchar(450)")
-                        .HasComment("Participant identifier");
-
-                    b.HasKey("EventId", "ParticipantId");
-
-                    b.HasIndex("ParticipantId");
-
-                    b.ToTable("EventParticipant");
-
-                    b.HasComment("Event participant entity");
-
-                    b.HasData(
-                        new
-                        {
-                            EventId = 1,
-                            ParticipantId = "0e90dbeb-6468-4abc-9599-b4757e3874aa"
-                        });
-                });
-
             modelBuilder.Entity("WebUni_Management.Infrastructure.Data.Models.Library", b =>
                 {
                     b.Property<int>("Id")
@@ -895,10 +784,6 @@ namespace WebUni_Management.Infrastructure.Migrations
                         .HasColumnType("nvarchar(255)")
                         .HasComment("News article image URL");
 
-                    b.Property<bool?>("IsApproved")
-                        .HasColumnType("bit")
-                        .HasComment("Is article approved for publishing");
-
                     b.Property<DateTime>("PublishedOn")
                         .HasColumnType("datetime2")
                         .HasComment("News article published on");
@@ -924,7 +809,6 @@ namespace WebUni_Management.Infrastructure.Migrations
                             AuthorId = 1,
                             Content = "With the start of a new study term, students are gearing up for a month-long examination period. Across educational institutions, there's a mix of anticipation and determination as learners of all ages prepare to showcase their knowledge.\r\n\r\nProfessors are finalizing exam schedules, ensuring students are ready for comprehensive assessments. Students are employing various study techniques, from late-night sessions to group study, to maximize their performance.\r\n\r\nThroughout the month, students will face challenges, but with determination, they're poised to excel. It's a time of growth and resilience as students strive for success in their academic endeavors.",
                             ImageUrl = "https://www.inspiringinterns.com/blog/wp-content/uploads/2017/05/time-481447-1200x849.jpg",
-                            IsApproved = true,
                             PublishedOn = new DateTime(2024, 3, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "New Study Term Begins: Students Prepare for Month-Long Exams"
                         },
@@ -1310,24 +1194,6 @@ namespace WebUni_Management.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Menu");
-                });
-
-            modelBuilder.Entity("WebUni_Management.Infrastructure.Data.Models.EventParticipant", b =>
-                {
-                    b.HasOne("WebUni_Management.Infrastructure.Data.Models.Event", "Event")
-                        .WithMany()
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("WebUni_Management.Infrastructure.Data.Models.ApplicationUser", "Participant")
-                        .WithMany()
-                        .HasForeignKey("ParticipantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Event");
-
-                    b.Navigation("Participant");
                 });
 
             modelBuilder.Entity("WebUni_Management.Infrastructure.Data.Models.NewsArticle", b =>
