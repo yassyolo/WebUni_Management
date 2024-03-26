@@ -20,9 +20,90 @@ namespace WebUni_Management.Core.Services
            repository = _repository;
         }
 
+        public async Task AddNewsAsync(NewsFormViewModel model)
+        {
+            var newsArticle = new NewsArticle()
+            {
+                Title = model.Title,
+                PublishedOn = DateTime.Parse(model.PublishedOn),
+                Content = model.Content,
+                ImageUrl = model.ImageUrl,
+            };
+            await repository.AddAsync(newsArticle);
+            await repository.SaveChangesAsync();
+        }
+
+        public async Task EditNewsAsync(NewsFormViewModel model, int id)
+        {
+            var newsArticle = await repository.All<NewsArticle>().FirstOrDefaultAsync(x => x.Id == id);
+
+            newsArticle.Title = model.Title;
+            newsArticle.Content = model.Content;
+            newsArticle.ImageUrl = model.ImageUrl;
+            newsArticle.PublishedOn = DateTime.Parse(model.PublishedOn);
+
+            await repository.SaveChangesAsync();
+        }
+
+        public async Task<bool> ExistByIdAsync(int id)
+        {
+            return await repository.AllReadOnly<NewsArticle>().AnyAsync(x => x.Id == id);
+        }
+
+        public async Task<NewsShowcaseViewModel> FilterNewsAsync(string? yearSearchTerm = null, string? monthSearchTerm = null, string? dateSearchTerm = null, int currentPage = 1, int newsPerPage = 2)
+        {
+            var news = repository.AllReadOnly<NewsArticle>();
+
+            if(yearSearchTerm != null && yearSearchTerm != "")
+            {
+                news = news.Where(x => x.PublishedOn.Year.ToString() == yearSearchTerm);
+            }
+            if (monthSearchTerm != null && monthSearchTerm != "")
+            {
+                news = news.Where(x => x.PublishedOn.Month.ToString() == monthSearchTerm);
+            }
+            if (dateSearchTerm != null && dateSearchTerm != "")
+            {
+                news = news.Where(x => x.PublishedOn.Date.ToString() == dateSearchTerm);
+            }
+            var newsToShow = await news.Skip((currentPage - 1) * newsPerPage).Take(newsPerPage)
+                .Where(x => x.IsApproved != false)
+                .Select(x => new NewsDetailsViewModel()
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    ImageUrl = x.ImageUrl,
+                    PublishedOn = x.PublishedOn.ToString("MMM dd, yyyy"),
+                    Content = x.Content
+                })
+                .ToListAsync();
+
+            return new NewsShowcaseViewModel
+            {
+                TotalNews = await news.CountAsync(),
+                News = newsToShow
+            };
+        }
+
+        public async Task<NewsFormViewModel?> GetEditNewsFormAsync(int id)
+        {
+            return await repository.AllReadOnly<NewsArticle>().Where( x => x.Id == id)
+                .Select(x => new NewsFormViewModel()
+                {
+                    Title = x.Title,
+                    Id = x.Id,
+                    ImageUrl= x.ImageUrl,
+                    Content = x.Content,
+                    PublishedOn = x.PublishedOn.ToString()
+                })
+                .FirstOrDefaultAsync()
+                ;
+        }
+
         public async Task<IEnumerable<NewsArticleIndexViewModel>> GetLastThreeNewsArticlesAsync(string userId)
         {
             return await repository.AllReadOnly<NewsArticle>()
+                .Where(x => x.IsApproved != false)
                 .OrderByDescending(x => x.PublishedOn)
                 .Take(3)
                 .Select(x => new NewsArticleIndexViewModel
@@ -46,8 +127,9 @@ namespace WebUni_Management.Core.Services
                     Id = x.Id,
                     Title = x.Title,
                     ImageUrl = x.ImageUrl,
-                    PublishedOn = x.PublishedOn.ToString(),
-                    Content = x.Content
+                    PublishedOn = x.PublishedOn.ToString("MMM dd, yyyy"),
+                    Content = x.Content,
+                    Author = x.Author.FirstName + " " + x.Author.LastName
                 })
                 .FirstOrDefaultAsync();
             var newsArticleStatusById = await repository.All<NewsArticleReadStatus>().Where(x => x.NewsArticleId == id && x.Read == false).FirstOrDefaultAsync();
@@ -58,5 +140,40 @@ namespace WebUni_Management.Core.Services
             }
             return model;
         }
-    }
+
+        public async Task<ApproveNewsViewModel> GetNewsForApprovalAsync(int newsPerPage = 2, int currentPage = 1)
+        {
+            var news = repository.AllReadOnly<NewsArticle>().Where(x => x.IsApproved == false);
+            var newsToShow = await news.Skip((currentPage - 1) * newsPerPage).Take(newsPerPage).
+                Select(x => new NewsDetailsViewModel()
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    ImageUrl = x.ImageUrl,
+                    Content = x.Content,
+                    PublishedOn = x.PublishedOn.ToString()
+                }).ToListAsync();
+            return new ApproveNewsViewModel()
+            {
+                News = newsToShow,
+                TotalNews = await news.CountAsync()
+            };
+        }
+
+        public async Task WriteNewsAsync(NewsFormViewModel model, string userId)
+		{
+			var author = await repository.AllReadOnly<Student>().FirstOrDefaultAsync(x => x.UserId == userId);
+            var newsArticle = new NewsArticle()
+			{
+				Title = model.Title,
+				PublishedOn = DateTime.Parse(model.PublishedOn),
+				Content = model.Content,
+				ImageUrl = model.ImageUrl,
+                AuthorId = author.Id,
+                IsApproved = false
+			};
+			await repository.AddAsync(newsArticle);
+			await repository.SaveChangesAsync();
+		}
+	}
 }
