@@ -1,0 +1,225 @@
+﻿ @model WebUni_Management.Core.Models.News.NewsShowcaseViewModel
+@{
+    ViewBag.Message = "Be up-to-date with the things happening around you!";
+}
+
+<div class="all-showcase-container">
+    <div class="all-showcase-message">
+        <h2>@ViewBag.Message</h2>
+        <h3>Feel free to search our news by date!</h3>
+    </div>
+    <div class="all-search-engine">
+        <form class="form-search-engine" asp-controller="News" asp-action="Index" method="get">
+            <div class="search-term">
+                <label asp-for="YearSearchTerm" class="bold-label">Year</label>
+                <input asp-for="YearSearchTerm" class="form-control" placeholder="Year...">
+            </div>
+            <div class="search-term">
+                <label asp-for="MonthSearchTerm" class="bold-label">Month</label>
+                <input asp-for="MonthSearchTerm" class="form-control" placeholder="Month...">
+            </div>
+            <div class="search-term">
+                <label asp-for="DateSearchTerm" class="bold-label">Date</label>
+                <input asp-for="DateSearchTerm" class="form-control" placeholder="Date...">
+            </div>
+            <div class="submit">
+                <button type="submit" class="btn btn-primary search-btn">Search</button>
+            </div>
+        </form>
+    </div>
+
+    @{
+        var previousPage = Model.CurrentPage - 1;
+        if (previousPage < 1)
+        {
+            previousPage = 1;
+        }
+
+        var maxPage = Math.Ceiling((double)Model.TotalNews /
+        Model.NewsPerPage);
+    }
+    <div class="pagination-buttons">
+        <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
+           asp-controller="News"
+           asp-action="Index"
+           asp-route-currentPage="@previousPage"
+           asp-route-yearSearchTerm="@Model.YearSearchTerm"
+           asp-route-monthSearchTerm="@Model.MonthSearchTerm"
+           asp-route-dateSearchTerm="@Model.DateSearchTerm"><<</a>
+        @{
+            var shouldButtonBeDisabled = Model.CurrentPage == maxPage ||
+            !Model.News.Any();
+        }
+        <a class="btn btn-primary
+           @(shouldButtonBeDisabled ? "disabled" : string.Empty)"
+           asp-controller="News"
+           asp-action="Index"
+           asp-route-currentPage="@(Model.CurrentPage + 1)"
+           asp-route-yearSearchTerm="@Model.YearSearchTerm"
+           asp-route-monthSearchTerm="@Model.MonthSearchTerm"
+           asp-route-dateSearchTerm="@Model.DateSearchTerm">>></a>
+    </div>
+
+    @if (!Model.News.Any())
+    {
+        <h2 class="text-center">No rooms found by the given criteria!</h2>
+    }
+
+    <div class="flip-card-container">
+        @foreach (var article in Model.News)
+        {
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <img src="@article.ImageUrl" alt="News Cover">
+                    </div>
+                    <div class="flip-card-back">
+                        <h6><strong>Title</strong>: @article.Title</h6>
+                        <h6><strong>Published on</strong>: @article.PublishedOn</h6>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <form asp-controller="News" asp-action="Edit" asp-route-id="@article.Id" method="get">
+                                <button type="submit" class="btn btn-danger">Edit</button>
+                            </form>
+                        }
+                        <form asp-controller="News" asp-action="Details" asp-route-id="@article.Id" method="get">
+                            <button type="submit" class="btn btn-danger">Details</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<style>
+    .all-showcase-message {
+        color: #e91e63;
+        margin-bottom: 20px;
+        text-align:center;
+    }
+
+    .all-search-engine {
+        margin-bottom: 30px;
+        width: 90%;
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .search-term {
+        width: 29%;
+        float: left;
+        margin-right: 10px;
+    }
+
+    .submit {
+        float: left;
+        width: 8%;
+        margin-top: 24px;
+    }
+
+    .form-search-engine {
+        width: 100%;
+    }
+
+    .all-showcase-container {
+        height: 670px;
+        width: 1130px;
+        background-color: white;
+        margin: auto;
+        border: 2px solid #e91e63;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        align-content : center;
+        padding-top: 5px;
+        padding: 10px;
+    }
+
+    .flip-card-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .flip-card {
+        width: 250px;
+        height: 300px;
+        border: 1px solid #e91e63;
+        border-radius: 3px;
+        perspective: 1000px;
+        margin-bottom: 20px;
+    }
+
+    .flip-card-room {
+        width: 300px;
+        height: 300px;
+        border: 1px solid #e91e63;
+        border-radius: 3px;
+        perspective: 1000px;
+    }
+
+        .flip-card-room:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+    .flip-card-front img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .flip-card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.8s;
+        transform-style: preserve-3d;
+    }
+
+    .flip-card:hover .flip-card-inner {
+        transform: rotateY(180deg);
+    }
+
+    .flip-card-front, .flip-card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        color: black;
+        backface-visibility: hidden;
+    }
+
+    .flip-card-back {
+        background-color: #fc819e;
+        transform: rotateY(180deg);
+    }
+
+        .flip-card-back form {
+            margin-top: 10px;
+        }
+
+    .btn-primary {
+        background-color: #fc819e;
+        border-color: #fc819e;
+        color: black;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        .btn-primary:hover {
+            background-color: #e91e63;
+            border-color: #e91e63;
+        }
+
+    .bold-label {
+        font-weight: bold;
+    }
+
+    .pagination-buttons {
+        display: flex;
+        justify-content: center;
+        align-content: space-around;
+        margin-bottom: 30px;
+    }
+</style>

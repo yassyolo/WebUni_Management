@@ -23,31 +23,43 @@
             <nav class="nav-menu">
                 <ul class="menu">
                         <li class="menu-item menu-item-has-children">
-                            <a asp-controller="Home" asp-action="Index">Home<i class="plus"></i></a>
+                            <a>Home<i class="plus"></i></a>
                             <ul class="sub-menu">
                                 <li class="menu-item"><a asp-controller="Home" asp-action="Index">Our University</a></li>
                                 
                             </ul>
                     </li>
-                    <li class="menu-item">
-                        <a asp-controller="News" asp-action="Index">News</a>
+                        <li class="menu-item menu-item-has-children">
+                            <a>News<i class="plus"></i></a>
+                            <ul class="sub-menu">
+                                <li class="menu-item"><a asp-controller="News" asp-action="Index">Search News</a></li>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <li class="menu-item"><a asp-controller="News" asp-action="Add">Add News</a></li>
+                                    <li class="menu-item"><a asp-controller="News" asp-action="ApproveNews">Approve News</a></li>
+                                }
+                                else
+								{
+									<li class="menu-item"><a asp-controller="News" asp-action="WriteNews">Write News</a></li>
+								}
+                            </ul>
                     </li>
                     <li class="menu-item menu-item-has-children">
-                        <a asp-controller="Events" asp-action="Index">Events<i class="plus"></i></a>
+                        <a>Events<i class="plus"></i></a>
                        <ul class="sub-menu">
                         <li class="menu-item"><a asp-controller="Events" asp-action="AllEvents">All Events</a></li>
                         <li class="menu-item"><a asp-controller="Events" asp-action="MyEvents">My Events</a></li>
                        </ul>
                     </li>
                         <li class="menu-item menu-item-has-children">
-                            <a asp-controller="Menu" asp-action="Index">Canteen<i class="plus"></i></a>
+                            <a>Canteen<i class="plus"></i></a>
                             <ul class="sub-menu">
                                 <li class="menu-item"><a asp-controller="Menu" asp-action="Index">Our Canteen</a></li>
                                
                             </ul>
                         </li>
                     <li class="menu-item menu-item-has-children">
-                            <a asp-controller="Library" asp-action="Index">Library<i class="plus"></i></a>
+                            <a>Library<i class="plus"></i></a>
                             <ul class="sub-menu">
                                 <li class="menu-item"><a asp-controller="Library" asp-action="Index">Our Library</a></li>
                                 <li class="menu-item"><a asp-controller="Library" asp-action="AllBooksShowcase">Books</a></li>
@@ -59,13 +71,13 @@
                             </ul>
                     </li>
                         <li class="menu-item menu-item-has-children">
-                        <a asp-controller="Student" asp-action="">Personal info</a>
+                            <a>Personal info<i class="plus"></i></a>
                             <ul class="sub-menu">
                                 <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="RentedBooks" asp-route-userId="@User.FindFirstValue(ClaimTypes.NameIdentifier)">My Books</a></li>
                             </ul>
                     </li>
                     <li class="menu-item menu-item-has-children">
-                        <a asp-controller="Account" asp-action="">Account<i class="plus"></i></a>
+                        <a>Account<i class="plus"></i></a>
                         <ul class="sub-menu">
                             @if(!SignInManager.IsSignedIn(User))
                             {

@@ -137,6 +137,7 @@ a{
     transform: translateY(0);
     opacity:1;
     visibility:visible;
+    z-index: 101;
 }
 .header .menu > .menu-item-has-children:hover > a .plus:after{
     transform: translate(-50%, -50%) rotate(0deg);

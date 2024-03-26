@@ -5,18 +5,19 @@ ViewBag.Title = "Menu";
 
 <div class="menu-index-container">
 	<div class="welcome-message">
-		<div class="image-holder">
-			<src img="https://assets-global.website-files.com/62e628ccdd3aacd9841de18b/62ead78b6f662a4cb7295ab6_Carousel%3ACanteen.jpg" alt="canteen"></src>
+		<div class="image-holde">
+			<img src="https://assets-global.website-files.com/62e628ccdd3aacd9841de18b/62ead78b6f662a4cb7295ab6_Carousel%3ACanteen.jpg" alt="canteen" />
 		</div>
-		<div class="library-message">
-			<h2>@ViewBag.Title</h2>
+		<div class="welcome">
+			
 			<h5>Explore our vast collection of delicious meals and beverages. Whether you're a student, a professor, or a visitor, our menu has something for everyone. Enjoy browsing through our catalog and discovering new tastes. Happy eating and don't hesitate to ask our friendly staff for recommendations or assistance.</h5></div>
 	</div>
 	<div class="daily-menu">
+		<h2>@ViewBag.Title</h2>
         @foreach (var item in Model)
 		{
 			<div class="daily-menu-item">
-				<h2>@item.Name----@item.Price</h2>
+				<h2>@item.Name: @item.Price lv.</h2>
 				<p>@item.Category</p>
 			</div>
 		}
@@ -45,10 +46,15 @@ ViewBag.Title = "Menu";
 		display:flex;
 		height: 100%;
 		float:left;
-        width: 40%;
+        width: 100%;
 		margin-right:30px;
 	}
-	.image-holder img{
+	.image-holde{
+		width:90%;
+		height: 40%;
+		z-index:100;
+	}
+	 img{
 		z-index:100;
 		width:100%;
 		height:100%;
@@ -57,12 +63,15 @@ ViewBag.Title = "Menu";
 	}
 	.daily-menu{
 float:right;
-width:40%;
+width:50%;
 height:100%;
 display:flex;
-flex-direction:column
+flex-direction:column;
 	}
-
+	.welcome-message{
+		width: 50%;
+		flex-direction:column;
+	}
 
 	
 </style>

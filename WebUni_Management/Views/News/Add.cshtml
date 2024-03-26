@@ -1,0 +1,102 @@
+﻿@model WebUni_Management.Core.Models.News.NewsFormViewModel
+@{
+    ViewBag.Message = "Add News";
+}
+<div class="edit-container">
+    <h2>Add new news here:</h2>
+    <form class="post-form" method="post">
+        <div class="form-member">
+            <label asp-for="Title">Title</label>
+            <input asp-for="Title" class="form-control" placeholder="Title..">
+            <span asp-validation-for="Title" class="validation"></span>
+        </div>
+        <div class="form-member">
+            <label asp-for="PublishedOn">Publish date</label>
+            <input asp-for="PublishedOn" class="form-control" placeholder="Publish date..">
+            <span asp-validation-for="PublishedOn" class="validation"></span>
+        </div>
+        <div class="form-member">
+            <label asp-for="Content">Content</label>
+            <input asp-for="Content" class="form-control" placeholder="Content..">
+            <span asp-validation-for="Content" class="validation"></span>
+        </div>
+        <div class="form-member">
+            <label asp-for="ImageUrl">ImageUrl</label>
+            <input asp-for="ImageUrl" class="form-control" placeholder="Image URL..">
+            <span asp-validation-for="ImageUrl" class="validation"></span>
+        </div>
+
+        <form asp-controller="News" asp-action="Add" asp-route-id="@Model.Id" method="post">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </form>
+</div>
+<style>
+    .edit-container {
+        height: 530px;
+        width: 900px;
+        background-color: white;
+        margin: auto;
+        border: 2px solid #e91e63;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 10px;
+    }
+    h2{
+        color: #e91e63;
+    }
+
+    .post-form {
+        display: flex;
+        flex-direction: column;       
+        padding: 10px;
+        height: 80%;
+    }
+
+    .form-member {
+        margin-bottom: 20px;
+    }
+
+    .form-member label {
+        font-weight: bold;
+    }
+
+    .form-member input {
+        align-content: center;
+        justify-content: center;
+        width: 95%;
+        height: 30px;
+        border: 1px solid #e91e63;
+        border-radius: 3px;
+     }
+
+    .form-select {
+        width: 85%;
+        border: 1px solid #e91e63;
+        border-radius: 3px;
+    }
+
+    input.form-control[name="Content"] {
+        height: 90px;
+    }
+
+    .validation {
+        color: red;
+    }
+
+    .btn-primary {
+        background-color: #fc819e;
+        border-color: #fc819e;
+        color: black;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 20%;
+    }
+
+    .btn-primary:hover {
+        background-color: #e91e63;
+        border-color: #e91e63;
+    }
+</style>

@@ -1,26 +1,34 @@
-﻿@model IEnumerable<WebUni_Management.Core.Models.News.NewsArticleIndexViewModel>
+﻿@model WebUni_Management.Core.Models.Home.IndexPageViewModel
 @{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="home-index-container">
     <div class="home-introduction">
-
+        <h2><strong>Welcome to Web University's Student Management Platform!</strong></h2>
+        <h4> Whether you're a seasoned student or just beginning your journey, our platform is here to make your university experience as seamless and enriching as possible!</h4>
+        <h5>Here's what you can do on our platform:</h5>
+        <h5><a href="@Url.Action("AllBooksShowcase", "Library")"><strong>Rent Books</strong></a>: Browse through our extensive library collection and rent textbooks and reference materials for your courses.</h5>
+        <h5><a href="@Url.Action("AllRoomsShowcase", "Library")"><strong>Reserve Study Rooms</strong></a>: Need a quiet space to study or collaborate with coleagues? Reserve study rooms and make the most out of your study sessions.</h5>
+        <h5><a href="@Url.Action("JoinEvent", "Event")"><strong>Join Events</strong></a>: Stay up-to-date with the latest events, seminars and guest lectures. Engage with peers, expand your knowledge, and make meaningful connections.</h5>
+        <h5><a href="@Url.Action("Index", "Menu")"><strong>Check the Canteen Menu</strong></a>: Hungry for delicious meal? Check out the daily canteen menu.</h5>
+        <h5><a href="@Url.Action("Index", "PersonalInfo")"><strong>View Personal Information</strong></a>: Access your grades, attendance records, course schedules, and other personal information. Stay organized and on track with your academic progress.</h5>
+        <h4>Our platform is designed to support you every step of the way on your academic journey. If you still have not made your account <a href="@Url.Action("Account", "Register")"><strong>click here</strong></a>.</h4>
     </div>
     <div class="news-events-container">
         <div class="news-container">
-            <h6><strong>News</strong></h6>
-            @foreach(var article in Model)
+            <h5 class="name-tag"><strong>News</strong></h5>
+            @foreach(var article in Model.News)
             {
                 <div class="flip-card">
                     <div class="flip-card-inner">
                         <div class="flip-card-front">
-                            <img src="@article.ImageUrl" alt="Book Cover">
+                            <img src="@article.ImageUrl" alt="News Image">
                         </div>
                         <div class="flip-card-back">
-                            <h6>@article.Title</h6>
+                            <h6 class="name"><strong>Title:</strong> @article.Title</h6>
                             <form asp-controller="News" asp-action="Details" asp-route-id="@article.Id" method="get">
-                                <button type="submit" class="btn btn-danger">Details</button>
+                                <button type="submit" class="btn btn-primary">Details</button>
                             </form>
                         </div>
                     </div>
@@ -28,29 +36,61 @@
             }
         </div>
         <div class="events-container">
-            <h6><strong>Events</strong></h6>
+            <h5 class="name-tag"><strong>Events</strong></h5>
+            @foreach (var e in Model.Events)
+            {
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <img src="@e.ImageUrl" alt="Event Cover">
+                        </div>
+                        <div class="flip-card-back">
+                            <h6 class="name"><strong>Name:</strong> @e.Name</h6>
+                            <h6 class="name"><strong>Date:</strong> @e.StartTime - @e.EndTime</h6>
+                            <form asp-controller="Event" asp-action="Details" asp-route-id="@e.Id" method="get">
+                                <button type="submit" class="btn btn-primary">Details</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
     </div>
 </div>
 <style>
     .home-index-container {
-        height: 670px;
-        width: 1130px;
+        height: 950px;
+        width: 1150px;
         background-color: white;
         margin: auto;
         border: 2px solid #e91e63;
         border-radius: 8px;
         display: flex;
         flex-direction: row;
-        padding-top: 5px;
-        padding: 10px;
+        padding: 15px;
     }
     .home-introduction{
-        width: 50%;
+        width: 65%;
+        float: right;
+    }
+    h2, h6, a{
+        color: #e91e63;
+    }
+    h2, h4, h5{
+        padding-bottom: 20px;
+    }
+    .name{
+        color:black;
     }
     .news-events-container{
-        width:45%;
+        padding-top: 50px;
+        width:35%;
         float:left;
+        gap:20px;
+    }
+    .name-tag{
+        color:#e91e63;
+        margin-bottom: 20px;
     }
     .news-container{
         width:50%;
@@ -63,8 +103,8 @@
     }
 
     .flip-card {
-        width: 230px;
-        height: 190px;
+        width: 185px;
+        height: 195px;
         border: 1px solid #e91e63;
         border-radius: 3px;
         perspective: 1000px;
@@ -120,7 +160,7 @@
         }
 
     .btn-primary {
-        background-color: #fc819e;
+        background-color: mediumvioletred;
         border-color: #fc819e;
         color: black;
         border-radius: 4px;
