@@ -10,7 +10,10 @@ namespace WebUni_Management.Core.Contracts
     public interface INewsService
     {
         Task AddNewsAsync(NewsFormViewModel model);
-        Task EditNewsAsync(NewsFormViewModel model, int id);
+        Task ApproveNewsArticleAsync(int id);
+        Task DeleteNewsArticleAsync(int id);
+		Task DiscardNewsArticleAsync(int id);
+		Task EditNewsAsync(NewsFormViewModel model, int id);
         Task<bool> ExistByIdAsync(int id);
         Task<NewsShowcaseViewModel> FilterNewsAsync(string? yearSearchTerm, string? monthSearchTerm, string? dateSearchTerm, int currentPage, int newsPerPage);
         Task<NewsFormViewModel?> GetEditNewsFormAsync(int id);

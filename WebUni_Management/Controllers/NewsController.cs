@@ -96,5 +96,32 @@ namespace WebUni_Management.Controllers
 
             return View(query);
         }
+        public async Task<IActionResult> Approve(int id)
+        {
+            if( await newsService.ExistByIdAsync(id) == false)
+            {
+                return BadRequest();
+            }
+            await newsService.ApproveNewsArticleAsync(id);
+            return RedirectToAction(nameof(Index));
+        }
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (await newsService.ExistByIdAsync(id) == false)
+            {
+                return BadRequest();
+            }
+            await newsService.DeleteNewsArticleAsync(id);
+            return RedirectToAction(nameof(Index));
+        }
+        public async Task<IActionResult> Discard(int id)
+        {
+			if (await newsService.ExistByIdAsync(id) == false)
+			{
+				return BadRequest();
+			}
+			await newsService.DiscardNewsArticleAsync(id);
+			return RedirectToAction(nameof(Index));
+		}
     }
 }

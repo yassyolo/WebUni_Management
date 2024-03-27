@@ -9,9 +9,12 @@ namespace WebUni_Management.Controllers
 	public class PersonalInfoController : Controller
 	{
 		private readonly IPersonalInfoService personalInfoService;
-        public PersonalInfoController(IPersonalInfoService _personalInfoService)
+        private readonly IEventService eventService;
+
+        public PersonalInfoController(IPersonalInfoService _personalInfoService, IEventService _eventService)
         {
             personalInfoService = _personalInfoService;
+			eventService = _eventService;
         }
         public IActionResult Index()
 		{
@@ -41,6 +44,15 @@ namespace WebUni_Management.Controllers
 			}
 			await personalInfoService.RemoveBookRentAsync(id, userId);
 			return RedirectToAction("RentedBooks", new { userId = userId });
+		}
+		public async Task<IActionResult> JoinedEvents(string userId)
+		{
+			/*if(await eventService.UserHasJoinedEventsAsync(userId) == false)
+			{
+
+			}*/
+			var model = await eventService.JoinedEventsAsync(userId);
+			return View(model);
 		}
 	}
 }

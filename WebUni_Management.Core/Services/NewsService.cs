@@ -28,12 +28,34 @@ namespace WebUni_Management.Core.Services
                 PublishedOn = DateTime.Parse(model.PublishedOn),
                 Content = model.Content,
                 ImageUrl = model.ImageUrl,
+                IsApproved = true
             };
             await repository.AddAsync(newsArticle);
             await repository.SaveChangesAsync();
         }
 
-        public async Task EditNewsAsync(NewsFormViewModel model, int id)
+        public async Task ApproveNewsArticleAsync(int id)
+        {
+            var newsArticle = await repository.All<NewsArticle>().Where(x => x.Id == id).FirstOrDefaultAsync();
+            newsArticle.IsApproved = true;
+            await repository.SaveChangesAsync();
+        }
+
+        public async Task DeleteNewsArticleAsync(int id)
+        {
+            var newsArticle = await repository.All<NewsArticle>().FirstOrDefaultAsync(x => x.Id == id);
+            await repository.DeleteAsync<NewsArticle>(newsArticle);
+            await repository.SaveChangesAsync();
+        }
+
+		public async Task DiscardNewsArticleAsync(int id)
+		{
+			var newsArticle = await repository.All<NewsArticle>().FirstOrDefaultAsync(x => x.Id == id);
+            await repository.DeleteAsync<NewsArticle>(newsArticle);
+            await repository.SaveChangesAsync();
+		}
+
+		public async Task EditNewsAsync(NewsFormViewModel model, int id)
         {
             var newsArticle = await repository.All<NewsArticle>().FirstOrDefaultAsync(x => x.Id == id);
 
@@ -151,7 +173,7 @@ namespace WebUni_Management.Core.Services
                     Title = x.Title,
                     ImageUrl = x.ImageUrl,
                     Content = x.Content,
-                    PublishedOn = x.PublishedOn.ToString()
+                    PublishedOn = x.PublishedOn.ToString("MMM dd, yyyy")
                 }).ToListAsync();
             return new ApproveNewsViewModel()
             {
