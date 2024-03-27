@@ -44,5 +44,11 @@ namespace WebUni_Management.Infrastructure.Repository
 		{
 			return await GetDbSet<T>().FindAsync(id);
 		}
-	}
+
+        public async Task DeleteAsync<T>(T entity) where T : class
+        {
+            GetDbSet<T>().Remove(entity);
+            await SaveChangesAsync();
+        }
+    }
 }
