@@ -1,0 +1,63 @@
+﻿@using System.Security.Claims
+@model IEnumerable<WebUni_Management.Core.Models.Event.EventIndexViewModel>
+@{
+    ViewBag.Title = "My Joined Events";
+}
+<h2>@ViewBag.Message</h2>
+<div class="rentedbook-container">
+    <h2>View your joined events here and save the dates in your calendar.</h2>
+    <div class="flip-card-container">
+        @foreach (var ev in Model)
+        {
+            <div class="card">
+                <img src="@ev.ImageUrl" class="card-img" alt="...">
+                <div class="card-body">
+                    <h5><strong>Name</strong>:@ev.Name</h5>
+                    <h5><strong>Lecturer</strong>:@ev.GuestParticipant</h5>
+                    <h5><strong>Date</strong>:@ev.StartTime - @ev.EndTime</h5>
+                    <form asp-controller="Event" asp-action="Details" asp-route-id="@ev.Id" method="get">
+                        <button type="submit" class="btn btn-primary">Details</button>
+                    </form>
+                    <form asp-controller="PersonalInfo" asp-action="RemoveJoin" asp-route-id="@ev.Id" method="get">
+                        <button type="submit" class="btn btn-primary">Remove Join</button>
+                    </form>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+<style>
+    .card-img {
+        height: 45%;
+    }
+
+    .card-title {
+        color: #e91e63;
+        height: 25%;
+        margin: auto;
+    }
+
+    .card-text {
+        height: 15%;
+    }
+
+    .rentedbook-container {
+        height: 800px;
+        width: 1130px;
+        background-color: white;
+        margin: auto;
+        border: 2px solid #e91e63;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        align-content: space-between;
+        padding-top: 5px;
+        padding: 10px;
+    }
+
+    .card {
+        width: 300px;
+        height: 100%;
+    }
+</style>

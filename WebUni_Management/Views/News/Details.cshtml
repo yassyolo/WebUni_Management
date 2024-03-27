@@ -19,12 +19,12 @@
 		<div class="action-buttons">
 		@if (User.IsInRole("Admin"))
 		{
-			<form asp-controller="News" asp-action="Add" asp-route-id="@Model.Id" method="get">
-				<button type="submit" class="btn btn-primary">Add</button>
-			</form>
 			<form asp-controller="News" asp-action="Edit" asp-route-id="@Model.Id" method="get">
 				<button type="submit" class="btn btn-primary">Edit</button>
 			</form>
+				<form asp-controller="News" asp-action="Delete" asp-route-id="@Model.Id" method="get">
+					<button type="submit" class="btn btn-primary">Delete</button>
+				</form>
 		}
 
 		<form asp-controller="News" asp-action="Index" method="get">

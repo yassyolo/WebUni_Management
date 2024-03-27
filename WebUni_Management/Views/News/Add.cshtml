@@ -25,10 +25,14 @@
             <input asp-for="ImageUrl" class="form-control" placeholder="Image URL..">
             <span asp-validation-for="ImageUrl" class="validation"></span>
         </div>
-
+        <div class="action-buttons">
         <form asp-controller="News" asp-action="Add" asp-route-id="@Model.Id" method="post">
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
+        <form asp-controller="News" asp-action="Index" method="get">
+            <button type="submit" class="btn btn-primary">Back</button>
+        </form>
+        </div>
     </form>
 </div>
 <style>
@@ -92,11 +96,17 @@
         color: black;
         border-radius: 4px;
         cursor: pointer;
-        width: 20%;
+       
     }
 
     .btn-primary:hover {
         background-color: #e91e63;
         border-color: #e91e63;
+    }
+
+    .action-buttons {
+        display: flex;
+        margin-top: auto;
+        gap: 20px;
     }
 </style>
