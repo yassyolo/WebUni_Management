@@ -62,6 +62,20 @@ namespace WebUni_Management.Infrastructure.SeedDb
         public Event Event2 { get; set; }
         public Event Event3 { get; set; }
         public EventParticipant EventParticipant1 { get; set; }
+        public SubjectProfessor SubjectProfessor1 { get; set; }
+        public SubjectProfessor SubjectProfessor2 { get; set; }
+        public SubjectProfessor SubjectProfessor3 { get; set; }
+        public SubjectProfessor SubjectProfessor4 { get; set; }
+        public Subject Subject1 { get; set; }
+        public Subject Subject2 { get; set; }
+        public Subject Subject3 { get; set; }
+        public SubjectByProfessor Subject1ByProfessor1 { get; set; }
+        public SubjectByProfessor Subject1ByProfessor2 { get; set; }
+        public SubjectByProfessor Subject2ByProfessor3 { get; set; }
+        public SubjectByProfessor Subject3ByProfessor4 { get; set; }
+        public SubjectForStudent Subject1ForStudent1 { get; set; }
+        public SubjectForStudent Subject2ForStudent1 { get; set; }
+        public SubjectForStudent Subject3ForStudent1 { get; set; }
 
         public SeedData()
         {
@@ -81,8 +95,11 @@ namespace WebUni_Management.Infrastructure.SeedDb
             SeedNewsArticleReadStatus();
             SeedEvents();
             SeedEventParticipants();
+            SeedSubjectProfessors();
+            SeedSubjects();
+            SeedSubjectByProfessor();
+            SeedSubjectsForStudent();
         }
-
         private void SeedUsers()
         {
             var hasher = new PasswordHasher<ApplicationUser>();
@@ -520,6 +537,117 @@ namespace WebUni_Management.Infrastructure.SeedDb
             {
                 EventId = Event1.Id,
                 ParticipantId = StudentUser.Id
+            };
+        }
+        private void SeedSubjectProfessors()
+        {
+            SubjectProfessor1 = new SubjectProfessor
+            {
+                Id = 1,
+                FirstName = "Maria",
+                LastName = "Ivanova",
+                Title = "Professor",
+                Description = "Maria Ivanova is a dedicated professor with over 10 years of experience in teaching mathematics. She holds a Ph.D. in Mathematics from Sofia University and has published several research papers in the field.",
+                Email = "mivanova@gmail.com",
+                PhoneNumber = "0888888888",
+            };
+            SubjectProfessor2 = new SubjectProfessor
+            {
+                Id = 2,
+                FirstName = "Georgi",
+                LastName = "Petrov",
+                Title = "Assistant",
+                Description = "Georgi Petrov is an enthusiastic assistant professor specializing in mathematics. He has a Master's degree in Mathematics from the University of Sofia and is passionate about teaching and research.",
+                Email = "gp@gmail.com",
+                PhoneNumber = "0877777777",
+            };
+            SubjectProfessor3 = new SubjectProfessor
+            {
+                Id = 3,
+                FirstName = "Ivan",
+                LastName = "Georgiev",
+                Title = "Professor",
+                Description = "Ivan Georgiev is a dedicated professor with a background in mathematics and computer science. He holds a Bachelor's degree in Mathematics and a Master's degree in Computer Science.",
+                Email = "ivg@abv.bg",
+                PhoneNumber = "0899999999"
+            };
+            SubjectProfessor4 = new SubjectProfessor
+            {
+                Id = 4,
+                FirstName = "Stefan",
+                LastName = "Stefanov",
+                Title = "Professor",
+                Description = "Stefan Stefanov is a professor specializing in computer science. He has a Master's degree in Computer Science and is passionate about teaching and research.",
+                Email = "ssss@gmail.com",
+                PhoneNumber = "0888888883"
+            };
+        }
+        private void SeedSubjects()
+        {
+            Subject1 = new Subject
+            {
+                Id = 1,
+                Name = "Calculus",
+                TotlaAttendanceCount = 13,
+                Description = "Calculus is a fundamental branch of mathematics that deals with rates of change and accumulation. It is used in various fields such as physics, engineering, economics, and computer science. This course covers topics such as limits, derivatives, integrals, and applications of calculus in real-world problems.",
+            };
+            Subject2 = new Subject
+            {
+                Id = 2,
+                Name = "Linear Algebra",
+                TotlaAttendanceCount = 15,
+                Description = "Linear algebra is a branch of mathematics that studies vectors, vector spaces, linear transformations, and systems of linear equations. It is essential in various fields such as physics, engineering, computer science, and economics. This course covers topics such as matrices, determinants, vector spaces, eigenvalues, and eigenvectors.",
+            };
+            Subject3 = new Subject
+            {
+                Id = 3,
+                Name = "Software Architecture",
+                TotlaAttendanceCount = 12,
+                Description = "Software architecture is the process of designing and defining the structure of a software system. It involves making high-level decisions about the organization and implementation of software components. This course covers topics such as architectural styles, design patterns, software quality attributes, and system decomposition.",
+            };
+        }
+        private void SeedSubjectByProfessor()
+        {
+            Subject1ByProfessor1 = new SubjectByProfessor
+            {
+                SubjectId = Subject1.Id,
+                ProfessorId = SubjectProfessor1.Id
+            };
+            Subject1ByProfessor2 = new SubjectByProfessor
+            {
+                SubjectId = Subject1.Id,
+                ProfessorId = SubjectProfessor2.Id
+            };
+            Subject2ByProfessor3 = new SubjectByProfessor
+            {
+                SubjectId = Subject2.Id,
+                ProfessorId = SubjectProfessor3.Id
+            };
+            Subject3ByProfessor4 = new SubjectByProfessor
+            {
+                SubjectId = Subject3.Id,
+                ProfessorId = SubjectProfessor4.Id
+            };
+        }
+        private void SeedSubjectsForStudent()
+        {
+            Subject1ForStudent1 = new SubjectForStudent
+            {
+                SubjectId = Subject1.Id,
+                StudentId = StudentUser.Id,
+                AttendanceRecord = 5
+            };
+            Subject2ForStudent1 = new SubjectForStudent
+            {
+                SubjectId = Subject2.Id,
+                StudentId = StudentUser.Id,
+                AttendanceRecord = 7
+            };
+            Subject3ForStudent1 = new SubjectForStudent
+            {
+                SubjectId = Subject3.Id,
+                StudentId = StudentUser.Id,
+                AttendanceRecord = 12
             };
         }
     }

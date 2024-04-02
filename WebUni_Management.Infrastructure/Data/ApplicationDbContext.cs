@@ -33,6 +33,10 @@ namespace WebUni_Management.Data
             builder.ApplyConfiguration(new NewsArticleReadStatusConfiguration());
             builder.ApplyConfiguration(new EventConfiguration());
             builder.ApplyConfiguration(new EventParticipantConfiguration());
+            builder.ApplyConfiguration(new SubjectProfessorConfiguration());
+            builder.ApplyConfiguration(new SubjectConfiguration());
+            builder.ApplyConfiguration(new SubjectByProfessorConfiguration());
+            builder.ApplyConfiguration(new SubjectForStudentConfiguration());
             base.OnModelCreating(builder);
         }
 
@@ -51,5 +55,9 @@ namespace WebUni_Management.Data
 
         public DbSet<Event> Events { get; set; } = null!;
         public DbSet<EventParticipant> EventParticipant { get; set; } = null!;
+        public DbSet<SubjectProfessor> SubjectProfessors { get; set; } = null!;
+        public DbSet<Subject> Subject { get; set; } = null!;
+        public DbSet<SubjectForStudent> SubjectForStudent { get; set; } = null!;
+        public DbSet<SubjectByProfessor> SubjectByProfessor { get; set; } = null!;
     }
 }

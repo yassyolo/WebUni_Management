@@ -46,5 +46,8 @@ namespace WebUni_Management.Infrastructure.Data.Models
 
         [Comment("News articles by the student")]
         public IEnumerable<NewsArticle>? NewsArticles { get; set; } = new List<NewsArticle>();
+
+        [Comment("Subjects of the student")]
+        public IEnumerable<Subject>? Subjects { get; set; } = new List<Subject>();
     }
 }

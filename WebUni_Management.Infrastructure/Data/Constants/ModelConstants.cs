@@ -80,6 +80,25 @@ namespace WebUni_Management.Infrastructure.Data.Constants
             public const int GuestParticipantMaxLength = 40;
             public const int GuestParticipantMinLength = 2;
         }
+        public class Subject
+        {
+            public const int SubjectNameMaxLength = 50;
+            public const int SubjectNameMinLength = 50;
+            public const int SubjectDescriptionMaxLength = 500;
+            public const int SubjectDescriptionMinLength = 10;
+            public const int SubjectMinAttendanceTimes = 1;
+            public const int SubjectMaxAttendanceTimes = 20;
+            public const int SubjectProfessorNameMaxLength = 30;
+            public const int SubjectProfessorNameMinLength = 2;
+            public const int SubjectProfessorDescriptionMaxLength = 500;
+            public const int SubjectProfessorDescriptionMinLength = 10;
+            public const int SubjectProfessorEmailMaxLength = 50;
+            public const int SubjectProfessorEmailMinLength = 5;
+            public const int SubjectProfessorPhoneNumberMaxLength = 12;
+            public const int SubjectProfessorPhoneNumberMinLength = 5;
+            public const int SubjectProfessorTitleMaxLength = 30;
+            public const int SubjectProfessorTitleMinLength = 2;
+        }
                     
     }
 }
