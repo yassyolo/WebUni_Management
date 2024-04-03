@@ -4,6 +4,8 @@ using System.Security.Claims;
 using WebUni_Management.Core.Contracts;
 using WebUni_Management.Infrastructure.Data.Models;
 using WebUni_Management.Core.Models.Account;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace WebUni_Management.Controllers
 {
@@ -12,13 +14,19 @@ namespace WebUni_Management.Controllers
         private readonly IAccountService accountService;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly UserStore<ApplicationUser> userStore;
+        private readonly IUserEmailStore<ApplicationUser> emailStore;
         public AccountController(IAccountService accountService, 
-            UserManager<ApplicationUser> userManager, 
-            SignInManager<ApplicationUser> signInManager)
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            UserStore<ApplicationUser> userStore,
+            IUserEmailStore<ApplicationUser> emailStore)
         {
             this.accountService = accountService;
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.userStore = userStore;
+            this.emailStore = emailStore;
         }
 
         [HttpGet]
@@ -41,6 +49,8 @@ namespace WebUni_Management.Controllers
                     InitialPassword = model.InitialPassword,
                     
                 };
+                await userStore.SetUserNameAsync(user, model.UserName, CancellationToken.None);
+                await emailStore.SetEmailAsync(user, model.Email, CancellationToken.None);
 
                 var result = await userManager.CreateAsync(user, model.InitialPassword);
 
@@ -59,17 +69,19 @@ namespace WebUni_Management.Controllers
             return View(model);
         }
         [HttpGet]
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
             var model = new LoginViewModel();
             return View(model);
         }
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
+            
             var normalizedUsername = userManager.NormalizeName(model.Username);
             var user = await userManager.FindByNameAsync(normalizedUsername);
-            if (user != null)
+            if (user != null && ModelState.IsValid)
             {
                 if (!user.IsApproved)
                 {
@@ -77,7 +89,7 @@ namespace WebUni_Management.Controllers
                     return View(model);
                 }
 
-                var result = await signInManager.PasswordSignInAsync(model.Username, model.Password, true, false);
+                var result = await signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false);
                 if (result.Succeeded && await userManager.IsInRoleAsync(user, "Student"))
                 {
                     return RedirectToAction(nameof(ManageAccount));
@@ -90,6 +102,7 @@ namespace WebUni_Management.Controllers
             else
             {
                 ModelState.AddModelError(string.Empty, "Invalid Username or Password.");
+                return View(model);
             }
             return View(model);
         }

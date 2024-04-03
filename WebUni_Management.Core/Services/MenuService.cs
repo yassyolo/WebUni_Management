@@ -20,9 +20,10 @@ namespace WebUni_Management.Core.Services
             repository = _repository;
         }
 
-        public async Task<IEnumerable<MenuItemsViewModel>> AllMenuItemsAsync()
+        public async Task<MenuIndexViewModeltest> GetMenuAsync()
         {
-            return await repository.AllReadOnly<Dish>()
+            var menu = await repository.AllReadOnly<Menu>().Where(x => x.Id == 1).FirstOrDefaultAsync();
+            var dishes = await repository.AllReadOnly<Dish>()
                 .Select(x => new MenuItemsViewModel
                 {
                     Id = x.Id,
@@ -30,6 +31,33 @@ namespace WebUni_Management.Core.Services
                     Price = x.Price.ToString(),
                     Category = x.Category,
                 }).ToListAsync();
+            return new MenuIndexViewModeltest
+            {
+                Id = menu.Id,
+                Dishes = dishes,
+                Date = menu.Date.ToString("MMM dd, yyyy")
+            };
         }
+
+		/*/*public async Task<MenuFormViewModel?> GetMenuFormForUpdateAsync()
+        {
+           /* return await repository.AllReadOnly<Menu>().Where(x => x.Date == DateTime.Today)
+                .Select(x => new MenuFormViewModel()
+                {
+                    MenuId = x.Id,
+                    Date = x.Date
+                })
+                .FirstOrDefaultAsync();
+            menu.Dishes = await repository.AllReadOnly<Dish>().Where(x => x.MenuId == menu.Id)
+                .Select(x => new MenuItemsFormViewModel()
+                {
+                    Id = x.Id,
+                    Category = x.Category,
+                    Name = x.Name,
+                    Price = x.Price
+                })
+                .ToListAsync();*/
+
+	
     }
 }

@@ -91,5 +91,14 @@ namespace WebUni_Management.Controllers
             await eventService.JoinEventAsync(id, userId);
             return RedirectToAction("JoinedEvents", "PersonalInfo", new {userId = userId});
         }
+        public async Task<IActionResult> Delete(int id)
+        {
+			if (await eventService.EventExistsByIdAsync(id) == false)
+			{
+				return BadRequest();
+			}
+			await eventService.DeleteEventByIdAsync(id);
+            return RedirectToAction(nameof(AllEvents));
+        }
     }
 }

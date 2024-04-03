@@ -404,5 +404,46 @@ namespace WebUni_Management.Core.Services
 			};
 			return model;
 		}
+
+		public async Task DeleteBookAsync(int id)
+		{
+			var book = await repository.All<Book>().Where(x => x.Id == id).FirstOrDefaultAsync();
+            var bookAuthors = await repository.All<BookByBookAuthor>().Where(x => x.BookId == id).ToListAsync();
+            foreach(var ba in bookAuthors)
+            {
+				await repository.DeleteAsync(ba);
+			}
+            if (book != null)
+            {
+				await repository.DeleteAsync(book);
+			}
+			await repository.SaveChangesAsync();
+		}
+
+		public async Task DeleteRoomAsync(int id)
+		{
+			var room = await repository.All<StudyRoom>().Where(x => x.Id == id).FirstOrDefaultAsync();
+            if (room != null)
+            {
+				await repository.DeleteAsync(room);
+			}
+            await repository.SaveChangesAsync();
+		}
+
+		public async Task EditRoomAsync(int id, EditRoomViewModel model)
+		{
+			var room = repository.All<StudyRoom>().FirstOrDefault(x => x.Id == id);
+			if (room == null)
+            {
+				throw new InvalidOperationException("Room not found");
+			}
+			room.Name = model.Name;
+			room.Description = model.Description;
+			room.Capacity = model.Capacity;
+			room.Floor = model.Floor;
+			room.ImageUrl = model.ImageUrl;
+			room.IsRented = model.IsRented;
+			await repository.SaveChangesAsync();
+		}
 	}
 }

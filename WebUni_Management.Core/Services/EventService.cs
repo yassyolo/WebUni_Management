@@ -38,7 +38,23 @@ namespace WebUni_Management.Core.Services
             await repository.SaveChangesAsync();
         }
 
-        public async Task EditEventAsync(int id, EventFormViewModel model)
+		public async Task DeleteEventByIdAsync(int id)
+		{
+			var ev = await repository.All<Event>().Where(e => e.Id == id).FirstOrDefaultAsync();
+            var eventParticipant = await repository.All<EventParticipant>().Where(x => x.EventId == id).ToListAsync();
+			foreach (var evp in eventParticipant)
+			{
+				await repository.DeleteAsync(evp);
+			}
+			if (ev != null )
+            {
+                await repository.DeleteAsync(ev);
+            }
+           
+            await repository.SaveChangesAsync();
+		}
+
+		public async Task EditEventAsync(int id, EventFormViewModel model)
         {
             var ev = await repository.All<Event>().FirstOrDefaultAsync(x => x.Id == id);
             ev.Description = model.Description;
@@ -66,7 +82,7 @@ namespace WebUni_Management.Core.Services
                 events = events.Where(x => x.GuestParticipant.Contains(normalizedSearchTerm) || x.Name.Contains(normalizedSearchTerm));
             }
             var joinedEvents = await repository.AllReadOnly<EventParticipant>().Where(x => x.ParticipantId  == userId).Select(x=> x.EventId).ToListAsync();
-            var eventsToShow = await events .Where(x => joinedEvents.Contains(x.Id)).Skip((currentPage - 1) * eventsPerPage).Take(eventsPerPage)
+            var eventsToShow = await events .Where(x => !joinedEvents.Contains(x.Id)).Skip((currentPage - 1) * eventsPerPage).Take(eventsPerPage)
                
                 .Select(x => new EventIndexViewModel()
                 {
@@ -121,10 +137,10 @@ namespace WebUni_Management.Core.Services
 
         public async Task<IEnumerable<EventIndexViewModel>> GetLastThreeEventsAsync(string userId)
         {
-            var eventsOfUser = await repository.AllReadOnly<EventParticipant>().Where(x => x.ParticipantId == userId).Select(x => x.EventId).ToListAsync();
+            //var eventsOfUser = await repository.AllReadOnly<EventParticipant>().Where(x => x.ParticipantId == userId).Select(x => x.EventId).ToListAsync();
 
             return await repository.AllReadOnly<Event>()
-                .Where(x => !eventsOfUser.Contains(x.Id))
+                //.Where(x => !eventsOfUser.Contains(x.Id))
                 .Take(3)
                 .Select(x => new EventIndexViewModel()
                 {

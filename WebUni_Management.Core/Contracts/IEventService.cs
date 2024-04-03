@@ -10,7 +10,8 @@ namespace WebUni_Management.Core.Contracts
     public interface IEventService
     {
         Task AddEventAsync(EventFormViewModel model);
-        Task EditEventAsync(int id, EventFormViewModel model);
+		Task DeleteEventByIdAsync(int id);
+		Task EditEventAsync(int id, EventFormViewModel model);
         Task<bool> EventExistsByIdAsync(int id);
         Task<AllEventsShowcaseViewModel> FilterEventsAsunc(string userId, string searchTerm, int eventsPerPage, int currentPage);
 		Task<EventDetailsViewModel?> GetDetailsForEventById(int id);

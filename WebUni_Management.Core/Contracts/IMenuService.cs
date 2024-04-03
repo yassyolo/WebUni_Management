@@ -9,6 +9,7 @@ namespace WebUni_Management.Core.Contracts
 {
     public interface IMenuService
     {
-        Task<IEnumerable<MenuItemsViewModel>> AllMenuItemsAsync();
+        Task<MenuIndexViewModeltest> GetMenuAsync();
+        //Task<MenuFormViewModel?> GetMenuFormForUpdateAsync();
     }
 }

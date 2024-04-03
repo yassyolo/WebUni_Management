@@ -15,15 +15,20 @@ namespace WebUni_Management.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var model = await menuService.AllMenuItemsAsync();
+            var model = await menuService.GetMenuAsync();
             return View(model);
         }
 
         [WordDocument(DefaultFilename = "MenuDocument")]
         public async Task<IActionResult> DownloadMenu()
         {
-            var model = await menuService.AllMenuItemsAsync();
+            var model = await menuService.GetMenuAsync();
             return View("DownloadMenu", model);
         }
+        /*public async Task<IActionResult> UpdateMenu()
+        {
+            var model = await menuService.GetMenuFormForUpdateAsync();
+            return View(model);
+        }*/
     }
 }
