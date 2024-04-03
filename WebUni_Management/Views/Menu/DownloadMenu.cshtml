@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WebUni_Management.Core.Models.Menu.MenuItemsViewModel>
+﻿@model WebUni_Management.Core.Models.Menu.MenuIndexViewModeltest
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +9,8 @@
 </head>
 <body>
     <div class="menu-content">
-        @foreach (var item in Model)
+        <h4>@Model.Date</h4>
+        @foreach (var item in Model.Dishes)
         {
             <div class="menu-item">
                 <h2>@item.Name</h2>

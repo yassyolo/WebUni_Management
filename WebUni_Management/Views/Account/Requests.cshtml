@@ -21,7 +21,7 @@
                         <td>@item.UserName</td>
                         <td>@item.InitialPassword</td>
                         <td>@item.Email</td>
-                        <td>
+                        <td class="action-buttons">
                             <form asp-controller="Account" asp-action="ApproveRequest" method="post">
                                 <input type="hidden" name="username" value="@item.UserName" />
                                 <button type="submit" class="btn btn-primary">Accept</button>
@@ -88,5 +88,11 @@
     .btn-danger:hover {
             background-color: #e91e63;
             border-color: #e91e63;
+    }
+
+    .action-buttons {
+        display: flex;
+        margin-top: auto;
+        gap: 20px;
     }
 </style>

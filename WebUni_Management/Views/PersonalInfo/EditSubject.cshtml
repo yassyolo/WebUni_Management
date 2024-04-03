@@ -1,0 +1,160 @@
+﻿@model WebUni_Management.Core.Models.PersonalInfo.EditSubjectFormViewModel
+@{
+    ViewBag.Message = "Edit subject";
+}
+<div class="edit-container">
+    <h2>Edit news here:</h2>
+    <form class="post-form" method="post">
+    <div class="subject-edit">
+    
+        <div class="form-member">
+            <label asp-for="Name">Name</label>
+            <input asp-for="Name" class="form-control" placeholder="Name..">
+            <span asp-validation-for="Name" class="validation"></span>
+        </div>
+        <div class="form-member">
+                <label asp-for="Description">Description</label>
+                <input asp-for="Description" class="form-control" placeholder="Description..">
+                <span asp-validation-for="Description" class="validation"></span>
+        </div>
+            <div class="form-member">
+                <label asp-for="TotalAttendanceCount">Total Attendance Count</label>
+                <input asp-for="TotalAttendanceCount" class="form-control" placeholder="Total Attendance Count..">
+                <span asp-validation-for="TotalAttendanceCount" class="validation"></span>
+            </div>
+        
+    </div>
+    @foreach (var item in Model.SubjectProfessors)
+        {
+          <div class="professor-edit">
+       
+            <div class="form-member">
+                <label asp-for="@item.FirstName">First Name</label>
+                    <input asp-for="@item.FirstName" class="form-control" placeholder="First Name..">
+                    <span asp-validation-for="@item.FirstName" class="validation"></span>
+            </div>
+                <div class="form-member">
+                    <label asp-for="@item.LastName">Last Name</label>
+                    <input asp-for="@item.LastName" class="form-control" placeholder="Last Name..">
+                    <span asp-validation-for="@item.LastName" class="validation"></span>
+                </div>
+                <div class="form-member">
+                    <label asp-for="@item.Title">Title</label>
+                    <input asp-for="@item.Title" class="form-control" placeholder="Title..">
+                    <span asp-validation-for="@item.Title" class="validation"></span>
+                </div>
+                <div class="contact-info">
+            <div class="form-member">
+                <label asp-for="@item.Email">Email</label>
+                    <input asp-for="@item.Email" class="form-control" placeholder="Email..">
+                    <span asp-validation-for="@item.Email" class="validation"></span>
+            </div>
+            <div class="form-member">
+                <label asp-for="@item.PhoneNumber">Phone Number</label>
+                    <input asp-for="@item.PhoneNumber" class="form-control" placeholder="Phone Number..">
+                    <span asp-validation-for="@item.PhoneNumber" class="validation"></span>
+            </div>
+                </div>
+                <div class="form-member">
+                    <label asp-for="@item.Description">Description</label>
+                    <input asp-for="@item.Description" class="form-control" placeholder="Description..">
+                    <span asp-validation-for="@item.Description" class="validation"></span>
+                </div>
+       
+          </div>
+        }
+        <div class="action-buttons">
+            <form asp-controller="News" asp-action="Edit" asp-route-id="@Model.Id" method="post">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <form asp-controller="News" asp-action="Index" method="get">
+                <button type="submit" class="btn btn-primary">Back</button>
+            </form>
+        </div>
+    </form>
+</div>
+<style>
+    .edit-container {
+        height: 530px;
+        width: 1130px;
+        background-color: white;
+        margin: auto;
+        border: 2px solid #e91e63;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 10px;
+    }
+
+    .post-form {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        height: 80%;
+    }
+
+    .form-member {
+        margin-bottom: 20px;
+    }
+
+        .form-member label {
+            font-weight: bold;
+        }
+
+        .form-member input {
+            align-content: center;
+            justify-content: center;
+            width: 95%;
+            height: 30px;
+            border: 1px solid #e91e63;
+            border-radius: 3px;
+        }
+
+    .form-select {
+        width: 85%;
+        border: 1px solid #e91e63;
+        border-radius: 3px;
+    }
+
+    .contact-info{
+        width:100%;
+		display: flex;
+        flex-direction: row;
+		gap: 20px;
+    }
+
+        .contact-info .form-member input{
+            
+            width: 50%;
+            height: 30px;
+            border: 1px solid #e91e63;
+            border-radius: 3px;
+        }
+    input.form-control[name="Content"] {
+        height: 90px;
+    }
+
+    .validation {
+        color: red;
+    }
+
+    .btn-primary {
+        background-color: #fc819e;
+        border-color: #fc819e;
+        color: black;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        .btn-primary:hover {
+            background-color: #e91e63;
+            border-color: #e91e63;
+        }
+
+    .action-buttons {
+        display: flex;
+        margin-top: auto;
+        gap: 20px;
+    }
+</style>

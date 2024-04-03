@@ -59,7 +59,10 @@
                             <a>Canteen<i class="plus"></i></a>
                             <ul class="sub-menu">
                                 <li class="menu-item"><a asp-controller="Menu" asp-action="Index">Our Canteen</a></li>
-                               
+                                @if(User.IsInRole("Admin"))
+                                {
+                                    <li class="menu-item"><a asp-controller="Menu" asp-action="UpdateMenu">Update Menu</a></li>
+                                }
                             </ul>
                         </li>
                     <li class="menu-item menu-item-has-children">
@@ -77,8 +80,16 @@
                         <li class="menu-item menu-item-has-children">
                             <a>Personal info<i class="plus"></i></a>
                             <ul class="sub-menu">
-                                <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="RentedBooks" asp-route-userId="@User.FindFirstValue(ClaimTypes.NameIdentifier)">My Books</a></li>
-                                <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="JoinedEvents">My Events</a></li>
+                                @if (User.Identity.IsAuthenticated && User.IsInRole("Student"))
+                                {
+                                    <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="RentedBooks" asp-route-userId="@User.FindFirstValue(ClaimTypes.NameIdentifier)">My Books</a></li>
+                                    <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="JoinedEvents">My Events</a></li>
+                                }                               
+                                @if(User.IsInRole("Admin"))
+                                {
+                                    <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="SearchStudentIndex">Search Students</a></li>
+
+                                }
 
                             </ul>
                     </li>

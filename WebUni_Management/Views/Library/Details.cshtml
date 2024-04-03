@@ -14,6 +14,7 @@
 		<h5><b>Category:</b> @Model.Category</h5>
 		<h5><b>Published in:</b> @Model.PublishYear</h5>
 		<h5><b>Description:</b> @Model.Description</h5>
+		<div class="action-buttons">
 		@if (Model.IsRented == false && User.IsInRole("Student"))
 		{
 			<form asp-controller="Library" asp-action="Rent" asp-route-id="@Model.Id" method="get">
@@ -25,10 +26,14 @@
 			<form asp-controller="Library" asp-action="Edit" asp-route-id="@Model.Id" method="get">
 				<button type="submit" class="btn btn-primary">Edit</button>
 			</form>
+			<form asp-controller="Library" asp-action="Delete" asp-route-id="@Model.Id" method="get">
+				<button type="submit" class="btn btn-primary">Delete</button>
+			</form>
 		}
 		<form asp-controller="Library" asp-action="AllBooksShowcase" method="post">
 			<button type="submit" class="btn btn-primary">Back</button>
 		</form>
+		</div>
 	</div>
 </div>
 <style>
@@ -90,4 +95,10 @@
 			background-color: #e91e63;
 			border-color: #e91e63;
 		}
+
+	.action-buttons {
+		display: flex;
+		margin-top: auto;
+		gap: 20px;
+	}
 </style>

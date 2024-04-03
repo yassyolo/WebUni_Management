@@ -57,6 +57,11 @@ app.MapControllerRoute(
     pattern: "Account/DiscardRequest/{username}",
     defaults: new { controller = "Account", action = "DiscardRequest" }
 );
+app.MapControllerRoute(
+	name: "EditSubject",
+	pattern: "PersonalInfo/EditSubject/{subjectId}/{studentId}",
+	defaults: new { controller = "PersonalInfo", action = "EditSubject" }
+);
 app.MapRazorPages();
 
 using(var scope = app.Services.CreateScope())

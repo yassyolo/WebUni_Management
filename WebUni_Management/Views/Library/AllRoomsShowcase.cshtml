@@ -11,9 +11,9 @@
     <div class="all-search-engine">
         <form class="form-search-engine" asp-controller="Library" asp-action="AllRoomsShowcase" method="get">
             <div class="category-search">
-                <label asp-for="Capacity" class="bold-label"></label>
+                <label asp-for="Capacity" class="bold-label">Capacity</label>
                 <select asp-for="Capacity" class="form-control">
-                    <option value="">Select Capacity</option> 
+                    <option value="">Capacity..</option> 
                     @for (int i = 1; i <= 10; i++)
                     {
                         <option value="@i">@i</option>
@@ -21,8 +21,8 @@
                 </select>
 </div>
             <div class="search-term">
-                <label asp-for="SearchTerm" class="bold-label"></label>
-                <input asp-for="SearchTerm" class="form-control" placeholder="...">
+                <label asp-for="SearchTerm" class="bold-label">Search</label>
+                <input asp-for="SearchTerm" class="form-control" placeholder="Search..">
             </div>
             <div class="submit">
                 <button type="submit" class="btn btn-primary search-btn">Search</button>
@@ -74,8 +74,8 @@
                         <img src="@room.ImageUrl" alt="Room">
                     </div>
                     <div class="flip-card-back">
-                        <h6>@room.Name</h6>
-                        <h6>@room.Capacity</h6>
+                        <h6><strong>Name</strong>: @room.Name</h6>
+                        <h6><strong>Capacity</strong>: @room.Capacity</h6>
                         @if (room.IsRented == false && User.IsInRole("Student"))
                         {
                             <form asp-controller="Library" asp-action="RentRoom" asp-route-id="@room.Id" method="get">
@@ -101,6 +101,7 @@
     .all-showcase-message {
         color: #e91e63;
         margin-bottom: 20px;
+        text-align:center;
     }
 
     .all-search-engine {

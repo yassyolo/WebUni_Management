@@ -13,7 +13,8 @@
 		<h5><b>Category:</b> @Model.Capacity</h5>
 		<h5><b>Published in:</b> @Model.Floor</h5>
 		<h5><b>Description:</b> @Model.Description</h5>
-		@if (Model.IsRented == false && User.IsInRole("Admin"))
+		<div class="action-buttons">
+		@if (Model.IsRented == false && User.IsInRole("Student"))
 		{
 			<form asp-controller="Library" asp-action="RentRoom" asp-route-id="@Model.Id" method="get">
 				<button type="submit" class="btn btn-primary">Rent</button>
@@ -24,10 +25,14 @@
 			<form asp-controller="Library" asp-action="EditRoom" asp-route-id="@Model.Id" method="get">
 				<button type="submit" class="btn btn-primary">Edit</button>
 			</form>
+			<form asp-controller="Library" asp-action="DeleteRoom" asp-route-id="@Model.Id" method="get">
+				<button type="submit" class="btn btn-primary">Delete</button>
+			</form>
 		}
 		<form asp-controller="Library" asp-action="AllRoomsShowcase" method="post">
 			<button type="submit" class="btn btn-primary">Back</button>
 		</form>
+		</div>
 	</div>
 </div>
 <style>
@@ -93,4 +98,10 @@
 			background-color: #e91e63;
 			border-color: #e91e63;
 		}
+
+	.action-buttons {
+		display: flex;
+		margin-top: auto;
+		gap: 20px;
+	}
 </style>

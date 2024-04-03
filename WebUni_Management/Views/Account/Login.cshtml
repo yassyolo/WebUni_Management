@@ -18,6 +18,14 @@
 				<input asp-for="Password" id="Password" class="form-control" />
 				<span asp-validation-for="Password" class="text-danger"></span>
 			</div>
+            <div>
+                <div class="checkbox">
+                    <label asp-for="RememberMe" class="form-label">
+                        <input class="form-check-input" asp-for="RememberMe" />
+                        @Html.DisplayNameFor(m => m.RememberMe)
+                    </label>
+                </div>
+            </div>
             <button type="submit" class="btn btn-primary">Submit</button>
 		</form>
         </div>

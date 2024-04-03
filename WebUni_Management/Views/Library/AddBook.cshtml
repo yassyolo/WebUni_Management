@@ -21,19 +21,19 @@
             <span asp-validation-for="Description" class="validation"></span>
         </div>
         <div class="form-member">
-            <label asp-for="PublishYear">PublishYear</label>
-            <input asp-for="PublishYear" class="form-control" placeholder="PublishYear..">
+            <label asp-for="PublishYear">Publish Year</label>
+            <input asp-for="PublishYear" class="form-control" placeholder="Publish Year..">
             <span asp-validation-for="PublishYear" class="validation"></span>
         </div>
         <div class="form-member">
-            <label asp-for="ImageUrl">ImageUrl</label>
+            <label asp-for="ImageUrl">Image URL</label>
             <input asp-for="ImageUrl" class="form-control" placeholder="Image URL..">
             <span asp-validation-for="ImageUrl" class="validation"></span>
         </div>
         <div class="form-member">
-            <label asp-for="CategoryId">CategoryId</label>
+            <label asp-for="CategoryId">Category</label>
             <select asp-for="CategoryId" class="form-select">
-                <option value="">Select Category</option>
+                <option value="">Category..</option>
                 @foreach (var category in Model.Categories)
                 {
                     <option value="@category.Id">@category.Name</option>
@@ -41,15 +41,23 @@
             </select>
             <span asp-validation-for="CategoryId" class="validation"></span>
         </div>
+        <div class="action-buttons">
         <form asp-controller="Library" asp-action="Edit" asp-route-id="@Model.Id" method="post">
             <button type="submit" class="btn btn-primary">Add book</button>
         </form>
+        <form asp-controller="Library" asp-action="AllBooksShowcase" method="get">
+            <button type="submit" class="btn btn-primary">Back</button>
+        </form>
+        </div>
     </form>
 </div>
 <style>
+    h2{
+        color: #e91e63;
+    }
     .edit-container {
-        height: 700px;
-        width: 1130px;
+        height: 680px;
+        width: 1000px;
         background-color: white;
         margin: auto;
         border: 2px solid #e91e63;
@@ -63,8 +71,6 @@
     .post-form {
         display: flex;
         flex-direction: column;
-        align-content: center;
-        padding-top: 5px;
         padding: 10px;
         height: 80%;
     }
@@ -80,12 +86,20 @@
         .form-member input {
             align-content: center;
             justify-content: center;
-            width: 85%;
+            width: 95%;
             height: 30px;
             border: 1px solid #e91e63;
             border-radius: 3px;
         }
 
+        .form-member select {
+            align-content: center;
+            justify-content: center;
+            width: 95%;
+            height: 36px;
+            border: 1px solid #e91e63;
+            border-radius: 3px;
+        }
     .form-select {
         width: 85%;
         border: 1px solid #e91e63;
@@ -106,11 +120,16 @@
         color: black;
         border-radius: 4px;
         cursor: pointer;
-        width: 20%;
     }
 
         .btn-primary:hover {
             background-color: #e91e63;
             border-color: #e91e63;
         }
+
+    .action-buttons {
+        display: flex;
+        margin-top: auto;
+        gap: 20px;
+    }
 </style>

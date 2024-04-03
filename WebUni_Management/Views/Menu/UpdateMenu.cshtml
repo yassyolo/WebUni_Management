@@ -1,9 +1,9 @@
-﻿@model WebUni_Management.Core.Models.Event.EventFormViewModel
+﻿@*model WebUni_Management.Core.Models.Menu.MenuFormViewModel
 @{
-    ViewBag.Message = "Add Events";
+    ViewBag.Message = "Update Menu";
 }
 <div class="edit-container">
-    <h2>Add new events here:</h2>
+    <h2>Edit news here:</h2>
     <form class="post-form" method="post">
         <div class="form-member">
             <label asp-for="Name">Name</label>
@@ -26,8 +26,8 @@
             <span asp-validation-for="Capacity" class="validation"></span>
         </div>
         <div class="form-member">
-            <label asp-for="GuestParticipant">Guest Lecturer</label>
-            <input asp-for="GuestParticipant" class="form-control" placeholder="Guest Lecturer..">
+            <label asp-for="GuestParticipant">Guest lecturer</label>
+            <input asp-for="GuestParticipant" class="form-control" placeholder="Guest lecturer..">
             <span asp-validation-for="GuestParticipant" class="validation"></span>
         </div>
         <div class="form-member">
@@ -41,19 +41,19 @@
             <span asp-validation-for="ImageUrl" class="validation"></span>
         </div>
         <div class="action-buttons">
-        <form asp-controller="News" asp-action="Add" asp-route-id="@Model.Id" method="post">
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-        <form asp-controller="News" asp-action="Index" method="get">
-            <button type="submit" class="btn btn-primary">Back</button>
-        </form>
+            <form asp-controller="News" asp-action="Edit" asp-route-id="@Model.Id" method="post">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <form asp-controller="News" asp-action="Index" method="get">
+                <button type="submit" class="btn btn-primary">Back</button>
+            </form>
         </div>
     </form>
 </div>
 <style>
     .edit-container {
-        height: 750px;
-        width: 900px;
+        height: 700px;
+        width: 1130px;
         background-color: white;
         margin: auto;
         border: 2px solid #e91e63;
@@ -62,10 +62,6 @@
         flex-direction: column;
         justify-content: center;
         padding: 10px;
-    }
-
-    h2 {
-        color: #e91e63;
     }
 
     .post-form {
@@ -98,7 +94,7 @@
         border-radius: 3px;
     }
 
-    input.form-control[name="Description"] {
+    input.form-control[name="Content"] {
         height: 90px;
     }
 
@@ -125,3 +121,4 @@
         gap: 20px;
     }
 </style>
+*@

@@ -1,6 +1,6 @@
-﻿@model IEnumerable<WebUni_Management.Core.Models.Menu.MenuItemsViewModel>
+﻿@model WebUni_Management.Core.Models.Menu.MenuIndexViewModeltest
 @{
-ViewBag.Title = "Menu";
+ViewBag.Message = "Check out our canteen!";
 }
 
 <div class="menu-index-container">
@@ -9,29 +9,60 @@ ViewBag.Title = "Menu";
 			<img src="https://assets-global.website-files.com/62e628ccdd3aacd9841de18b/62ead78b6f662a4cb7295ab6_Carousel%3ACanteen.jpg" alt="canteen" />
 		</div>
 		<div class="welcome">
-			
-			<h5>Explore our vast collection of delicious meals and beverages. Whether you're a student, a professor, or a visitor, our menu has something for everyone. Enjoy browsing through our catalog and discovering new tastes. Happy eating and don't hesitate to ask our friendly staff for recommendations or assistance.</h5></div>
+			<h2>@ViewBag.Message</h2>
+			<h5>Explore our vast collection of delicious meals and beverages. Whether you're a student, a professor, or a visitor, our menu has something for everyone. Don't forget to check out our meny that is updated every day. Happy eating and don't hesitate to ask our friendly staff for recommendations or assistance.</h5>
+		</div>
 	</div>
 	<div class="daily-menu">
-		<h2>@ViewBag.Title</h2>
-        @foreach (var item in Model)
+		<h5>@Model.Date</h5>
+		<h2><strong>Salads</strong></h2>
+		<div class="daily-menu-item">
+		@foreach (var item in Model.Dishes)
 		{
-			<div class="daily-menu-item">
-				<h2>@item.Name: @item.Price lv.</h2>
-				<p>@item.Category</p>
-			</div>
+			@if(item.Category == "Salad")
+			{
+				
+					<h3>@item.Name: @item.Price lv.</h3>
+				
+			}
 		}
+		</div>
+		<h2><strong>Main Dishes</strong></h2>
+		<div class="daily-menu-item">
+		@foreach (var item in Model.Dishes)
+		{
+			@if (item.Category == "Main Dish")
+			{
+				
+					<h3>@item.Name: @item.Price lv.</h3>
+				
+			}
+		}
+		</div>
+		<h2><strong>Desserts</strong></h2>
+		<div class="daily-menu-item">
+		@foreach (var item in Model.Dishes)
+		{
+			@if (item.Category == "Dessert")
+			{
+				
+					<h3>@item.Name: @item.Price lv.</h3>
+				
+			}
+		}
+		</div>
+		<div class="download">
+			<form asp-controller="Menu" asp-action="DownloadMenu" method="get">
+				<button type="submit" class="btn btn-primary">Download Menu</button>
+			</form>
+		</div>
 	</div>
-	<div class="download">
-<form asp-controller="Menu" asp-action="DownloadMenu" method="get">
-			<button type="submit" class="btn btn-primary">Download Menu</button>
-		</form>
-	</div>
+	
 </div>
 <style>
 .menu-index-container {
-        height: 900px;
-        width: 1130px;
+        height: 740px;
+        width: 960px;
         background-color: white;
         margin: auto;
         border: 2px solid #e91e63;
@@ -46,13 +77,15 @@ ViewBag.Title = "Menu";
 		display:flex;
 		height: 100%;
 		float:left;
-        width: 100%;
-		margin-right:30px;
+        width: 45%;
+		margin-right:20px;
+		text-align:center;
 	}
 	.image-holde{
-		width:90%;
-		height: 40%;
+		width:86%;
+		height: 36%;
 		z-index:100;
+		margin-bottom:20px;
 	}
 	 img{
 		z-index:100;
@@ -61,17 +94,45 @@ ViewBag.Title = "Menu";
 		border: 1px solid #e91e63;
 		border-radius: 3px;
 	}
+	.welcome{
+		width:86%;
+		text-align:center;
+	}
+	h2{
+		color: #e91e63;
+		margin-bottom:25px;
+	}
 	.daily-menu{
 float:right;
-width:50%;
+width:55%;
 height:100%;
 display:flex;
 flex-direction:column;
+gap:20px;
+text-align:center;
 	}
 	.welcome-message{
 		width: 50%;
 		flex-direction:column;
+		text-align:start;
 	}
 
+	.daily-menu-item{
+		margin-bottom:15px;
+	}
+
+	.btn-primary {
+		background-color: #fc819e;
+		border-color: #fc819e;
+		color: black;
+		border-radius: 4px;
+		padding: 10px 20px;
+		cursor: pointer;
+	}
+
+		.btn-primary:hover {
+			background-color: #e91e63;
+			border-color: #e91e63;
+		}
 	
 </style>

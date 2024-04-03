@@ -13,7 +13,7 @@
         <div class="category-search">
                 <label asp-for="Category" class="bold-label"></label>
 			<select asp-for="Category" class="form-control">
-				<option value="">All</option>
+				<option value="">Category..</option>
 				@foreach (var category in Model.Categories)
 				{
 					<option value="@category">@category</option>
@@ -21,8 +21,8 @@
 			</select>
         </div>
         <div class="search-term">
-                <label asp-for="SearchTerm" class="bold-label"></label>
-            <input asp-for="SearchTerm" class="form-control" placeholder="...">
+                <label asp-for="SearchTerm" class="bold-label">Search</label>
+            <input asp-for="SearchTerm" class="form-control" placeholder="Search..">
         </div>
         <div class="submit">
           <button type="submit" class="btn btn-primary search-btn">Search</button>
@@ -77,8 +77,8 @@
                         <img src="@book.ImageUrl" alt="Book Cover">
                     </div>
                     <div class="flip-card-back">
-                        <h6>@book.Title</h6>
-                        <h6>@book.Category</h6>
+                        <h6><strong>Title</strong>: @book.Title</h6>
+                        <h6><strong>Category</strong>: @book.Category</h6>
                         @if (book.IsRented == false && User.IsInRole("Student"))
                         {
                             <form asp-controller="Library" asp-action="Rent" asp-route-id="@book.Id" method="get">
@@ -110,9 +110,11 @@
     }
     .all-search-engine{
         margin-bottom: 30px;
-        width:90%;
-        display:flex;
+        width: 90%;
+        display: flex;
         gap: 20px;
+        justify-content: center;
+        align-content: center;
     }
     .category-search{
         width: 40%;
@@ -148,6 +150,7 @@
 
     .all-showcase-message {
         margin-bottom: 20px;
+        text-align:center;
     }
 
     .flip-card-container {
