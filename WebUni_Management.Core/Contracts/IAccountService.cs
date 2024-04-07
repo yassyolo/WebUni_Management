@@ -10,11 +10,15 @@ namespace WebUni_Management.Core.Contracts
 {
     public interface IAccountService
     {
-        Task<Student?> FindUserByIdAsync(string user);
-
-        //Task ApproveAndUpdateUserAsync();
-        Task<IEnumerable<RequestsViewModel>> GetRequestsAsync();
+        Task AddNewStudentAsync(string username, ManageAccountViewModel model);
+        Task<ManageAccountViewModel> FillManageAccountAsync(string userId);
+		Task<ApplicationUser?> FindUserByIdAsync(string user);
+        Task<AllRequestsViewModel> GetAllRequestsAsync(int currentPage, int requestsPerPage);
+        Task<bool> GetStudentAsync(string userId);
         Task<ApplicationUser?> GetUserByUserNameAsync(string username);
-        Task UpdateUserAsync(string userId, ManageAccountViewModel model);
+        Task AddStudentAsync(string userId, ManageAccountViewModel model);
+		Task<bool> StudentExistsByIdAsync(int id);
+		Task<ManageAccountViewModel?> GetEditAccountFormAsync(int id);
+        Task EditAccountAsync(int id, ManageAccountViewModel model);
     }
 }

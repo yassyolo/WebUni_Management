@@ -62,6 +62,12 @@ app.MapControllerRoute(
 	pattern: "PersonalInfo/EditSubject/{subjectId}/{studentId}",
 	defaults: new { controller = "PersonalInfo", action = "EditSubject" }
 );
+app.MapControllerRoute(
+    name: "ManageAttendance",
+    pattern: "PersonalInfo/ManageAttendance/{subjectId}/{studentId}",
+    defaults: new { controller = "PersonalInfo", action = "ManageAttendance" }
+);
+
 app.MapRazorPages();
 
 using(var scope = app.Services.CreateScope())

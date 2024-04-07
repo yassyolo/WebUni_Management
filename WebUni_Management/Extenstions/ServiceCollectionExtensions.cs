@@ -44,9 +44,8 @@ namespace Microsoft.Extensions.DependencyInjection
                 options.Password.RequireUppercase = false;
                 options.Password.RequireLowercase = false;
             })
-           .AddEntityFrameworkStores<ApplicationDbContext>();
-
-            services.AddScoped<UserManager<ApplicationUser>, UserManager<ApplicationUser>>();
+           .AddEntityFrameworkStores<ApplicationDbContext>()
+           .AddDefaultTokenProviders();
 
             return services;
         }

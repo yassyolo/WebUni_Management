@@ -5,7 +5,9 @@ using WebUni_Management.Core.Contracts;
 using WebUni_Management.Infrastructure.Data.Models;
 using WebUni_Management.Core.Models.Account;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using ZXing.Common;
+using ZXing;
+using System.Drawing.Imaging;
 
 namespace WebUni_Management.Controllers
 {
@@ -14,19 +16,13 @@ namespace WebUni_Management.Controllers
         private readonly IAccountService accountService;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
-        private readonly UserStore<ApplicationUser> userStore;
-        private readonly IUserEmailStore<ApplicationUser> emailStore;
         public AccountController(IAccountService accountService, 
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
-            UserStore<ApplicationUser> userStore,
-            IUserEmailStore<ApplicationUser> emailStore)
+            UserManager<ApplicationUser> userManager, 
+            SignInManager<ApplicationUser> signInManager)
         {
             this.accountService = accountService;
             this.userManager = userManager;
             this.signInManager = signInManager;
-            this.userStore = userStore;
-            this.emailStore = emailStore;
         }
 
         [HttpGet]
@@ -49,8 +45,7 @@ namespace WebUni_Management.Controllers
                     InitialPassword = model.InitialPassword,
                     
                 };
-                await userStore.SetUserNameAsync(user, model.UserName, CancellationToken.None);
-                await emailStore.SetEmailAsync(user, model.Email, CancellationToken.None);
+
 
                 var result = await userManager.CreateAsync(user, model.InitialPassword);
 
@@ -85,6 +80,7 @@ namespace WebUni_Management.Controllers
             {
                 if (!user.IsApproved)
                 {
+                    TempData["Alert"] = "You have not been approved yet!";
                     ModelState.AddModelError(string.Empty, "User not approved.");
                     return View(model);
                 }
@@ -110,14 +106,24 @@ namespace WebUni_Management.Controllers
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
+            TempData["Alert"] = "You have logged out successfully!";
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
         [HttpGet]
-        public IActionResult ManageAccount()
+        public async Task<IActionResult> ManageAccount()
         {
-            var model = new ManageAccountViewModel();
-            return View(model);
+            bool nullStudent = await accountService.GetStudentAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (nullStudent)
+            {
+                var model = new ManageAccountViewModel();
+                return View(model);
+            }
+            else
+            {
+                var model = await accountService.FillManageAccountAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+				return View("FilledManageAccount", model);
+			}           
         }
         [HttpPost]
         public async Task<IActionResult> ManageAccount(ManageAccountViewModel model)
@@ -131,7 +137,7 @@ namespace WebUni_Management.Controllers
                 {
                     return RedirectToAction(nameof(Login));
                 }
-                await accountService.UpdateUserAsync(userId, model);
+                await accountService.AddStudentAsync(userId, model);
             }
             else
             {
@@ -140,15 +146,17 @@ namespace WebUni_Management.Controllers
             return View(model);
         }
         [HttpGet]
-        public async Task<IActionResult> Requests()
+        public async Task<IActionResult> Requests([FromQuery] AllRequestsViewModel query)
         {
-            var model = await accountService.GetRequestsAsync();
-            return View(model);
+            var model = await accountService.GetAllRequestsAsync(query.CurrentPage, query.RequestsPerPage);
+            query.Requests = model.Requests;
+            //var model = await accountService.GetRequestsAsync();
+            return View(query);
         }
         [HttpPost]
         public async Task<IActionResult> ApproveRequest(string username)
         {
-            //todo: role exists
+            
             var user = await userManager.FindByNameAsync(username);
             if (user == null)
             {
@@ -161,10 +169,13 @@ namespace WebUni_Management.Controllers
             {
                 await userManager.AddToRoleAsync(user, "Admin");
             }
-            else
+            else if(username.StartsWith("1"))
             {
+                //generate qrcode
+                //await accountService.StoreQRCodeAsync(user);
                 await userManager.AddToRoleAsync(user, "Student");
             }
+
 
             var result = await userManager.UpdateAsync(user);
             if (!result.Succeeded)
@@ -174,6 +185,7 @@ namespace WebUni_Management.Controllers
 
             return RedirectToAction(nameof(Requests)); 
         }
+
         [HttpPost]
         public async Task<IActionResult> DiscardRequest(string username)
         {
@@ -192,6 +204,30 @@ namespace WebUni_Management.Controllers
             }
 
             return RedirectToAction(nameof(Requests));
+        }
+        [HttpGet]
+        public async Task<IActionResult> EditAccount(int id)
+        {
+            if (await accountService.StudentExistsByIdAsync(id) == false)
+            {
+				return BadRequest();
+			}
+			var model = await accountService.GetEditAccountFormAsync(id);
+			return View(model);
+		}
+        [HttpPost]
+        public async Task<IActionResult> EditAccount(int id, ManageAccountViewModel model)
+        {
+            if (await accountService.StudentExistsByIdAsync(id) == false)
+            {
+                return BadRequest();
+            }
+            if (ModelState.IsValid == false)
+            {
+                return BadRequest();
+            }
+            await accountService.EditAccountAsync(id, model);
+            return RedirectToAction(nameof(ManageAccount));
         }
 
     }
