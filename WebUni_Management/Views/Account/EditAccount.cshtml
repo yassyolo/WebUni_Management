@@ -1,35 +1,35 @@
 ﻿@model WebUni_Management.Core.Models.Account.ManageAccountViewModel
 @{
-	ViewBag.Message = "Manage your account";
+    ViewBag.Message = "Edit your account";
 }
 <h1>@ViewBag.Message</h1>
 <div class="manage-account-container">
-<form asp-controller="Account" asp-action="ManageAccount" method="post">
-    <div class="form-group">
+    <form asp-controller="Account" asp-action="EditAccount" method="post">
+        <div class="form-group">
             <label for="FirstName" class="form-label">First Name:</label>
-        <input asp-for="FirstName" class="form-control" />
-        <span asp-validation-for="FirstName" class="text-danger"></span>
-    </div>
-    <div class="form-group">
+            <input asp-for="FirstName" class="form-control" />
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
             <label for="LastName" class="form-label">Last Name:</label>
-        <input asp-for="LastName" class="form-control" />
-        <span asp-validation-for="LastName" class="text-danger"></span>
-    </div>
-    <div class="form-group">
+            <input asp-for="LastName" class="form-control" />
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
             <label for="Age" class="form-label">Age:</label>
-        <input asp-for="Age" class="form-control" />
-        <span asp-validation-for="Age" class="text-danger"></span>
-    </div>
-    <div class="form-group">
+            <input asp-for="Age" class="form-control" />
+            <span asp-validation-for="Age" class="text-danger"></span>
+        </div>
+        <div class="form-group">
             <label for="PhoneNumber" class="form-label">Phone Number:</label>
-        <input asp-for="PhoneNumber" class="form-control" />
-        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-    </div>
-    <div class="form-group">
+            <input asp-for="PhoneNumber" class="form-control" />
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+        <div class="form-group">
             <label for="FacultyNumber" class="form-label">Faculty Number:</label>
-        <input asp-for="FacultyNumber" class="form-control" />
-        <span asp-validation-for="FacultyNumber" class="text-danger"></span>
-    </div>
+            <input asp-for="FacultyNumber" class="form-control" />
+            <span asp-validation-for="FacultyNumber" class="text-danger"></span>
+        </div>
         <div class="form-group">
             <label for="Faculty" class="form-label">Faculty:</label>
             <input asp-for="Faculty" class="form-control" />
@@ -40,17 +40,22 @@
             <input asp-for="Major" class="form-control" />
             <span asp-validation-for="Major" class="text-danger"></span>
         </div>
-         <div class="form-group">
-			<label for="CourseTerm" class="form-label">Course Term:</label>
-			<input asp-for="CourseTerm" class="form-control" />
-			<span asp-validation-for="CourseTerm" class="text-danger"></span>
-</div>
-    <button type="submit" id="submit" class="btn btn-primary">Submit</button>
-</form>
+        <div class="form-group">
+            <label for="CourseTerm" class="form-label">Course Term:</label>
+            <input asp-for="CourseTerm" class="form-control" />
+            <span asp-validation-for="CourseTerm" class="text-danger"></span>
+        </div>
+        <form asp-controller="Account" asp-action="EditAccount" method="post">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <form asp-controller="Account" asp-action="ManageAccount" asp-route-id="@Model.Id" method="get">
+            <button type="submit" class="btn btn-primary">Back</button>
+        </form>
+    </form>
 </div>
 <style>
     .manage-account-container {
-        height: 780px;
+        height: 880px;
         width: 550px;
         background-color: white;
         margin: auto;
@@ -59,13 +64,14 @@
         padding: 5px;
         display: flex;
         flex-direction: column;
-       
         align-items: center;
         margin-top: 10px;
     }
-    form{
-width:50%;
+
+    form {
+        width: 50%;
     }
+
     .form-group {
         padding-top: 15px;
         margin-bottom: 10px;
@@ -99,9 +105,11 @@ width:50%;
             background-color: #e91e63;
             border-color: #e91e63;
         }
-        h1{
-        color: #e91e63;;
-        text-align:center;
-        margin-bottom:10px;
-        }
+
+    h1 {
+        color: #e91e63;
+        ;
+        text-align: center;
+        margin-bottom: 10px;
+    }
 </style>

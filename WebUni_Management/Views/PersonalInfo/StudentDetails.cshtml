@@ -8,7 +8,7 @@
 	
 	<div class="news-description">
 		<h2>@ViewBag.Message</h2>
-		<h3><strong>Name:</strong> @Model.FirstName @Model.LastName, <strong>Age</strong>:@Model.Age, <strong>Faculty number:</strong> @Model.FacultyNumber</h3>
+		<h3><strong>Name</strong>: @Model.FirstName @Model.LastName <strong>Age</strong>: @Model.Age, <strong>Faculty number</strong>: @Model.FacultyNumber</h3>
 		<h5><strong>Email</strong>: @Model.Email, <strong>Phone Number</strong>: @Model.PhoneNumber</h5>
 		<h5><strong>Rented Books</strong>: @Model.RentedBooksCount, <strong>Rented Rooms</strong>: @Model.RentedStudyRoomsCount</h5>
 		<h3>Subjects:</h3>
@@ -16,9 +16,11 @@
 		{
 			<div class="subject-div">
 			<h5><strong>Name:</strong> @subject.Name</h5>
-			<form asp-controller="PersonalInfo" asp-action="ManageAttendance" asp-route-id="@subject.Id" method="get">
-				<button type="submit" class="btn btn-primary">Manage Attendance</button>
-			</form>
+				<form asp-controller="PersonalInfo" asp-action="ManageAttendance" method="get">
+					<input type="hidden" name="subjectId" value="@subject.Id" />
+					<input type="hidden" name="studentId" value="@Model.Id" />
+					<button type="submit" class="btn btn-primary">Manage Attendance</button>
+				</form>
 				<form asp-controller="PersonalInfo" asp-action="ManageGrades" asp-route-id="@subject.Id" method="get">
 					<button type="submit" class="btn btn-primary">Manage Grades</button>
 				</form>
@@ -47,7 +49,7 @@
 </div>
 <style>
 	h3, h5, h2{
-		margin-bottom: 14px;
+		margin-bottom: 20px;
 		
 	}
 	.subject-div{

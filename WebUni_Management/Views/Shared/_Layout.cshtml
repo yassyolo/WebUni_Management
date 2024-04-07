@@ -38,7 +38,7 @@
                                     <li class="menu-item"><a asp-controller="News" asp-action="Add">Add News</a></li>
                                     <li class="menu-item"><a asp-controller="News" asp-action="ApproveNews">Approve News</a></li>
                                 }
-                                else
+                                else if(User.Identity.IsAuthenticated && User.IsInRole("Student"))
 								{
 									<li class="menu-item"><a asp-controller="News" asp-action="WriteNews">Write News</a></li>
 								}
@@ -84,10 +84,13 @@
                                 {
                                     <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="RentedBooks" asp-route-userId="@User.FindFirstValue(ClaimTypes.NameIdentifier)">My Books</a></li>
                                     <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="JoinedEvents">My Events</a></li>
+                                    <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="SeePersonalInfo">Personal Info</a></li>
                                 }                               
                                 @if(User.IsInRole("Admin"))
                                 {
                                     <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="SearchStudentIndex">Search Students</a></li>
+                                    <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="SearchFaculties" method="get">Search Faculties</a></li>
+                                    <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="SearchMajors" method="get">Search Majors</a></li>
 
                                 }
 
@@ -107,13 +110,17 @@
                                {
                                    <li class="menu-item"><a asp-controller="Account" asp-action="Requests">Manage Requests</a></li>
                                }
-                               else
+                               else if(User.IsInRole("Student"))
                                {
                                    <li class="menu-item"><a asp-controller="Account" asp-action="ManageAccount">Manage Account</a></li>
                                }
                             }
                                 <li class="menu-item"><a asp-controller="Account" asp-action="Login">Login</a></li>
-                                <li class="menu-item"><a asp-controller="Account" asp-action="Logout">Logout</a></li>
+                                @if (User.Identities.Any())
+                                {
+                                    <li class="menu-item"><a asp-controller="Account" asp-action="Logout">Logout</a></li>
+
+                                }
                         </ul>
                     </li>
                 </ul>

@@ -1,52 +1,31 @@
-﻿@model WebUni_Management.Core.Models.Library.EditRoomViewModel
+﻿@model WebUni_Management.Core.Models.PersonalInfo.MajorFormViewModel
 @{
-    ViewBag.Message = "Add Room";
-}
-<div class="edit-container">
-    <h2>Add rooms here:</h2>
+    ViewBag.Message = "Edit Major";
+}<div class="edit-container">
+    <h2>Edit major here:</h2>
     <form class="post-form" method="post">
         <div class="form-member">
             <label asp-for="Name">Name</label>
             <input asp-for="Name" class="form-control" placeholder="Name..">
             <span asp-validation-for="Name" class="validation"></span>
         </div>
-        <div class="form-member">
-            <label asp-for="Description">Description</label>
-            <input asp-for="Description" class="form-control" placeholder="Description..">
-            <span asp-validation-for="Description" class="validation"></span>
-        </div>
-        <div class="form-member">
-            <label asp-for="Capacity">Capacity</label>
-            <input asp-for="Capacity" class="form-control" placeholder="Capacity..">
-            <span asp-validation-for="Capacity" class="validation"></span>
-        </div>
-        <div class="form-member">
-            <label asp-for="Floor">Floor</label>
-            <input asp-for="Floor" class="form-control" placeholder="Floor..">
-            <span asp-validation-for="Floor" class="validation"></span>
-        </div>
-        <div class="form-member">
-            <label asp-for="ImageUrl">Image URL</label>
-            <input asp-for="ImageUrl" class="form-control" placeholder="Image URL..">
-            <span asp-validation-for="ImageUrl" class="validation"></span>
-        </div>
+
         <div class="action-buttons">
-        <form asp-controller="Library" asp-action="AddRoom" asp-route-id="@Model.Id" method="post">
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-        <form asp-controller="Library" asp-action="AllRoomsShowcase" method="get">
-            <button type="submit" class="btn btn-primary">Back</button>
-        </form>
+            <form asp-controller="PersonalInfo" asp-action="EditMajor" method="post">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <form asp-controller="PersonalInfo" asp-action="SearchMajors" method="get">
+                <button type="submit" class="btn btn-primary">Back</button>
+            </form>
         </div>
     </form>
+
 </div>
+
 <style>
-    h2{
-        color: #e91e63;
-    }
     .edit-container {
-        height: 630px;
-        width: 1000px;
+        height: 250px;
+        width: 700px;
         background-color: white;
         margin: auto;
         border: 2px solid #e91e63;
@@ -56,6 +35,7 @@
         justify-content: center;
         padding: 10px;
     }
+
 
     .post-form {
         display: flex;
@@ -87,12 +67,16 @@
         border-radius: 3px;
     }
 
-    input.form-control[name="Description"] {
+    input.form-control[name="Content"] {
         height: 90px;
     }
 
     .validation {
         color: red;
+    }
+
+    form[asp-controller="PersonalInfo"][asp-action="AddMajor"] {
+        width: 20%;
     }
 
     .btn-primary {

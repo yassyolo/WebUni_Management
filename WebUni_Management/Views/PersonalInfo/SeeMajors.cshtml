@@ -1,0 +1,141 @@
+﻿ @model IEnumerable<WebUni_Management.Core.Models.PersonalInfo.MajorIndexViewModel>
+@{
+    ViewBag.Message = "Be up-to-date with the things happening around you!";
+}
+
+<div class="all-showcase-container">
+
+    @if (!Model.Any())
+    {
+        <h2 class="text-center">No majors found in the faculty!</h2>
+    }
+
+    <div class="flip-card-container">
+        <div class="wrapper">
+            <div class="requests-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Action buttons</th>
+                        </tr>
+                    </thead>
+                    @foreach (var article in Model)
+                    {
+
+                        <tbody>
+                            <tr>
+                                <td>@article.Name</td>
+
+                                <td class="action-buttons">
+                                    <form asp-controller="PersonalInfo" asp-action="SeeSubjects" method="get">
+                                        <input type="hidden" name="id" value="@article.Id" />
+                                        <button type="submit" class="btn btn-primary">See Subjects</button>
+                                    </form>
+                                    <form asp-controller="PersonalInfo" asp-action="EditMajor" asp-route-id="@article.Id" method="get">
+                                        <input type="hidden" name="id" value="@article.Id" />
+                                        <button type="submit" class="btn btn-primary">Edit</button>
+                                    </form>
+                                    <form asp-controller="PersonalInfo" asp-action="SearchFaculties" method="get">
+                                        <input type="hidden" name="id" value="@article.Id" />
+                                        <button type="submit" class="btn btn-primary">Back</button>
+                                    </form>
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    }
+                    <tbody>
+                        <tr>
+                            <td><strong>ADD MAJOR</strong></td>
+
+                            <td class="action-buttons">
+
+                                <form asp-controller="PersonalInfo" asp-action="AddMajor" method="get">
+
+                                    <button type="submit" class="btn btn-primary">+</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<style>
+    .all-showcase-message {
+        color: #e91e63;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+   
+
+    .all-showcase-container {
+        height: 670px;
+        width: 1130px;
+        background-color: white;
+        margin: auto;
+        border: 2px solid #e91e63;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        padding-top: 5px;
+        padding: 10px;
+    }
+
+
+    .btn-primary {
+        background-color: #fc819e;
+        border-color: #fc819e;
+        color: black;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        .btn-primary:hover {
+            background-color: #e91e63;
+            border-color: #e91e63;
+        }
+
+    .bold-label {
+        font-weight: bold;
+    }
+
+    .pagination-buttons {
+        display: flex;
+        justify-content: center;
+        align-content: space-around;
+        margin-bottom: 30px;
+    }
+
+    .wrapper {
+        width: 100%;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .table th,
+        .table td {
+            border: 1px solid #ccc;
+            padding: 8px;
+        }
+
+    .bold-label {
+        font-weight: bold;
+    }
+
+
+    .action-buttons {
+        display: flex;
+        margin-top: auto;
+        gap: 20px;
+    }
+</style>

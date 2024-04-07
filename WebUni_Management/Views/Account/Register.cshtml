@@ -7,18 +7,18 @@
     <h6 class="welcome-message">Welcome to the Web University Student Management Platform. To start the journey make a profile first.</h6>
 <form asp-controller="Account" asp-action="Register" method="post">
     <div class="form-group">
-            <label for="email" class="form-label">Email</label>
-        <input asp-for="Email" class="form-control" />
+        <label asp-for="Email" class="form-label">Email</label>
+            <input asp-for="Email" class="form-control" autocomplete="email" />
         <span asp-validation-for="Email" class="text-danger"></span>
     </div>
     <div class="form-group">
-            <label for="Username" class="form-label">Username</label>
-        <input asp-for="UserName" class="form-control" />
+        <label asp-for="UserName" class="form-label">Username</label>
+        <input asp-for="UserName" class="form-control" autocomplete="username" />
         <span asp-validation-for="UserName" class="text-danger"></span>
     </div>
     <div class="form-group">
-            <label for="password" class="form-label">Password</label>
-        <input asp-for="InitialPassword" type="password" class="form-control" />
+        <label asp-for="InitialPassword" class="form-label">Password</label>
+        <input asp-for="InitialPassword" type="password" class="form-control" autocomplete="initial-password" />
         <span asp-validation-for="InitialPassword" class="text-danger"></span>
     </div>
     <button type="submit" id="submit" class="btn btn-primary">Register</button>
@@ -85,4 +85,6 @@
 @section Scripts
 {
     <script src="~/js/Account/Register.js"></script>
+    <partial name="_ValidationScriptsPartial" />
 }
+

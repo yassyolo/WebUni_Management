@@ -13,7 +13,8 @@ namespace WebUni_Management.Core.Models.PersonalInfo
 {
 	public class EditSubjectFormViewModel
 	{
-		public int Id { get; set; }
+		public int StudentId { get; set; }
+		public int SubjectId { get; set; }
 
 		[Required(ErrorMessage = RequiredErrorMessage)]
 		[MaxLength(SubjectNameMaxLength)]
@@ -26,6 +27,7 @@ namespace WebUni_Management.Core.Models.PersonalInfo
 		[Required(ErrorMessage = RequiredErrorMessage)]
 		[Range(SubjectMinAttendanceTimes, SubjectMaxAttendanceTimes, ErrorMessage =MaxLengthErrorMessage)]
 		public int TotalAttendanceCount { get; set; }
-		public IEnumerable<SubjectProfessorIndexViewModel> SubjectProfessors { get; set; } = new List<SubjectProfessorIndexViewModel>();
-	}
+		public SubjectProfessorIndexViewModel SubjectProfessor { get; set; } = null!;
+		public SubjectAssistantIndexViewModel SubjectAssistant { get; set; } = null!;
+    }
 }
