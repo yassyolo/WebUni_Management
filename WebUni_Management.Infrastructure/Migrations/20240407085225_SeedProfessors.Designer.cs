@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebUni_Management.Data;
 
@@ -11,9 +12,10 @@ using WebUni_Management.Data;
 namespace WebUni_Management.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240407085225_SeedProfessors")]
+    partial class SeedProfessors
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -318,7 +320,7 @@ namespace WebUni_Management.Infrastructure.Migrations
                         {
                             Id = "b242640e-291a-4de7-9701-e3e8e0afb0c9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "db8b841e-824a-44ef-9ed4-4f708071ab7e",
+                            ConcurrencyStamp = "74204972-be2a-4dfb-a131-9a947545e1d7",
                             Email = "admin@gmail.com",
                             EmailConfirmed = true,
                             InitialPassword = "",
@@ -326,9 +328,9 @@ namespace WebUni_Management.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "00000001",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEBsKeauewLkz/vHZgGgFsZ44AQRAOoVakj+nK+U1J5Z9O7WqAAm7xaxXDuGVFJOGA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDDJ0Uw4J1WL0Y9Q7a9UOAF/xpTJPfthsSUej1Wf/wpeRslrsxhLW/B33KGWIAFi9w==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "27563151-9049-41aa-a609-b33b469fea6e",
+                            SecurityStamp = "3e2ddd43-a565-4a75-aba8-3f88e3068592",
                             TwoFactorEnabled = false,
                             UserName = "00000001"
                         },
@@ -336,7 +338,7 @@ namespace WebUni_Management.Infrastructure.Migrations
                         {
                             Id = "0e90dbeb-6468-4abc-9599-b4757e3874aa",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2d41e5ea-c2ac-418e-98c2-90afd93fe598",
+                            ConcurrencyStamp = "c3c3284e-dfb0-4543-8046-bb77b2daeb29",
                             Email = "student@gmail.com",
                             EmailConfirmed = true,
                             InitialPassword = "",
@@ -344,9 +346,9 @@ namespace WebUni_Management.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "STUDENT@GMAIL.COM",
                             NormalizedUserName = "12345678",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJfrtR07DYwuUP99o5tHWAO1BjdfaVJ63jKX2MMdqQr0LZVPcMillKTTwbOkEn2E9g==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEEXlgrwXIAV4M/rtArIo5BBOpVuwduK4p6TE6OlanagA0z2Jbxhyk0RY6KWb5e/Qng==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f6c0c43c-a6ad-4754-9f22-78440810a104",
+                            SecurityStamp = "73522ee7-77a6-4e05-9e3b-5f5f19d77763",
                             TwoFactorEnabled = false,
                             UserName = "12345678"
                         });

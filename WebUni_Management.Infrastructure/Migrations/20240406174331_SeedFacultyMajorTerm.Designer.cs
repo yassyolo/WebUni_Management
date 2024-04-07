@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebUni_Management.Data;
 
@@ -11,9 +12,10 @@ using WebUni_Management.Data;
 namespace WebUni_Management.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240406174331_SeedFacultyMajorTerm")]
+    partial class SeedFacultyMajorTerm
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -318,7 +320,7 @@ namespace WebUni_Management.Infrastructure.Migrations
                         {
                             Id = "b242640e-291a-4de7-9701-e3e8e0afb0c9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "db8b841e-824a-44ef-9ed4-4f708071ab7e",
+                            ConcurrencyStamp = "8c818326-a858-47d5-bfa2-135c208ed713",
                             Email = "admin@gmail.com",
                             EmailConfirmed = true,
                             InitialPassword = "",
@@ -326,9 +328,9 @@ namespace WebUni_Management.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "00000001",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEBsKeauewLkz/vHZgGgFsZ44AQRAOoVakj+nK+U1J5Z9O7WqAAm7xaxXDuGVFJOGA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBTXuy6oETXAGTYBpFDxTSZoCaG7C5ddOZqYDP7KOU/ecF5JVKON6acyQdwdM2AJoQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "27563151-9049-41aa-a609-b33b469fea6e",
+                            SecurityStamp = "845c83e3-7613-442a-8aa7-db3c7e466b55",
                             TwoFactorEnabled = false,
                             UserName = "00000001"
                         },
@@ -336,7 +338,7 @@ namespace WebUni_Management.Infrastructure.Migrations
                         {
                             Id = "0e90dbeb-6468-4abc-9599-b4757e3874aa",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2d41e5ea-c2ac-418e-98c2-90afd93fe598",
+                            ConcurrencyStamp = "9f9d4938-da48-4232-afb4-f89585e8eecf",
                             Email = "student@gmail.com",
                             EmailConfirmed = true,
                             InitialPassword = "",
@@ -344,9 +346,9 @@ namespace WebUni_Management.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "STUDENT@GMAIL.COM",
                             NormalizedUserName = "12345678",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJfrtR07DYwuUP99o5tHWAO1BjdfaVJ63jKX2MMdqQr0LZVPcMillKTTwbOkEn2E9g==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEETBcT9krRQs6e3kCZ5RgPEmeGJKt8V9nQe1foeT2vz6KhkM8RT2f6d+rciul5RGYQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f6c0c43c-a6ad-4754-9f22-78440810a104",
+                            SecurityStamp = "2b1d4aa0-f914-42b7-a766-ab201e006efc",
                             TwoFactorEnabled = false,
                             UserName = "12345678"
                         });
@@ -1448,16 +1450,6 @@ namespace WebUni_Management.Infrastructure.Migrations
                         {
                             SubjectId = 3,
                             ProfessorId = 4
-                        },
-                        new
-                        {
-                            SubjectId = 2,
-                            ProfessorId = 5
-                        },
-                        new
-                        {
-                            SubjectId = 3,
-                            ProfessorId = 6
                         });
                 });
 
@@ -1595,26 +1587,6 @@ namespace WebUni_Management.Infrastructure.Migrations
                             LastName = "Stefanov",
                             PhoneNumber = "0888888883",
                             Title = "Professor"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Description = "Ivanka Ivanova , an accomplished Linear Algebra Assistant, graduated with honors from the Mathematics Department at Sofia University \"St. Kliment Ohridski\" in Bulgaria. Her academic journey was marked by a deep fascination with abstract algebraic structures and their applications in various fields. During her undergraduate studies, Ivanka actively participated in research projects focusing on linear algebra and its role in computer science and data analysis.",
-                            Email = "i@gmail.com",
-                            FirstName = "Ivanka",
-                            LastName = "Ivanova",
-                            PhoneNumber = "0888888884",
-                            Title = "Assistant"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Description = "Georgi Georgiev brings a wealth of expertise and practical experience to his teaching role. He obtained his Bachelor's degree in Computer Science from the Technical University of Sofia, Bulgaria, where he developed a strong foundation in software engineering principles and methodologies.",
-                            Email = "g@gmail.com",
-                            FirstName = "Georgi",
-                            LastName = "Georgiev",
-                            PhoneNumber = "0888888885",
-                            Title = "Assistant"
                         });
                 });
 

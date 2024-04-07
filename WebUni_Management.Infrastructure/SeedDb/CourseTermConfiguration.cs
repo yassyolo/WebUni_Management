@@ -10,15 +10,16 @@ using WebUni_Management.Infrastructure.Data.Models;
 
 namespace WebUni_Management.Infrastructure.SeedDb
 {
-    public class SubjectConfiguration : IEntityTypeConfiguration<Subject>
+    public class CourseTermConfiguration : IEntityTypeConfiguration<CourseTerm>
     {
-        public void Configure(EntityTypeBuilder<Subject> builder)
+        public void Configure(EntityTypeBuilder<CourseTerm> builder)
         {
             builder
-       .HasMany(sub => sub.Students)
-       .WithMany(s => s.Subjects);
+        .HasMany(ct => ct.Students)
+        .WithOne(s => s.CourseTerm)
+        .OnDelete(DeleteBehavior.Restrict);
             var data = new SeedData();
-            builder.HasData(new Subject[] {data.Subject1, data.Subject2, data.Subject3});
+            builder.HasData(new CourseTerm[] { data.CourseTerm1 });
         }
     }
 }

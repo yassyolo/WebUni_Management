@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,5 +35,29 @@ namespace WebUni_Management.Infrastructure.Data.Models
         [Required]
         [Comment("Subject professors")]
         public IEnumerable<SubjectProfessor> SubjectProfessors { get; set; } = new List<SubjectProfessor>();
+
+        [Comment("Subject faculty identifier")]
+        public int FacultyId { get; set; }
+
+        [ForeignKey(nameof(FacultyId))]
+        [Comment("Subject faculty")]
+        public Faculty Faculty { get; set; } = null!;
+
+        [Comment("Subject major identifier")]
+        public int MajorId { get; set; }
+
+        [ForeignKey(nameof(MajorId))]
+        [Comment("Subject major")]
+        public Major Major { get; set; } = null!;
+
+        [Comment("Subject course term")]
+        [ForeignKey(nameof(CourseTermId))]
+        public CourseTerm CourseTerm { get; set; } = null!;
+
+        [Comment("Subject course term identifier")]
+        public int CourseTermId { get; set; }
+
+        [Comment("Subject students")]
+        public IEnumerable<Student> Students { get; set; } = new List<Student>();
     }
 }

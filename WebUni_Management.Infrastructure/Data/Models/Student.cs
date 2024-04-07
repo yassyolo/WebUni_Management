@@ -26,10 +26,37 @@ namespace WebUni_Management.Infrastructure.Data.Models
         [Comment("Student phone number")]
         public string PhoneNumber { get; set; } = string.Empty;
 
+        [MaxLength(FacultyNameMaxLength)]
+        [Comment("Student faculty")]
+        [ForeignKey(nameof(FacultyId))]
+        public Faculty Faculty { get; set; } = null!;
+
+        [Comment("Student faculty identifier")]
+        public int FacultyId { get; set; }
+        
+
+        [MaxLength(MajorNameMaxLength)]
+        [Comment("Student major")]
+        [ForeignKey(nameof(MajorId))]
+        public Major Major { get; set; } = null!;
+
+        [Comment("Student major identifier")]
+        public int MajorId { get; set; }
+
+        [MaxLength(CourseTermNameMaxLength)]
+        [Comment("Student course term")]
+        [ForeignKey(nameof(CourseTermId))]
+        public CourseTerm CourseTerm { get; set; } = null!;
+
+        [Comment("Student course term identifier")]
+        public int CourseTermId { get; set; }
+
         [Required]
         [MaxLength(FacultyNumberLength)]
         [Comment("Student faculty number")]
         public string FacultyNumber { get; set; } = string.Empty;
+
+
 
         [Comment("User")]
         public ApplicationUser User { get; set; } = null!;

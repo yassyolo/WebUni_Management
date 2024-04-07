@@ -19,6 +19,9 @@ namespace WebUni_Management.Data
         {
             builder.ApplyConfiguration(new UsersConfiguration());
             builder.ApplyConfiguration(new AdminsConfiguration());
+            builder.ApplyConfiguration(new FacultyConfiguration());
+            builder.ApplyConfiguration(new MajorConfiguration());
+            builder.ApplyConfiguration(new CourseTermConfiguration());
             builder.ApplyConfiguration(new StudentsConfiguration());
             builder.ApplyConfiguration(new UserRolesConfiguration());
             builder.ApplyConfiguration(new LibraryConfiguration());
@@ -59,5 +62,9 @@ namespace WebUni_Management.Data
         public DbSet<Subject> Subject { get; set; } = null!;
         public DbSet<SubjectForStudent> SubjectForStudent { get; set; } = null!;
         public DbSet<SubjectByProfessor> SubjectByProfessor { get; set; } = null!;
+
+        public DbSet<Faculty> Faculty { get; set; } = null!;
+        public DbSet<Major> Major { get; set; }
+        public DbSet<CourseTerm> CourseTerm { get; set; }
     }
 }

@@ -14,7 +14,7 @@ namespace WebUni_Management.Infrastructure.SeedDb
         public void Configure(EntityTypeBuilder<SubjectProfessor> builder)
         {
             var data = new SeedData();
-            builder.HasData(new SubjectProfessor[] {data.SubjectProfessor1, data.SubjectProfessor2, data.SubjectProfessor3, data.SubjectProfessor4});
+            builder.HasData(new SubjectProfessor[] {data.SubjectProfessor1, data.SubjectProfessor2, data.SubjectProfessor3, data.SubjectProfessor4, data.SubjectProfessor5, data.SubjectProfessor6});
         }
     }
 }

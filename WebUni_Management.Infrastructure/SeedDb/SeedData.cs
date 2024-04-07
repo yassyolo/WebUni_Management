@@ -66,21 +66,31 @@ namespace WebUni_Management.Infrastructure.SeedDb
         public SubjectProfessor SubjectProfessor2 { get; set; }
         public SubjectProfessor SubjectProfessor3 { get; set; }
         public SubjectProfessor SubjectProfessor4 { get; set; }
+        public SubjectProfessor SubjectProfessor5 { get; set; }
+        public SubjectProfessor SubjectProfessor6 { get; set; }
         public Subject Subject1 { get; set; }
         public Subject Subject2 { get; set; }
         public Subject Subject3 { get; set; }
         public SubjectByProfessor Subject1ByProfessor1 { get; set; }
         public SubjectByProfessor Subject1ByProfessor2 { get; set; }
         public SubjectByProfessor Subject2ByProfessor3 { get; set; }
+        public SubjectByProfessor Subject2ByProfessor5 { get; set; }
         public SubjectByProfessor Subject3ByProfessor4 { get; set; }
+        public SubjectByProfessor Subject3ByProfessor6 { get; set; }
         public SubjectForStudent Subject1ForStudent1 { get; set; }
         public SubjectForStudent Subject2ForStudent1 { get; set; }
         public SubjectForStudent Subject3ForStudent1 { get; set; }
+        public Faculty Faculty1 { get; set; }
+        public Major Major1 { get; set; }
+        public CourseTerm CourseTerm1 { get; set; }
 
         public SeedData()
         {
             SeedUsers();
             SeedAdmin();
+            SeedFaculty();
+            SeedMajor();
+            SeedCourseTerm();
             SeedStudent();
             SeedUserRoles();
             SeedBookCategories();
@@ -99,7 +109,9 @@ namespace WebUni_Management.Infrastructure.SeedDb
             SeedSubjects();
             SeedSubjectByProfessor();
             SeedSubjectsForStudent();
+            
         }
+
         private void SeedUsers()
         {
             var hasher = new PasswordHasher<ApplicationUser>();
@@ -138,6 +150,32 @@ namespace WebUni_Management.Infrastructure.SeedDb
                 
             };
         }
+        private void SeedFaculty()
+        {
+            Faculty1 = new Faculty
+            {
+                Id = 1,
+                Name = "Mathematics"
+            };
+        }
+        private void SeedMajor()
+        {
+            Major1 = new Major
+            {
+                Id = 1,
+                Name = "Computer Science",
+                FacultyId = Faculty1.Id
+            };
+        }
+        private void SeedCourseTerm()
+        {
+            CourseTerm1 = new CourseTerm
+            {
+                Id = 1,
+                Name = "Summer 24",
+                MajorId = Major1.Id
+            };
+        }
         private void SeedStudent()
         {
             Student = new Student()
@@ -148,7 +186,10 @@ namespace WebUni_Management.Infrastructure.SeedDb
                 Age = 20,
                 PhoneNumber = "0890320424",
                 FacultyNumber = "12345678",
-                UserId = StudentUser.Id
+                UserId = StudentUser.Id,
+                FacultyId = Faculty1.Id,
+                MajorId = Major1.Id,
+                CourseTermId = CourseTerm1.Id
             };
         }
         private void SeedUserRoles()
@@ -581,7 +622,28 @@ namespace WebUni_Management.Infrastructure.SeedDb
                 Email = "ssss@gmail.com",
                 PhoneNumber = "0888888883"
             };
+            SubjectProfessor5 = new SubjectProfessor
+            {
+                Id = 5,
+                FirstName = "Ivanka",
+                LastName = "Ivanova",
+                Title = "Assistant",
+                Description = "Ivanka Ivanova , an accomplished Linear Algebra Assistant, graduated with honors from the Mathematics Department at Sofia University \"St. Kliment Ohridski\" in Bulgaria. Her academic journey was marked by a deep fascination with abstract algebraic structures and their applications in various fields. During her undergraduate studies, Ivanka actively participated in research projects focusing on linear algebra and its role in computer science and data analysis.",
+                Email = "i@gmail.com",
+                PhoneNumber = "0888888884"
+            };
+            SubjectProfessor6 = new SubjectProfessor
+            {
+                Id = 6,
+                FirstName = "Georgi",
+                LastName = "Georgiev",
+                Title = "Assistant",
+                Description = "Georgi Georgiev brings a wealth of expertise and practical experience to his teaching role. He obtained his Bachelor's degree in Computer Science from the Technical University of Sofia, Bulgaria, where he developed a strong foundation in software engineering principles and methodologies.",
+                Email = "g@gmail.com",
+                PhoneNumber = "0888888885"
+            };
         }
+        
         private void SeedSubjects()
         {
             Subject1 = new Subject
@@ -589,6 +651,9 @@ namespace WebUni_Management.Infrastructure.SeedDb
                 Id = 1,
                 Name = "Calculus",
                 TotlaAttendanceCount = 13,
+                FacultyId = Faculty1.Id,
+                MajorId = Major1.Id,
+                CourseTermId = CourseTerm1.Id,
                 Description = "Calculus is a fundamental branch of mathematics that deals with rates of change and accumulation. It is used in various fields such as physics, engineering, economics, and computer science. This course covers topics such as limits, derivatives, integrals, and applications of calculus in real-world problems.",
             };
             Subject2 = new Subject
@@ -596,6 +661,9 @@ namespace WebUni_Management.Infrastructure.SeedDb
                 Id = 2,
                 Name = "Linear Algebra",
                 TotlaAttendanceCount = 15,
+                FacultyId = Faculty1.Id,
+                MajorId = Major1.Id,
+                CourseTermId = CourseTerm1.Id,
                 Description = "Linear algebra is a branch of mathematics that studies vectors, vector spaces, linear transformations, and systems of linear equations. It is essential in various fields such as physics, engineering, computer science, and economics. This course covers topics such as matrices, determinants, vector spaces, eigenvalues, and eigenvectors.",
             };
             Subject3 = new Subject
@@ -603,6 +671,9 @@ namespace WebUni_Management.Infrastructure.SeedDb
                 Id = 3,
                 Name = "Software Architecture",
                 TotlaAttendanceCount = 12,
+                FacultyId = Faculty1.Id,
+                MajorId = Major1.Id,
+                CourseTermId = CourseTerm1.Id,
                 Description = "Software architecture is the process of designing and defining the structure of a software system. It involves making high-level decisions about the organization and implementation of software components. This course covers topics such as architectural styles, design patterns, software quality attributes, and system decomposition.",
             };
         }
@@ -623,12 +694,22 @@ namespace WebUni_Management.Infrastructure.SeedDb
                 SubjectId = Subject2.Id,
                 ProfessorId = SubjectProfessor3.Id
             };
+            Subject2ByProfessor5 = new SubjectByProfessor
+            {
+                SubjectId = Subject2.Id,
+                ProfessorId = SubjectProfessor5.Id
+            };
             Subject3ByProfessor4 = new SubjectByProfessor
             {
                 SubjectId = Subject3.Id,
                 ProfessorId = SubjectProfessor4.Id
             };
-        }
+            Subject3ByProfessor6 = new SubjectByProfessor
+            {
+                SubjectId = Subject3.Id,
+                ProfessorId = SubjectProfessor6.Id
+            };
+    }
         private void SeedSubjectsForStudent()
         {
             Subject1ForStudent1 = new SubjectForStudent
@@ -650,6 +731,7 @@ namespace WebUni_Management.Infrastructure.SeedDb
                 AttendanceRecord = 12
             };
         }
+        
     }
 }
 

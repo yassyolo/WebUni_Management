@@ -15,6 +15,12 @@ namespace WebUni_Management.Infrastructure.Data.Constants
             public const int AgeMinValue = 18;
             public const int AgeMaxValue = 100;
             public const int FacultyNumberLength = 8;
+            public const int FacultyNameMinLength = 2;
+            public const int FacultyNameMaxLength = 100;
+            public const int MajorNameMinLength = 2;
+            public const int MajorNameMaxLength = 100;
+            public const int CourseTermNameMaxLength = 20;
+            public const int CourseTermNameMinLength = 2;
         }
         public class Library
         {
