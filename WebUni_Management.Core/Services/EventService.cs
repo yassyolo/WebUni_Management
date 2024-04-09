@@ -135,7 +135,7 @@ namespace WebUni_Management.Core.Services
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<EventIndexViewModel>> GetLastThreeEventsAsync(string userId)
+        public async Task<IEnumerable<EventIndexViewModel>> GetLastThreeEventsAsync()
         {
             //var eventsOfUser = await repository.AllReadOnly<EventParticipant>().Where(x => x.ParticipantId == userId).Select(x => x.EventId).ToListAsync();
 
@@ -152,21 +152,6 @@ namespace WebUni_Management.Core.Services
                     ImageUrl = x.ImageUrl,
                 })
                 .ToListAsync();
-        }
-
-        public async Task<IEnumerable<EventIndexViewModel>> JoinedEventsAsync(string userId)
-        {
-            return await repository.AllReadOnly<EventParticipant>().Where(x => x.ParticipantId == userId)
-                 .Select(x => new EventIndexViewModel()
-                 {
-                     Id = x.EventId,
-                     Name = x.Event.Name,
-                     StartTime = x.Event.StartTime.ToString("MMM dd, yyyy"),
-                     EndTime = x.Event.EndTime.ToString("MMM dd, yyyy"),
-                     GuestParticipant = x.Event.GuestParticipant,
-                     ImageUrl = x.Event.ImageUrl
-                 })
-                 .ToListAsync();
         }
 
         public async Task JoinEventAsync(int id, string userId)

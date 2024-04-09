@@ -20,7 +20,7 @@ namespace WebUni_Management.Core.Services
             repository = _repository;
         }
 
-        public async Task<AllBooksQueryModel> AllBooksAsync(string? category = null, string? searchTerm = null, int currentPage = 1, int booksPerPage = 1)
+        public async Task<AllBooksQueryModel> AllBooksAsync(string? category = null, string? searchTerm = null, int currentPage = 1, int booksPerPage = 3)
         {
             var books = repository.AllReadOnly<Book>();
 
@@ -146,7 +146,7 @@ namespace WebUni_Management.Core.Services
             }
             return books;
         }
-        private async Task<string> GetAuthor(int id)
+        public async Task<string> GetAuthor(int id)
         {
             var authorViewModels = await repository.AllReadOnly<BookByBookAuthor>()
                 .Where(x => x.BookId == id)
@@ -193,8 +193,6 @@ namespace WebUni_Management.Core.Services
             return await repository.AllReadOnly<BookCategory>()
            .AnyAsync(x => x.Id == id);
         }
-
-        //todo
 
         public async Task EditBookAsync(int id, EditBookViewModel model)
         {
@@ -309,6 +307,7 @@ namespace WebUni_Management.Core.Services
                 CategoryId = model.CategoryId,
                 PublishYear = model.PublishYear,
                 Description = model.Description,
+                LibraryId = 1
             };
 
             var authors = model.Author.Split(", ").ToArray();
@@ -371,12 +370,11 @@ namespace WebUni_Management.Core.Services
                 }               
             }
             await repository.SaveChangesAsync();
-            var model = new ManageRentViewModel
+
+            return new ManageRentViewModel
             {
                 TotalBookRented = booksToReturn
             };
-            return model;
-
         }
 
 		public async Task<ManageRentViewModel> ManageRoomRentAsync()
@@ -445,5 +443,24 @@ namespace WebUni_Management.Core.Services
 			room.IsRented = model.IsRented;
 			await repository.SaveChangesAsync();
 		}
-	}
+
+        public async Task<bool> IsRoomRentedAsync(int id)
+        {
+           return await repository.AllReadOnly<StudyRoom>().Where(x => x.Id == id).Select(x => x.IsRented).FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> IsRoomRentedByUserWithIdAsync(string userId, int id)
+        {
+            return await repository.AllReadOnly<StudyRoom>().Where(x => x.Id == id && x.RenterId == userId).AnyAsync();           
+        }
+
+        public async Task RentRoomAsync(string userId, int id)
+        {
+            var room = await repository.All<StudyRoom>().FirstOrDefaultAsync(x => x.Id == id);
+            room.IsRented = true;
+            room.RenterId = userId;
+            room.RentalDate = DateTime.Now;
+            await repository.SaveChangesAsync();
+        }
+    }
 }

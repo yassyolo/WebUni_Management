@@ -235,5 +235,25 @@ namespace WebUni_Management.Controllers
 			return RedirectToAction(nameof(AllRoomsShowcase));
 		}
 
+        public async Task<IActionResult> RentRoom(int id)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (await libraryService.RoomExistsByIdAsync(id) == false)
+            {
+                return BadRequest();
+            }
+            if(await libraryService.IsRoomRentedAsync(id) == true)
+            {
+                return BadRequest();
+            }
+            if(await libraryService.IsRoomRentedByUserWithIdAsync(userId, id) == true)
+            {
+                return BadRequest();
+            }
+            
+            await libraryService.RentRoomAsync(userId, id);
+             return RedirectToAction("RentedRooms", "PersonalInfo");
+        }
+
 	}
 }

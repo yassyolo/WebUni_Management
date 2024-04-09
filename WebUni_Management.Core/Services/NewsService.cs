@@ -28,7 +28,7 @@ namespace WebUni_Management.Core.Services
                 PublishedOn = DateTime.Parse(model.PublishedOn),
                 Content = model.Content,
                 ImageUrl = model.ImageUrl,
-                IsApproved = true
+                IsApproved = true,
             };
             await repository.AddAsync(newsArticle);
             await repository.SaveChangesAsync();
@@ -55,7 +55,7 @@ namespace WebUni_Management.Core.Services
             await repository.SaveChangesAsync();
 		}
 
-		public async Task EditNewsAsync(NewsFormViewModel model, int id)
+		public async Task EditNewsAsync(int id, NewsFormViewModel model)
         {
             var newsArticle = await repository.All<NewsArticle>().FirstOrDefaultAsync(x => x.Id == id);
 
@@ -109,7 +109,7 @@ namespace WebUni_Management.Core.Services
 
         public async Task<NewsFormViewModel?> GetEditNewsFormAsync(int id)
         {
-            return await repository.AllReadOnly<NewsArticle>().Where( x => x.Id == id)
+            return await repository.AllReadOnly<NewsArticle>().Where(x => x.Id == id)
                 .Select(x => new NewsFormViewModel()
                 {
                     Title = x.Title,
@@ -118,11 +118,9 @@ namespace WebUni_Management.Core.Services
                     Content = x.Content,
                     PublishedOn = x.PublishedOn.ToString()
                 })
-                .FirstOrDefaultAsync()
-                ;
+                .FirstOrDefaultAsync();
         }
-
-        public async Task<IEnumerable<NewsArticleIndexViewModel>> GetLastThreeNewsArticlesAsync(string userId)
+        public async Task<IEnumerable<NewsArticleIndexViewModel>> GetLastThreeNewsArticlesAsync()
         {
             return await repository.AllReadOnly<NewsArticle>()
                 .Where(x => x.IsApproved != false)
@@ -135,10 +133,6 @@ namespace WebUni_Management.Core.Services
                     ImageUrl = x.ImageUrl,
                 })
                 .ToListAsync();
-            /*foreach (var article in articles) 
-            { 
-                await repository.AllReadOnly<NewsArticleReadStatus>().
-            }*/
         }
 
         public async Task<NewsDetailsViewModel?> GetNewsArticleDetailsById(int id, string userId)
@@ -182,8 +176,9 @@ namespace WebUni_Management.Core.Services
             };
         }
 
-        public async Task WriteNewsAsync(NewsFormViewModel model, string userId)
+        public async Task WriteNewsAsync(string userId, NewsFormViewModel model)
 		{
+           
 			var author = await repository.AllReadOnly<Student>().FirstOrDefaultAsync(x => x.UserId == userId);
             var newsArticle = new NewsArticle()
 			{

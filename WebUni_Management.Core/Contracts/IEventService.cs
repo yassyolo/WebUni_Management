@@ -16,8 +16,7 @@ namespace WebUni_Management.Core.Contracts
         Task<AllEventsShowcaseViewModel> FilterEventsAsunc(string userId, string searchTerm, int eventsPerPage, int currentPage);
 		Task<EventDetailsViewModel?> GetDetailsForEventById(int id);
         Task<EventFormViewModel?> GetEditEventFormAsync(int id);
-        Task<IEnumerable<EventIndexViewModel>> GetLastThreeEventsAsync(string userId);
-        Task<IEnumerable<EventIndexViewModel>> JoinedEventsAsync(string userId);
+        Task<IEnumerable<EventIndexViewModel>> GetLastThreeEventsAsync();
         Task JoinEventAsync(int id, string userId);
         Task<bool> UserHasAlreadyJoinedEvent(int id, string userId);
     }

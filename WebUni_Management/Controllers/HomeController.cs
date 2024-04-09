@@ -27,8 +27,8 @@ namespace WebUni_Management.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var model = new IndexPageViewModel();
-            model.News = await newsService.GetLastThreeNewsArticlesAsync(userId);
-            model.Events = await eventService.GetLastThreeEventsAsync(userId);
+            model.News = await newsService.GetLastThreeNewsArticlesAsync();
+            model.Events = await eventService.GetLastThreeEventsAsync();
             return View(model);
         }
         [AllowAnonymous]

@@ -67,7 +67,7 @@ namespace WebUni_Management.Controllers
                 return View(model);
             }
 
-            await newsService.EditNewsAsync(model, id);
+            await newsService.EditNewsAsync(id, model);
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]
@@ -84,7 +84,7 @@ namespace WebUni_Management.Controllers
                 return View(model);
             }
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            await newsService.WriteNewsAsync(model, userId);
+            await newsService.WriteNewsAsync(userId, model);
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]

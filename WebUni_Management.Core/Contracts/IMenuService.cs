@@ -9,7 +9,11 @@ namespace WebUni_Management.Core.Contracts
 {
     public interface IMenuService
     {
-        Task<MenuIndexViewModeltest> GetMenuAsync();
-        //Task<MenuFormViewModel?> GetMenuFormForUpdateAsync();
-    }
+		Task ChangeMenuDateAsync(int id);
+		Task<bool> DishExistsById(int id);
+		Task EditDishAsync(int id, DishFormViewModel model);
+		Task<DishFormViewModel?> GetDishForEditAsync(int id);
+		Task<MenuIndexViewModeltest> GetMenuAsync();
+		Task<bool> MenuExistsById(int id);
+	}
 }

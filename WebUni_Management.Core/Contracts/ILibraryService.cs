@@ -9,11 +9,12 @@ namespace WebUni_Management.Core.Contracts
 {
     public interface ILibraryService
     {
-        Task<AllBooksQueryModel> AllBooksAsync(string? category = null, string? searchTerm = null, int currentPage = 1, int housesPerPage = 1);
+        Task<AllBooksQueryModel> AllBooksAsync(string? category = null, string? searchTerm = null, int currentPage = 1, int booksPerPage = 1);
         Task<IEnumerable<string>> AllCategorisNamesAsync();
         Task<IEnumerable<BookCategoryViewModel>> AllCategoriesForEditAsync();
         Task<BookDetailsViewModel?> BookDetailsAsync(int id);
         Task<bool> BookExistsByIdAsync(int id);
+        Task<string> GetAuthor(int id);
         Task<EditBookViewModel> GetEditFormBookModelAsync(int id);
         Task<bool> IsBookRentedAsync(int id);
         Task<IEnumerable<BookInfoViewModel>> LastThreeBooksAsync();
@@ -32,5 +33,8 @@ namespace WebUni_Management.Core.Contracts
 		Task DeleteBookAsync(int id);
 		Task DeleteRoomAsync(int id);
 		Task EditRoomAsync(int id, EditRoomViewModel model);
-	}
+        Task<bool> IsRoomRentedAsync(int id);
+        Task<bool> IsRoomRentedByUserWithIdAsync(string userId, int id);
+        Task RentRoomAsync(string userId, int id);
+    }
 }

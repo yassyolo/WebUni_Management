@@ -23,14 +23,17 @@ namespace WebUni_Management.Controllers
 			return View();
 		}
 		[Authorize(Roles = "Student")]
-		public async Task<IActionResult> RentedBooks(string userId) 
+		public async Task<IActionResult> RentedBooks([FromQuery] MyRentedBooksViewModel query) 
 		{ 
+			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 			if(await personalInfoService.UserWithIdExistsAsync(userId) == false)
 			{
                 return BadRequest();
             }
-			var model = await personalInfoService.MyRentedBooksAsync(userId);
-			return View(model);
+			var model = await personalInfoService.MyRentedBooksAsync(userId, query.CurrentPage, query.BooksPerPage);
+			query.TotalBooks = model.TotalBooks;
+			query.Books = model.Books;
+			return View(query);
 		}
 		[Authorize(Roles = "Student")]
 		public async Task<IActionResult> RemoveRent(int id)
@@ -47,15 +50,40 @@ namespace WebUni_Management.Controllers
 			await personalInfoService.RemoveBookRentAsync(id, userId);
 			return RedirectToAction("RentedBooks", new { userId = userId });
 		}
-		public async Task<IActionResult> JoinedEvents(string userId)
+		public async Task<IActionResult> JoinedEvents([FromQuery] MyJoinedEventsViewModel query)
 		{
-			/*if(await eventService.UserHasJoinedEventsAsync(userId) == false)
+			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+			if(await personalInfoService.UserHasJoinedEventWithIdAsync(userId) == false)
 			{
-
-			}*/
-			var model = await eventService.JoinedEventsAsync(userId);
-			return View(model);
+				return BadRequest();
+			}
+			var model = await personalInfoService.JoinedEventsAsync(userId, query.CurrentPage, query.EventsPerPage);
+			query.TotalEvents = model.TotalEvents;
+			query.Events = model.Events;
+			return View(query);
 		}
+		public async Task<IActionResult> RemoveJoin(int id)
+		{
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if(await personalInfoService.UserHasJoinedEventWithIdAsync(userId) == false)
+			{
+                return BadRequest();
+            }
+            await personalInfoService.RemoveJoinAsync(id, userId);
+            return RedirectToAction("JoinedEvents", new { userId = userId });
+        }
+		public async Task<IActionResult> RentedRooms([FromQuery] MyRentedRoomsViewModel query)
+		{
+            var stringId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+			if (await personalInfoService.UserWithIdExistsAsync(stringId) == false)
+			{
+                return BadRequest();
+            }
+            var model = await personalInfoService.MyRentedRoomsAsync(stringId, query.CurrentPage, query.RoomsPerPage);
+			query.TotalRooms = model.TotalRooms;
+			query.Rooms = model.Rooms;
+			return View(query);
+        }
 		public async Task<IActionResult> SearchStudentIndex()
 		{
 			return View();
@@ -263,6 +291,55 @@ namespace WebUni_Management.Controllers
 			var model = await personalInfoService.LoadPersonalInfoAsync(userId);
 			return View(model);
 		}
-	
-	}
+		public async Task<IActionResult> SeeMyAttendance(int id)
+		{
+			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+			var studentId = await personalInfoService.GetStudentIdByUserIdAsync(userId);
+            if (await personalInfoService.SubjectWithIdExistsAsync(id) == false)
+			{
+                return BadRequest();
+            }
+            if (await personalInfoService.StudentHasSubjectAsync(id, studentId) == false)
+			{
+                return BadRequest();
+            }
+            var model = await personalInfoService.SeeMyAttendanceRecordAsync(id, userId);
+            return View(model);
+        }
+		public async Task<IActionResult> SeeMySubjectDetails(int id)
+		{
+			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+			var studentId = await personalInfoService.GetStudentIdByUserIdAsync(userId);
+			if (await personalInfoService.SubjectWithIdExistsAsync(id) == false)
+			{
+				return BadRequest();
+			}
+			if (await personalInfoService.StudentHasSubjectAsync(id, studentId) == false)
+			{
+				return BadRequest();
+			}
+			var model = await personalInfoService.SeeMySubjectDetailsAsync(id, userId);
+			return View(model);
+		}
+		public async Task<IActionResult> SeeFacultyDetails(int id)
+		{
+            if (await personalInfoService.FacultyExistsByIdAsync(id) == false)
+            {
+                return BadRequest();
+            }
+			var model = await personalInfoService.GetFacultyDetailsAsync(id);
+			return View(model);
+        }
+		public async Task<IActionResult> SeeMajorDetails(int id)
+		{
+			if (await personalInfoService.MajorExistsByIdAsync(id) == false)
+			{
+				return BadRequest();
+			}
+			var model = await personalInfoService.GetMajorDetailsAsync(id);
+			return View(model);
+		}
+
+
+    }
 }

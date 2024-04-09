@@ -1,9 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration.UserSecrets;
 using WebUni_Management.Attributes;
 using WebUni_Management.Core.Contracts;
+using WebUni_Management.Core.Models.Menu;
 
 namespace WebUni_Management.Controllers
 {
+    [Authorize]
     public class MenuController : Controller
     {
         private readonly IMenuService menuService;
@@ -12,23 +16,56 @@ namespace WebUni_Management.Controllers
         {
             menuService = _menuService;
         }
-
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var model = await menuService.GetMenuAsync();
             return View(model);
         }
-
+        
         [WordDocument(DefaultFilename = "MenuDocument")]
         public async Task<IActionResult> DownloadMenu()
         {
             var model = await menuService.GetMenuAsync();
             return View("DownloadMenu", model);
         }
-        /*public async Task<IActionResult> UpdateMenu()
+        [HttpGet]
+        [AutoValidateAntiforgeryToken]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> EditDish(int id)
         {
-            var model = await menuService.GetMenuFormForUpdateAsync();
+            if (await menuService.DishExistsById(id) == false)
+            {
+                return BadRequest();
+            }
+			var model = await menuService.GetDishForEditAsync(id);
             return View(model);
-        }*/
-    }
+		}
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> EditDish(int id, DishFormViewModel model)
+        {
+			if (await menuService.DishExistsById(id) == false)
+            {
+				return BadRequest();
+			}
+			if (ModelState.IsValid)
+            {
+				await menuService.EditDishAsync(id, model);
+				return RedirectToAction(nameof(Index));
+			}
+			return View(model);
+		}
+		[Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ChangeDate(int id)
+        {
+            if (await menuService.MenuExistsById(id) == false)
+            {
+				return BadRequest();
+			}
+			await menuService.ChangeMenuDateAsync(id);
+			return RedirectToAction(nameof(Index));
+        }
+	}
 }

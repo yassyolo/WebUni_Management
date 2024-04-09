@@ -24,17 +24,26 @@ namespace WebUni_Management.Core.Contracts
         Task<FacultyFormViewModel?> GetEditFacultyFormAsync(int id);
         Task<MajorFormViewModel?> GetEditMajorFormAsync(int id);
         Task<EditSubjectFormViewModel?> GetEditSubjectFormAsync(int subjectId, int studentId);
+        Task<FacultyDetailsViewModel?> GetFacultyDetailsAsync(int id);
+        Task<MajorDetailsViewModel?> GetMajorDetailsAsync(int id);
         Task<IEnumerable<MajorIndexViewModel>?> GetMajorsForFacultyAsync(int id);
         Task<StudentDetailsViewModel?> GetStudentDetailsByIdAsync(int id);
+        Task<int> GetStudentIdByUserIdAsync(string userId);
+        Task<MyJoinedEventsViewModel> JoinedEventsAsync(string userId, int currentPage, int eventsPerPage);
         Task<PersonalInfoViewModel?> LoadPersonalInfoAsync(string userId);
         Task<bool> MajorExistsByIdAsync(int id);
-        Task<IEnumerable<BookInfoViewModel>> MyRentedBooksAsync(string userId);
+        Task<MyRentedBooksViewModel> MyRentedBooksAsync(string userId, int currentPage, int booksPerPage);
+        Task<MyRentedRoomsViewModel> MyRentedRoomsAsync(string stringId, int currentPage, int roomsPerPage);
         Task RemoveBookRentAsync(int id, string userId);
+        Task RemoveJoinAsync(int id, string userId);
         Task<bool> RentedBookExistsByIdAsync(int id);
+        Task<MyAttendanceViewModel?> SeeMyAttendanceRecordAsync(int id, string studentUserId);
+		Task<SeeMySubjectDetailsViewModel?> SeeMySubjectDetailsAsync(int id, string userId);
 		Task<bool> StudentHasSubjectAsync(int subjectId, int studentId);
 		Task<bool> StudentWithIdExistsAsync(int id);
 		Task<bool> SubjectWithIdExistsAsync(int id);
-		Task<bool> UserWithIdExistsAsync(string userId);
+        Task<bool> UserHasJoinedEventWithIdAsync(string userId);
+        Task<bool> UserWithIdExistsAsync(string userId);
         Task<bool> UserWithIdHasRentedBookAsync(int id, string userId);
     }
 }

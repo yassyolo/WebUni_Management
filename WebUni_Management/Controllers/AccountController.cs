@@ -8,9 +8,17 @@ using Microsoft.AspNetCore.Authentication;
 using ZXing.Common;
 using ZXing;
 using System.Drawing.Imaging;
+using System.Diagnostics.CodeAnalysis;
+using QRCoder;
+using QRCoder;
+using System;
+using System.Drawing;
+using System.IO;
+using ZXing.QrCode.Internal;
 
 namespace WebUni_Management.Controllers
 {
+
     public class AccountController : Controller
     {
         private readonly IAccountService accountService;
@@ -122,6 +130,17 @@ namespace WebUni_Management.Controllers
             else
             {
                 var model = await accountService.FillManageAccountAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+				if (model.QrCode != null)
+				{
+					var imreBase64 = Convert.ToBase64String(model.QrCode);
+					string imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64);
+					ViewBag.ImageData = imgDataURL;
+				}
+				else
+				{
+					// Handle the case where the QR code is null, perhaps by setting a default image
+					ViewBag.ImageData = "data:image/png;base64,defaultBase64String";
+				}
 				return View("FilledManageAccount", model);
 			}           
         }
@@ -143,7 +162,7 @@ namespace WebUni_Management.Controllers
             {
                 ModelState.AddModelError("", "Invalid attempt in updating your account.");
             }
-            return View(model);
+            return RedirectToAction(nameof(ManageAccount));
         }
         [HttpGet]
         public async Task<IActionResult> Requests([FromQuery] AllRequestsViewModel query)
@@ -171,7 +190,7 @@ namespace WebUni_Management.Controllers
             }
             else if(username.StartsWith("1"))
             {
-                //generate qrcode
+               
                 //await accountService.StoreQRCodeAsync(user);
                 await userManager.AddToRoleAsync(user, "Student");
             }
@@ -229,6 +248,6 @@ namespace WebUni_Management.Controllers
             await accountService.EditAccountAsync(id, model);
             return RedirectToAction(nameof(ManageAccount));
         }
-
+        
     }
 }

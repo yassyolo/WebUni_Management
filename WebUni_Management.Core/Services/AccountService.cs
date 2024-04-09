@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using WebUni_Management.Core.Contracts;
 using WebUni_Management.Core.Models.Account;
 using WebUni_Management.Infrastructure.Data.Models;
+using QRCoder;
 using WebUni_Management.Infrastructure.Repository;
 
 namespace WebUni_Management.Core.Services
@@ -58,7 +59,7 @@ namespace WebUni_Management.Core.Services
 			{
 				throw new InvalidOperationException("Course term not found");
 			}
-			
+			var qrCode = student.QRCode;
            
             return await repository.AllReadOnly<Student>().Select(x => new ManageAccountViewModel
             {
@@ -71,10 +72,12 @@ namespace WebUni_Management.Core.Services
 				Faculty = faculty.Name,
 				Major = major.Name,
 				Email = x.User.Email,
-				CourseTerm = courseTerm.Name
+				CourseTerm = courseTerm.Name,
+                QrCode = x.QRCode
 			}).FirstOrDefaultAsync();
             
 		}
+
 
 		public async Task<ApplicationUser?> FindUserByIdAsync(string user)
         {
@@ -132,11 +135,21 @@ namespace WebUni_Management.Core.Services
                 FacultyId = await repository.AllReadOnly<Faculty>().Where(x => x.Name == model.Faculty).Select(x => x.Id).FirstOrDefaultAsync(),
                 CourseTermId = await repository.AllReadOnly<CourseTerm>().Where(x => x.Name == model.CourseTerm).Select(x => x.Id).FirstOrDefaultAsync()
             };
+            student.QRCode = GenerateQRCode(userId);
             await repository.AddAsync(student);
             await repository.SaveChangesAsync();
         }
+        public byte[] GenerateQRCode(string data)
+        {
+            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(data, QRCodeGenerator.ECCLevel.Q);
+            PngByteQRCode qrCode = new PngByteQRCode(qrCodeData);
+            byte[] qrCodeAsPngByteArr = qrCode.GetGraphic(20);
 
-		public async Task<bool> StudentExistsByIdAsync(int id)
+            return qrCodeAsPngByteArr;
+        }
+
+        public async Task<bool> StudentExistsByIdAsync(int id)
 		{
 			return await repository.AllReadOnly<Student>().AnyAsync(x => x.Id == id);
 		}
