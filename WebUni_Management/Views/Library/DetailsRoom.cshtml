@@ -1,14 +1,14 @@
 ﻿@model WebUni_Management.Core.Models.Library.RoomShowcaseViewModel
 @{
-	ViewBag.Title = "Book Details";
+	ViewBag.Title = "Room Details";
 }
 
 <h6>@ViewBag.Message</h6>
 <div class="details-container">
-	<div class="book-img">
-		<img src="@Model.ImageUrl" alt="Book Cover" />
+	<div class="room-img">
+		<img src="@Model.ImageUrl" alt="Room Image" />
 	</div>
-	<div class="book-description">
+	<div class="room-description">
 		<h3><b>Title:</b> @Model.Name</h3>
 		<h5><b>Category:</b> @Model.Capacity</h5>
 		<h5><b>Published in:</b> @Model.Floor</h5>
@@ -29,7 +29,7 @@
 				<button type="submit" class="btn btn-primary">Delete</button>
 			</form>
 		}
-		<form asp-controller="Library" asp-action="AllRoomsShowcase" method="post">
+		<form asp-controller="Library" asp-action="AllRoomsShowcase" method="get">
 			<button type="submit" class="btn btn-primary">Back</button>
 		</form>
 		</div>
@@ -50,7 +50,7 @@
 		padding: 10px;
 	}
 
-	.book-img {
+	.room-img {
 		margin-top: 20px;
 		margin-right: 30px;
 		margin-left: 30px;
@@ -59,31 +59,31 @@
 		float: left;
 	}
 
-		.book-img img {
-			width: 100%;
-			height: 100%;
-			border: 1px solid #e91e63;
-			border-radius: 3px;
-		}
+    .room-img img {
+		width: 100%;
+	    height: 100%;
+		border: 1px solid #e91e63;
+		border-radius: 3px;
+    }
 
-	.book-description {
+	.room-description {
 		margin-top: 20px;
 		width: 600px;
 		height: 700px;
 		float: right;
 	}
 
-		.book-description b {
-			color: #e91e63; /* Change only the color of <b> elements */
-		}
+    .room-description b {
+	    color: #e91e63;
+    }
 
-		.book-description h5 {
-			color: black; /* Keep the color of other elements black */
-		}
+	.room-description h5 {
+		color: black; 
+	}
 
-		.book-description button {
-			margin-top: 10px;
-		}
+	.room-description button {
+		margin-top: 10px;
+	}
 
 	.btn-primary {
 		background-color: #fc819e;
@@ -94,10 +94,10 @@
 		cursor: pointer;
 	}
 
-		.btn-primary:hover {
-			background-color: #e91e63;
-			border-color: #e91e63;
-		}
+	.btn-primary:hover {
+		background-color: #e91e63;
+		border-color: #e91e63;
+	}
 
 	.action-buttons {
 		display: flex;

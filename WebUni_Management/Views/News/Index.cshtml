@@ -62,7 +62,7 @@
 
     @if (!Model.News.Any())
     {
-        <h2 class="text-center">No rooms found by the given criteria!</h2>
+        <h2 class="text-center">No news found by the given criteria!</h2>
     }
 
     <div class="flip-card-container">
@@ -161,9 +161,9 @@
         perspective: 1000px;
     }
 
-        .flip-card-room:hover .flip-card-inner {
-            transform: rotateY(180deg);
-        }
+    .flip-card-room:hover .flip-card-inner {
+        transform: rotateY(180deg);
+    }
 
     .flip-card-front img {
         width: 100%;
@@ -196,9 +196,9 @@
         transform: rotateY(180deg);
     }
 
-        .flip-card-back form {
-            margin-top: 10px;
-        }
+    .flip-card-back form {
+        margin-top: 10px;
+    }
 
     .btn-primary {
         background-color: #fc819e;
@@ -207,11 +207,18 @@
         border-radius: 4px;
         cursor: pointer;
     }
+    .btn-danger{
+        background-color: #D20062;
+        border-color: #D20062;
+        color: black;
+        border-radius: 4px;
+        cursor: pointer;
+    }
 
-        .btn-primary:hover {
-            background-color: #e91e63;
-            border-color: #e91e63;
-        }
+     .btn-primary:hover, .btn-danger:hover {
+        background-color: #e91e63;
+        border-color: #e91e63;
+     }
 
     .bold-label {
         font-weight: bold;

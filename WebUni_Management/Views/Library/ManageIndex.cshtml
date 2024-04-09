@@ -15,7 +15,7 @@
 	<div class="add-manage">
 		<form asp-controller="Library" asp-action="AddBook" method="get">
 			<h2>Add book:</h2>
-			<button type="submit" class="btn btn-addbook">Add Book</button>
+			<button type="submit" class="btn btn-primary">Add Book</button>
 		</form>
 		<form asp-controller="Library" asp-action="AddRoom" method="get">
 			<h2>Add room:</h2>
@@ -25,11 +25,11 @@
 	<div class="rent-manage">
 		<form asp-controller="Library" asp-action="ManageBookRent" method="post">
 			<h2>Manage book rent:</h2>
-			<button type="submit" class="btn btn-primary">Manage Book Rent</button>
+			<button type="submit" class="btn btn-primary">Book Rent</button>
 		</form>
 		<form asp-controller="Library" asp-action="ManageRoomRent" method="post">
 			<h2>Manage room rent:</h2>
-			<button type="submit" class="btn btn-primary">Manage Room Rent</button>
+			<button type="submit" class="btn btn-primary">Room Rent</button>
 		</form>
 	</div>
 </div>
@@ -52,8 +52,7 @@
 	}
 
 	.add-manage{
-		gap: 200px;
-		
+		gap: 200px;		
 	}
 
 	.rent-manage{
@@ -62,8 +61,7 @@
 
 	.add-manage,
 	.rent-manage {
-
-		 display: flex;
+		display: flex;
 		justify-content: center;
 		align-items: center;
 		width: 90%;
@@ -79,8 +77,8 @@
 		cursor: pointer;
 	}
 
-		.btn:hover {
-			background-color: #e91e63;
-			border-color: #e91e63;
-		}
+   .btn:hover {
+		background-color: #e91e63;
+		border-color: #e91e63;
+   }
 </style>

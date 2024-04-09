@@ -1,11 +1,12 @@
 ﻿ @model WebUni_Management.Core.Models.PersonalInfo.AllMajorsViewModel
 @{
-    ViewBag.Message = "Be up-to-date with the things happening around you!";
+    ViewBag.Message = "Search through our many majors!";
 }
 
 <div class="all-showcase-container">
     <div class="all-showcase-message">
-        <h3>Search majors!</h3>
+        <h3>Explore our university's majors effortlessly!</h3>
+        <h3>@ViewBag.Message</h3>
     </div>
     <div class="all-search-engine">
         <form class="form-search-engine" asp-controller="PersonalInfo" asp-action="SearchMajors" method="get">
@@ -62,41 +63,45 @@
                             <th scope="col">Action buttons</th>
                         </tr>
                     </thead>
-                    @foreach (var article in Model.Majors)
+                    @foreach (var major in Model.Majors)
                     {
 
                         <tbody>
                             <tr>
-                                <td>@article.Name</td>
+                                <td>@major.Name</td>
 
                                 <td class="action-buttons">
-                                    <form asp-controller="PersonalInfo" asp-action="SeeSubjects" method="get">
-                                        <input type="hidden" name="id" value="@article.Id" />
-                                        <button type="submit" class="btn btn-primary">See Subjects</button>
-                                    </form>
-                                    <form asp-controller="PersonalInfo" asp-action="EditMajor" asp-route-id="@article.Id" method="get">
-                                        <input type="hidden" name="id" value="@article.Id" />
-                                        <button type="submit" class="btn btn-primary">Edit</button>
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <form asp-controller="PersonalInfo" asp-action="EditMajor" asp-route-id="@major.Id" method="get">
+                                            <input type="hidden" name="id" value="@major.Id" />
+                                            <button type="submit" class="btn btn-primary">Edit</button>
+                                        </form>
+                                    }
+                                    <form asp-controller="PersonalInfo" asp-action="SeeMajorDetails" method="get">
+                                        <input type="hidden" name="id" value="@major.Id" />
+                                        <button type="submit" class="btn btn-primary">See Details</button>
+                                    </form>                                    
+                                </td>
+                            </tr>
+                        </tbody>
+                    }
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <tbody>
+                            <tr>
+                                <td><strong>ADD MAJOR</strong></td>
+
+                                <td class="action-buttons">
+
+                                    <form asp-controller="PersonalInfo" asp-action="AddMajor" method="get">
+
+                                        <button type="submit" class="btn btn-primary">+</button>
                                     </form>
                                 </td>
                             </tr>
-
                         </tbody>
-
                     }
-                    <tbody>
-                        <tr>
-                            <td><strong>ADD MAJOR</strong></td>
-
-                            <td class="action-buttons">
-
-                                <form asp-controller="PersonalInfo" asp-action="AddMajor" method="get">
-
-                                    <button type="submit" class="btn btn-primary">+</button>
-                                </form>
-                            </td>
-                        </tr>
-                    </tbody>
                 </table>
             </div>
         </div>

@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using System.Security.Claims
 @using WebUni_Management.Infrastructure.Data.Models
+@inject UserManager<ApplicationUser> UserManager
 @inject SignInManager<ApplicationUser> SignInManager
 <!DOCTYPE html>
 <html lang="en">
@@ -59,10 +60,6 @@
                             <a>Canteen<i class="plus"></i></a>
                             <ul class="sub-menu">
                                 <li class="menu-item"><a asp-controller="Menu" asp-action="Index">Our Canteen</a></li>
-                                @if(User.IsInRole("Admin"))
-                                {
-                                    <li class="menu-item"><a asp-controller="Menu" asp-action="UpdateMenu">Update Menu</a></li>
-                                }
                             </ul>
                         </li>
                     <li class="menu-item menu-item-has-children">
@@ -82,17 +79,20 @@
                             <ul class="sub-menu">
                                 @if (User.Identity.IsAuthenticated && User.IsInRole("Student"))
                                 {
-                                    <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="RentedBooks" asp-route-userId="@User.FindFirstValue(ClaimTypes.NameIdentifier)">My Books</a></li>
-                                    <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="JoinedEvents">My Events</a></li>
                                     <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="SeePersonalInfo">Personal Info</a></li>
+                                    <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="RentedBooks">My Books</a></li>
+                                    <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="RentedRooms">My Rooms</a></li>
+                                    <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="JoinedEvents">My Events</a></li>
+                                    
                                 }                               
                                 @if(User.IsInRole("Admin"))
                                 {
                                     <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="SearchStudentIndex">Search Students</a></li>
-                                    <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="SearchFaculties" method="get">Search Faculties</a></li>
-                                    <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="SearchMajors" method="get">Search Majors</a></li>
+                                   
 
                                 }
+                                <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="SearchFaculties" method="get">Search Faculties</a></li>
+                                <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="SearchMajors" method="get">Search Majors</a></li>
 
                             </ul>
                     </li>
@@ -116,11 +116,11 @@
                                }
                             }
                                 <li class="menu-item"><a asp-controller="Account" asp-action="Login">Login</a></li>
-                                @if (User.Identities.Any())
-                                {
-                                    <li class="menu-item"><a asp-controller="Account" asp-action="Logout">Logout</a></li>
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+                                <li class="menu-item"><a asp-controller="Account" asp-action="Logout">Logout</a></li>
 
-                                }
+                            }
                         </ul>
                     </li>
                 </ul>

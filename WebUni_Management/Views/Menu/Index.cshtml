@@ -14,16 +14,46 @@ ViewBag.Message = "Check out our canteen!";
 		</div>
 	</div>
 	<div class="daily-menu">
-		<h5>@Model.Date</h5>
+		@if (User.IsInRole("Admin"))
+		{
+			<div class="row">
+				<div class="col-md-9">
+					<h3>@Model.Date</h3>
+				</div>
+				<div class="col-md-3">
+					<form asp-controller="Menu" asp-action="ChangeDate" asp-route-id="@Model.Id" method="get">
+						<button type="submit" class="btn btn-primary">Change Date</button>
+					</form>
+				</div>
+			</div>
+		}
+		else
+		{
+			<h4>@Model.Date</h4>
+		}		
 		<h2><strong>Salads</strong></h2>
 		<div class="daily-menu-item">
 		@foreach (var item in Model.Dishes)
 		{
 			@if(item.Category == "Salad")
-			{
-				
-					<h3>@item.Name: @item.Price lv.</h3>
-				
+			{				
+					@if (User.IsInRole("Admin"))
+					{
+						<div class="row">
+							<div class="col-md-9">
+								<h3>@item.Name: @item.Price lv.</h3>
+							</div>
+							<div class="col-md-3">
+								<form asp-controller="Menu" asp-action="EditDish" asp-route-id="@item.Id" method="get">
+									<button type="submit" class="btn btn-primary">Edit</button>
+								</form>
+							</div>
+						</div>
+					}
+					else
+					{
+						<h3>@item.Name: @item.Price lv.</h3>
+					}				
 			}
 		}
 		</div>
@@ -33,9 +63,23 @@ ViewBag.Message = "Check out our canteen!";
 		{
 			@if (item.Category == "Main Dish")
 			{
-				
-					<h3>@item.Name: @item.Price lv.</h3>
-				
+					@if (User.IsInRole("Admin"))
+					{
+						<div class="row">
+							<div class="col-md-9">
+								<h3>@item.Name: @item.Price lv.</h3>
+							</div>
+							<div class="col-md-3">
+								<form asp-controller="Menu" asp-action="EditDish" asp-route-id="@item.Id"  method="get">
+									<button type="submit" class="btn btn-primary">Edit</button>
+								</form>
+							</div>
+						</div>
+					}
+					else
+					{
+						<h3>@item.Name: @item.Price lv.</h3>
+					}
 			}
 		}
 		</div>
@@ -45,23 +89,43 @@ ViewBag.Message = "Check out our canteen!";
 		{
 			@if (item.Category == "Dessert")
 			{
-				
-					<h3>@item.Name: @item.Price lv.</h3>
-				
+					@if (User.IsInRole("Admin"))
+					{
+						<div class="row">
+							<div class="col-md-9">
+								<h3>@item.Name: @item.Price lv.</h3>
+							</div>
+							<div class="col-md-3">
+								<form asp-controller="Menu" asp-action="EditDish" asp-route-id="@item.Id" method="get">
+									<button type="submit" class="btn btn-primary">Edit</button>
+								</form>
+							</div>
+						</div>
+					}
+					else
+					{
+						<h3>@item.Name: @item.Price lv.</h3>
+					}
 			}
 		}
 		</div>
 		<div class="download">
-			<form asp-controller="Menu" asp-action="DownloadMenu" method="get">
-				<button type="submit" class="btn btn-primary">Download Menu</button>
-			</form>
+			@if (User.IsInRole("Admin") && User.IsInRole("Student"))
+			{
+				<form asp-controller="Menu" asp-action="DownloadMenu" method="get">
+					<button type="submit" class="btn btn-primary">Download Menu</button>
+				</form>
+			}			
 		</div>
 	</div>
 	
 </div>
 <style>
-.menu-index-container {
-        height: 740px;
+	.row{
+		margin-bottom:10px;
+	}
+    .menu-index-container {
+        height: 750px;
         width: 960px;
         background-color: white;
         margin: auto;
@@ -73,6 +137,7 @@ ViewBag.Message = "Check out our canteen!";
         padding-top: 5px;
         padding: 10px;
     }
+
 	.welcome-message{
 		display:flex;
 		height: 100%;
@@ -81,36 +146,42 @@ ViewBag.Message = "Check out our canteen!";
 		margin-right:20px;
 		text-align:center;
 	}
+
 	.image-holde{
 		width:86%;
 		height: 36%;
 		z-index:100;
 		margin-bottom:20px;
 	}
-	 img{
+
+	img{
 		z-index:100;
 		width:100%;
 		height:100%;
 		border: 1px solid #e91e63;
 		border-radius: 3px;
 	}
+
 	.welcome{
 		width:86%;
 		text-align:center;
 	}
+
 	h2{
 		color: #e91e63;
 		margin-bottom:25px;
 	}
+
 	.daily-menu{
-float:right;
-width:55%;
-height:100%;
-display:flex;
-flex-direction:column;
-gap:20px;
-text-align:center;
+        float:right;
+        width:55%;
+        height:100%;
+        display:flex;
+        flex-direction:column;
+        gap:20px;
+        text-align:center;
 	}
+
 	.welcome-message{
 		width: 50%;
 		flex-direction:column;
@@ -130,9 +201,9 @@ text-align:center;
 		cursor: pointer;
 	}
 
-		.btn-primary:hover {
-			background-color: #e91e63;
-			border-color: #e91e63;
-		}
+    .btn-primary:hover {
+		background-color: #e91e63;
+		border-color: #e91e63;
+    }
 	
 </style>

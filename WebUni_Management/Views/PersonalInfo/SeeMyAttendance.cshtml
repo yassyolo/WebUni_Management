@@ -1,0 +1,145 @@
+﻿ @model WebUni_Management.Core.Models.PersonalInfo.MyAttendanceViewModel
+@{
+    ViewBag.Message = "My Attendance";
+}
+
+<div class="all-showcase-container">
+    <div class="wrapper">
+        <div class="requests-container">
+        </div>
+    </div>
+    <h2>Attendance for the subject: <strong>@Model.SubjectName</strong></h2>
+    <h6>Red blocks are not attended lessons.</h6>
+    <div class="attendance">
+        @for (int i = 1; i <= Model.SubjectTotalAttendance; i++)
+        {
+            if (i <= Model.StudentAttendanceRecord)
+            {
+                <button type="button" class="attendance-button attendance-filled" disabled>@i</button>
+            }
+            else
+            {
+                <button type="button" class="attendance-button attendance-not-filled">@i</button>
+            }
+        }
+    </div>
+    <form asp-controller="PersonalInfo" asp-action="SeePersonalInfo">
+        <button type="submit" class="btn btn-primary">Back</button>
+    </form>
+
+
+
+
+</div>
+<style>
+    .attendance-button {
+        margin: 5px;
+    }
+
+    .attendance {
+        margin-bottom: 50px;
+    }
+
+    .attendance-filled {
+        background-color: green;
+        color: white;
+    }
+
+    .attendance-not-filled {
+        background-color: red;
+        color: white;
+        padding: 4px;
+    }
+
+
+
+    .all-showcase-message {
+        color: #e91e63;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    th {
+        color: #e91e63;
+    }
+
+    .all-search-engine {
+        margin-bottom: 30px;
+        width: 90%;
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        align-content: center;
+    }
+
+    .search-term {
+        width: 29%;
+        float: left;
+        margin-right: 10px;
+    }
+
+    .submit {
+        float: left;
+        width: 8%;
+        margin-top: 24px;
+    }
+
+    .form-search-engine {
+        width: 100%;
+    }
+
+    .all-showcase-container {
+        height: 350px;
+        width: 1130px;
+        background-color: white;
+        margin: auto;
+        border: 2px solid #e91e63;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        padding-top: 5px;
+        padding: 10px;
+    }
+
+
+
+    .btn-primary {
+        background-color: #fc819e;
+        border-color: #fc819e;
+        color: black;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        .btn-primary:hover {
+            background-color: #e91e63;
+            border-color: #e91e63;
+        }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .table th,
+        .table td {
+            border: 1px solid #ccc;
+            padding: 8px;
+        }
+
+    .bold-label {
+        font-weight: bold;
+    }
+
+
+    .action-buttons {
+        display: flex;
+        margin-top: auto;
+        gap: 20px;
+    }
+
+    h2, h6 {
+        margin-bottom: 20px;
+    }
+</style>

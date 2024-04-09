@@ -12,6 +12,6 @@
         public const string InvalidPublishYear = "Invalid publish year. Should be {1} characters long.";
         public const string InvalidFloor = "Invalid floor. Should be between {2} and {1}.";
         public const string InvalidCapacity = "Invalid capacity. Should be between {2} and {1}.";
-
+        public const string InvalidPrice = "Invalid price. Should be between {2} and {1}.";
     }
 }

@@ -14,17 +14,23 @@
         <h2><strong>Welcome to Web University's Student Management Platform!</strong></h2>
         <h4> Whether you're a seasoned student or just beginning your journey, our platform is here to make your university experience as seamless and enriching as possible!</h4>
         <h5>Here's what you can do on our platform:</h5>
-        <h5><a href="@Url.Action("AllBooksShowcase", "Library")"><strong>Rent Books</strong></a>: Browse through our extensive library collection and rent textbooks and reference materials for your courses.</h5>
-        <h5><a href="@Url.Action("AllRoomsShowcase", "Library")"><strong>Reserve Study Rooms</strong></a>: Need a quiet space to study or collaborate with coleagues? Reserve study rooms and make the most out of your study sessions.</h5>
-        <h5><a href="@Url.Action("AllEvents", "Event")"><strong>Join Events</strong></a>: Stay up-to-date with the latest events, seminars and guest lectures. Engage with peers, expand your knowledge, and make meaningful connections.</h5>
-        <h5><a href="@Url.Action("Index", "Menu")"><strong>Check the Canteen Menu</strong></a>: Hungry for delicious meal? Check out the daily canteen menu.</h5>
-        @if (User.IsInRole("Studen"))
+        @if (User.IsInRole("Student"))
         {
-            <h5><a href="@Url.Action("Index", "PersonalInfo")"><strong>View Personal Information</strong></a>: Access your grades, attendance records, course schedules, and other personal information. Stay organized and on track with your academic progress.</h5>
+            <h5><a href="@Url.Action("AllBooksShowcase", "Library")"><strong>Rent Books</strong></a>: Browse through our extensive library collection and rent textbooks and reference materials for your courses.</h5>
+            <h5><a href="@Url.Action("AllRoomsShowcase", "Library")"><strong>Reserve Study Rooms</strong></a>: Need a quiet space to study or collaborate with coleagues? Reserve study rooms and make the most out of your study sessions.</h5>
+            <h5><a href="@Url.Action("AllEvents", "Event")"><strong>Join Events</strong></a>: Stay up-to-date with the latest events, seminars and guest lectures. Engage with peers, expand your knowledge, and make meaningful connections.</h5>
+            <h5><a href="@Url.Action("Index", "Menu")"><strong>Check the Canteen Menu</strong></a>: Hungry for delicious meal? Check out the daily canteen menu.</h5>
+            <h5><a href="@Url.Action("SeePersonalInfo", "PersonalInfo")"><strong>View Personal Information</strong></a>: Access your grades, attendance records, course schedules, and other personal information. Stay organized and on track with your academic progress.</h5>
 
         }
-        <h5><strong>View Personal Information</strong>: Access your grades, attendance records, course schedules, and other personal information. Stay organized and on track with your academic progress.</h5>
-
+        else
+        {
+            <h5><strong>Rent Books</strong>: Browse through our extensive library collection and rent textbooks and reference materials for your courses.</h5>
+            <h5><strong>Reserve Study Rooms</strong>: Need a quiet space to study or collaborate with coleagues? Reserve study rooms and make the most out of your study sessions.</h5>
+            <h5><strong>Join Events</strong>: Stay up-to-date with the latest events, seminars and guest lectures. Engage with peers, expand your knowledge, and make meaningful connections.</h5>
+            <h5><strong>Check the Canteen Menu</strong>: Hungry for delicious meal? Check out the daily canteen menu.</h5>
+            <h5><strong>View Personal Information</strong>: Access your grades, attendance records, course schedules, and other personal information. Stay organized and on track with your academic progress.</h5>
+        }      
         <h4>Our platform is designed to support you every step of the way on your academic journey. If you still have not made your account <a href="@Url.Action("Account", "Register")"><strong>click here</strong></a>.</h4>
     </div>
     <div class="news-events-container">
@@ -116,7 +122,7 @@
 
     .flip-card {
         width: 185px;
-        height: 195px;
+        height: 205px;
         border: 1px solid #e91e63;
         border-radius: 3px;
         perspective: 1000px;
@@ -131,9 +137,9 @@
         perspective: 1000px;
     }
 
-        .flip-card-room:hover .flip-card-inner {
-            transform: rotateY(180deg);
-        }
+     .flip-card-room:hover .flip-card-inner {
+        transform: rotateY(180deg);
+     }
 
     .flip-card-front img {
         width: 100%;
@@ -167,23 +173,23 @@
         transform: rotateY(180deg);
     }
 
-        .flip-card-back form {
-            margin-top: 10px;
-        }
+    .flip-card-back form {
+        margin-top: 10px;
+    }
 
     .btn-primary {
-        background-color: mediumvioletred;
-        border-color: #fc819e;
+        background-color: #D20062;
+        border-color: #D20062;
         color: black;
         border-radius: 4px;
         cursor: pointer;
         margin-bottom: 20px;
     }
 
-        .btn-primary:hover {
-            background-color: #e91e63;
-            border-color: #e91e63;
-        }
+    .btn-primary:hover {
+        background-color: #e91e63;
+        border-color: #e91e63;
+    }
    .events-container{
         width: 50%;
         float: left;

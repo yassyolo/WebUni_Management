@@ -5,6 +5,7 @@
 <h1>@ViewBag.Message</h1>
 <div class="register-container">
     <h6 class="welcome-message">Welcome to the Web University Student Management Platform. To start the journey make a profile first.</h6>
+    <h6>(*Use your faculty number as Username and your SSN as password)</h6>
 <form asp-controller="Account" asp-action="Register" method="post">
     <div class="form-group">
         <label asp-for="Email" class="form-label">Email</label>
@@ -26,7 +27,7 @@
     </div>
 <style>
     .register-container {
-        height: 440px;
+        height: 510px;
         width: 550px;
         background-color: white;
         margin: auto;
@@ -42,7 +43,7 @@
 
     .form-group {
         padding-top: 15px;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
         align-items: center;
     }
 
@@ -59,22 +60,23 @@
     }
 
     .text-danger {
-        color: #dc3545;
+        color: red;
     }
 
     .btn-primary {
-        background-color: #fec7b4;
-        border-color: #fec7b4;
+        background-color: #fc819e;
+        border-color: #fc819e;
         color: black;
         padding: 10px 20px;
         border-radius: 4px;
         cursor: pointer;
+        margin-top:20px;
     }
 
-        .btn-primary:hover {
-            background-color: #fc819e;
-            border-color: #fc819e;
-        }
+    .btn-primary:hover {
+        background-color: #e91e63;
+        border-color: #e91e63;
+    }
 
     .welcome-message {
         text-align: center;

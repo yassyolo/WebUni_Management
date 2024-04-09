@@ -1,4 +1,4 @@
-﻿@model WebUni_Management.Core.Models.PersonalInfo.PersonalInfoViewModel
+﻿@model WebUni_Management.Core.Models.PersonalInfo.FacultyDetailsViewModel
 @{
 	ViewBag.Message = "Student Details";
 }
@@ -8,29 +8,22 @@
 
 	<div class="news-description">
 		<h2>@ViewBag.Message</h2>
-		<h3><strong>Name</strong>: @Model.FirstName @Model.LastName <strong>Faculty number</strong>: @Model.FacultyNumber</h3>
-		<h5><strong>Faculty</strong>: @Model.Faculty</h5>
-		<h5><strong>Major</strong>: @Model.Major</h5>
-		<h5><strong>Course Term</strong>: @Model.CourseTerm</h5>
-		<h3>Subjects:</h3>
-		@foreach (var subject in Model.Subjects)
+		<h3><strong>Name</strong>: @Model.Name</h3>
+		<h5><strong>Description</strong>: @Model.Description</h5>
+		
+		<h3>Majors:</h3>
+		@foreach (var subject in Model.Majors)
 		{
 			<div class="subject-div">
 				<h5><strong>Name:</strong> @subject.Name</h5>
-				<form asp-controller="PersonalInfo" asp-action="SeeMyAttendance" asp-route-id="@subject.Id" method="get">	
-					<button type="submit" class="btn btn-primary">See Attendance</button>
-				</form>
-				<form asp-controller="PersonalInfo" asp-action="SeeGrades" asp-route-id="@subject.Id" method="get">
-					<button type="submit" class="btn btn-primary">See Grades</button>
-				</form>
-				<form asp-controller="PersonalInfo" asp-action="SeeMySubjectDetails" asp-route-id="@subject.Id" method="get">
-					<button type="submit" class="btn btn-primary">See Details</button>
-				</form>
-
+				<h5><strong>Description:</strong> @subject.Description</h5>
 			</div>
 		}
 
 		<div class="action-buttons">
+			<form asp-controller="PersonalInfo" asp-action="SearchFaculties" method="get">
+				<button type="submit" class="btn btn-primary">Back</button>
+			</form>
 		</div>
 	</div>
 </div>
@@ -51,7 +44,7 @@
 	}
 
 	.details-container {
-		height: 650px;
+		height: 2000px;
 		width: 1130px;
 		background-color: white;
 		margin: auto;

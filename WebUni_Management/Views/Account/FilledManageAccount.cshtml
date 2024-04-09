@@ -14,6 +14,14 @@
 		<h5><strong>Faculty</strong>: @Model.Faculty</h5>
 	     <h5><strong>Major</strong>: @Model.Major</h5>
 		 <h5><strong>Course Term</strong>: @Model.CourseTerm</h5>
+		@if (Model.QrCode != null)
+		{
+			<img src="@ViewBag.ImageData">
+		}
+		else
+		{
+			<p>No QR Code available</p>
+		}
 
 		<div class="action-buttons">
 
