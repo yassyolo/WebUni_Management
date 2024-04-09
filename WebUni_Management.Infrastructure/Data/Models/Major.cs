@@ -23,6 +23,11 @@ namespace WebUni_Management.Infrastructure.Data.Models
         [MaxLength(MajorNameMaxLength)]
         public string Name { get; set; } = string.Empty;
 
+        [Required]
+        [Comment("Major description")]
+        [MaxLength(MajorDescriptionMaxLength)]
+        public string Description { get; set; } = string.Empty;
+
         [Comment("Major faculty")]
         public Faculty Faculty { get; set; } = null!;
 

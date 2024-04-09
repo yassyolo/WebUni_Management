@@ -155,7 +155,8 @@ namespace WebUni_Management.Infrastructure.SeedDb
             Faculty1 = new Faculty
             {
                 Id = 1,
-                Name = "Mathematics"
+                Name = "Mathematics",
+                Description = "The Mathematics Faculty offers a wide range of courses in pure and applied mathematics, statistics, and computer science. Our faculty members are dedicated to providing students with a solid foundation in mathematical theory and practical skills, preparing them for successful careers in academia, industry, and research.",
             };
         }
         private void SeedMajor()
@@ -164,7 +165,8 @@ namespace WebUni_Management.Infrastructure.SeedDb
             {
                 Id = 1,
                 Name = "Computer Science",
-                FacultyId = Faculty1.Id
+                FacultyId = Faculty1.Id,
+                Description = "The Computer Science major equips students with the knowledge and skills needed to excel in the rapidly evolving field of technology. Our comprehensive curriculum covers programming languages, algorithms, data structures, software engineering, and more, preparing students for diverse career opportunities in software development, cybersecurity, artificial intelligence, and beyond."
             };
         }
         private void SeedCourseTerm()

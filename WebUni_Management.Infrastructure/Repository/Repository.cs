@@ -34,6 +34,10 @@ namespace WebUni_Management.Infrastructure.Repository
         {
             return GetDbSet<T>().AsNoTracking();
         }
+        public async Task AddRangeAsync<T>(IEnumerable<T> entities) where T : class
+        {
+            await GetDbSet<T>().AddRangeAsync(entities);
+        }
 
         public async Task<int> SaveChangesAsync()
         {

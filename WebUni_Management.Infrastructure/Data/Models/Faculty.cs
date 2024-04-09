@@ -22,6 +22,11 @@ namespace WebUni_Management.Infrastructure.Data.Models
         [MaxLength(FacultyNameMaxLength)]
         public string Name { get; set; } = string.Empty;
 
+        [Required]
+        [Comment("Faculty description")]
+        [MaxLength(FacultyDescriptionMaxLength)]
+        public string Description { get; set; } = string.Empty;
+
         [Comment("Faculty majors")]
         public IEnumerable<Major> Majors { get; set; } = new List<Major>();
         [Comment("Faculty students")]

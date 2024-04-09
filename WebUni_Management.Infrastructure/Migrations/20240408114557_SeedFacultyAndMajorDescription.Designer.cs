@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebUni_Management.Data;
 
@@ -11,9 +12,10 @@ using WebUni_Management.Data;
 namespace WebUni_Management.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240408114557_SeedFacultyAndMajorDescription")]
+    partial class SeedFacultyAndMajorDescription
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -318,7 +320,7 @@ namespace WebUni_Management.Infrastructure.Migrations
                         {
                             Id = "b242640e-291a-4de7-9701-e3e8e0afb0c9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9a600a86-f4d5-47e8-90bf-ebc8fc3ddb4b",
+                            ConcurrencyStamp = "f984f945-9b89-4702-a9e7-a24ed8470d6a",
                             Email = "admin@gmail.com",
                             EmailConfirmed = true,
                             InitialPassword = "",
@@ -326,9 +328,9 @@ namespace WebUni_Management.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "00000001",
-                            PasswordHash = "AQAAAAEAACcQAAAAEDMTVDNOmzH0lE79AGugaGrBRVIVGwUnpW7juXwnWTGjEnv/9ho80Rq5RpV4G48VJQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDK1eoZJYoHUhdUx3yxAtK+8oTN1Ogu4Ndqho45CMaLyMnAHTnhp7t03H4oDLHgFYw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8417db81-0724-4ae7-8491-8a31092b9be0",
+                            SecurityStamp = "ec9c5292-11c0-4aa0-b2e9-4f570e8987ad",
                             TwoFactorEnabled = false,
                             UserName = "00000001"
                         },
@@ -336,7 +338,7 @@ namespace WebUni_Management.Infrastructure.Migrations
                         {
                             Id = "0e90dbeb-6468-4abc-9599-b4757e3874aa",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "04cf301b-b301-490a-b96f-aaf84857a256",
+                            ConcurrencyStamp = "c393f2e6-5eef-4eff-bc4a-9cc9e4240b3e",
                             Email = "student@gmail.com",
                             EmailConfirmed = true,
                             InitialPassword = "",
@@ -344,9 +346,9 @@ namespace WebUni_Management.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "STUDENT@GMAIL.COM",
                             NormalizedUserName = "12345678",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEyO9uYralcxq5fmoVsmjaEuZKARtxEYee6437GTd11EZb88d5UXMf87CywcPC17qQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJ+AqJLGecGtS/diFau5t+uc5WYdmiTxQGcDi9ZXmpJ4j8aPqDTCrntB10TNhBDA/g==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0907dde0-b18c-4c0a-b52a-5a1340ba2632",
+                            SecurityStamp = "dc386f80-873d-4c8d-a7af-44b27c02061a",
                             TwoFactorEnabled = false,
                             UserName = "12345678"
                         });
@@ -1182,9 +1184,6 @@ namespace WebUni_Management.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasComment("Student phone number");
-
-                    b.Property<byte[]>("QRCode")
-                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
