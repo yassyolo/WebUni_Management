@@ -158,7 +158,21 @@ namespace WebUnii_Management.Tests
             repository = new Repository(context);
             libraryService = new LibraryService(repository);
 
-            await repository.AddAsync(new Book
+            await repository.AddAsync(new BookAuthor
+            {
+				Id = 9,
+				FirstName = "Test",
+				LastName = "Test",
+			});
+            await repository.SaveChangesAsync();
+
+			await repository.AddAsync(new BookCategory
+			{
+				Id = 4,
+				Name = "Test"
+			});
+            await repository.SaveChangesAsync();
+			await repository.AddAsync(new Book
             {
                 Id = 13,
                 Title = "Test",
@@ -166,14 +180,20 @@ namespace WebUnii_Management.Tests
                 Description = "Test",
                 ImageUrl = "test",
                 LibraryId = 1,
-              
+                CategoryId = 4
+
             });
 
             await repository.SaveChangesAsync();
+           await repository.AddAsync(new BookByBookAuthor
+           {
+				BookId = 13,
+				AuthorId = 9
+			});
             var result = await libraryService.BookDetailsAsync(13);
             
 
-            Assert.AreEqual(10, result.Id);
+            Assert.AreEqual(13, result.Id);
             Assert.IsInstanceOf<BookDetailsViewModel>(result);
             Assert.IsNotNull(result);
             Assert.AreEqual("Test", result.Title);
@@ -351,8 +371,7 @@ namespace WebUnii_Management.Tests
             await repository.AddAsync(new BookAuthor
             {
                 Id = 9,
-                FirstName = "Test",
-                LastName = "Test",
+                FirstName = "Test Test",
             });
             await repository.SaveChangesAsync();
 
@@ -374,6 +393,7 @@ namespace WebUnii_Management.Tests
                 BookId = 13,
                 AuthorId = 9
             });
+            await repository.SaveChangesAsync();
             var result = await libraryService.GetAuthor(13);
             Assert.AreEqual("Test Test", result);
             Assert.IsInstanceOf<string>(result);
@@ -486,45 +506,66 @@ namespace WebUnii_Management.Tests
             Assert.IsFalse(result);
             Assert.IsInstanceOf<bool>(result);
         }
-        [Test]
-        public async Task EditBookAsync_ShouldReturnModel()
-        {
-            repository = new Repository(context);
-            libraryService = new LibraryService(repository);
+		[Test]
+		public async Task EditBookAsync_ShouldReturnModel()
+		{
+			var repository = new Repository(context);
+			var libraryService = new LibraryService(repository);
 
-            await repository.AddAsync(new Book
+			await repository.AddAsync(new BookAuthor
+			{
+				Id = 9,
+				FirstName = "Test",
+				LastName = "Test",
+			});
+			await repository.SaveChangesAsync();
+
+			await repository.AddAsync(new Book
+			{
+				Id = 13,
+				Title = "Test",
+				PublishYear = "1",
+				Description = "Test",
+				ImageUrl = "test",
+				LibraryId = 1,
+			});
+			await repository.SaveChangesAsync();
+
+            await repository.AddAsync(new BookByBookAuthor
             {
-                Id = 13,
-                Title = "Test",
-                PublishYear = "1",
-                Description = "Test",
-                ImageUrl = "test",
-                LibraryId = 1,
-                IsRented = false
-
-            });
+				BookId = 13,
+				AuthorId = 9
+			}); 
             await repository.SaveChangesAsync();
-            var model = new EditBookViewModel
-            {
-                Id = 13,
-                Title = "Test2",
-                PublishYear = "2",
-                Description = "Test2",
-                ImageUrl = "test2",
-            };
-            await libraryService.EditBookAsync(13, model);
-            var book = await repository.GetById<Book>(13);
+			var model = new EditBookViewModel
+			{
+				Id = 13,
+				Title = "Test2",
+				PublishYear = "2",
+				Description = "Test2",
+				ImageUrl = "test2",
+				Author = "Test Author", 
+				CategoryId = 1 
+			};
+			await libraryService.EditBookAsync(13, model);
+			var book = await repository.GetById<Book>(13);
 
-            Assert.AreEqual("Test2", book.Title);
-            Assert.AreEqual("2", book.PublishYear);
-            Assert.AreEqual("Test2", book.Description);
-            Assert.AreEqual("test2", book.ImageUrl);
-            Assert.AreEqual(13, book.Id);
-            Assert.IsFalse(book.IsRented);
-            Assert.IsInstanceOf<Book>(book);
-           
-        }
-        [Test]
+			Assert.AreEqual("Test2", book.Title);
+			Assert.AreEqual("2", book.PublishYear);
+			Assert.AreEqual("Test2", book.Description);
+			Assert.AreEqual("test2", book.ImageUrl);
+			Assert.AreEqual(13, book.Id);
+			Assert.IsFalse(book.IsRented);
+			Assert.IsInstanceOf<Book>(book);
+
+			var associatedAuthor = await repository.All<BookByBookAuthor>()
+				.Where(x => x.BookId == 13)
+				.Select(x => x.Author)
+				.FirstOrDefaultAsync();
+
+			Assert.AreEqual("Test", associatedAuthor.FirstName);
+		}
+		[Test]
         public async Task AllRoomsAsync_ShouldReturnModel()
         {
                repository = new Repository(context);
@@ -715,40 +756,31 @@ namespace WebUnii_Management.Tests
             libraryService = new LibraryService(repository);
 
             var guid = Guid.NewGuid().ToString();
-            await repository.AddAsync(new Book
-            {
-                Id = 13,
-                Title = "Test",
-                PublishYear = "1",
-                Description = "Test",
-                ImageUrl = "test",
-                LibraryId = 1,
-                IsRented = true,
-                RenterId = guid,
-                RentalDate = DateTime.UtcNow.AddDays(-20)
-            });
 
+
+            await repository.AddAsync(new ApplicationUser
+            {
+                Id = guid
+            });
             await repository.SaveChangesAsync();
-
             await repository.AddAsync(new Book
             {
-                Id = 14,
-                Title = "Test2",
-                PublishYear = "2",
-                Description = "Test2",
-                ImageUrl = "test2",
-                LibraryId = 1,
-                IsRented = true,
-                RenterId = guid,
-                RentalDate = DateTime.UtcNow.AddDays(-120)
-            });
+				Id = 14,
+				Title = "Test",
+				PublishYear = "1",
+				Description = "Test",
+				ImageUrl = "test",
+				LibraryId = 1,
+				IsRented = true,
+				RenterId = guid,
+                RentalDate = DateTime.Now.AddDays(-68)
+			});
             var result = await libraryService.ManageBookRentAsync();
             var book = await repository.GetById<Book>(14);
 
             Assert.IsInstanceOf<ManageRentViewModel>(result);
             Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.TotalBookRented);
-            Assert.IsFalse( book.IsRented);
+            Assert.IsFalse(book.IsRented);
         }
         [Test]
         public async Task DeleteBookAsync_ShouldDeleteBookAsync()

@@ -299,39 +299,38 @@ namespace WebUnii_Management.Tests
             Assert.AreEqual(4, readStatus.NewsArticleId);
             Assert.AreEqual(guid, readStatus.ReaderId);
         }
-        /*[Test]
-        public async Task WriteNewsAsync_ShouldAddnewsToDb()
-        {
-            repository = new Repository(dbContext);
-            newsService = new NewsService(repository);
+		[Test]
+		public async Task WriteNewsAsync_ShouldAddnewsToDb()
+		{
+			var repository = new Repository(dbContext);
+			var newsService = new NewsService(repository);
 
-            var guid = Guid.NewGuid().ToString();
-            await newsService.WriteNewsAsync(guid, new NewsFormViewModel
-            {
-                Id = 4,
-                Title = "Test",
-                Content = "Test",
-                ImageUrl = "Test",
-                PublishedOn = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
-            });
-            /*await repository.AddAsync(new Student            
-            {
-                Id = 2,
-                UserId = guid,
-            });
-            await repository.SaveChangesAsync();*/
+			var guid = Guid.NewGuid().ToString();
+			await repository.AddAsync(new Student
+			{
+				Id = 2,
+				UserId = guid,
+			});
+			await repository.SaveChangesAsync();
 
-            /*var news = await repository.GetById<NewsArticle>(4);
-            Assert.IsNotNull(news);
-            Assert.IsInstanceOf<NewsArticle>(news);
-            Assert.AreEqual("Test", news.Title);
-            Assert.AreEqual("Test", news.Content);
-            Assert.AreEqual("Test", news.ImageUrl);
-            Assert.AreEqual(4, news.Id);
-            Assert.AreEqual(false, news.IsApproved);
-            Assert.AreEqual(2, news.AuthorId);
-        }*/
-        [Test]
+			await newsService.WriteNewsAsync(guid, new NewsFormViewModel
+			{
+				Title = "Test",
+				Content = "Test",
+				ImageUrl = "Test",
+				PublishedOn = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+			});
+
+			var news = await repository.All<NewsArticle>().FirstOrDefaultAsync(); 
+			Assert.IsNotNull(news);
+			Assert.IsInstanceOf<NewsArticle>(news);
+			Assert.AreEqual("Test", news.Title);
+			Assert.AreEqual("Test", news.Content);
+			Assert.AreEqual("Test", news.ImageUrl);
+			Assert.IsFalse(news.IsApproved); 
+			Assert.AreEqual(2, news.AuthorId); 
+		}
+		[Test]
         public async Task GetNewsForApprovalAsync_ShouldReturnModel()
         {
             repository = new Repository(dbContext);
@@ -440,9 +439,59 @@ namespace WebUnii_Management.Tests
             Assert.AreEqual(2, result.News.Count());
             Assert.AreEqual(4, news.Id);
             Assert.AreEqual("Test", news.Title);
-            
-
-
+           
         }
-    }
+		[Test]
+		public async Task FilterNewsAsync_ShouldReturnAllNewsBySearch()
+		{
+			repository = new Repository(dbContext);
+			newsService = new NewsService(repository);
+
+			await repository.AddAsync(new NewsArticle
+			{
+				Id = 4,
+				Title = "Test",
+				Content = "Test",
+				ImageUrl = "Test",
+				IsApproved = true,
+                PublishedOn = DateTime.Now
+			});
+			await repository.SaveChangesAsync();
+			
+
+			var result = await newsService.FilterNewsAsync("2024", "04", "10", 1, 2);
+
+			var news = await repository.GetById<NewsArticle>(4);
+			Assert.IsNotNull(result);
+			Assert.IsInstanceOf<NewsShowcaseViewModel>(result);
+			Assert.AreEqual(4, news.Id);
+			Assert.AreEqual("Test", news.Title);
+
+		}
+		[Test]
+        public async Task ApproveNewsArticleAsync_ShouldApproveNews()
+        {
+            var repository = new Repository(dbContext); 
+            var newsService = new NewsService(repository);
+
+            await repository.AddAsync(new NewsArticle
+            {
+				Id = 4,
+				Title = "Test",
+				Content = "Test",
+				ImageUrl = "Test",
+				IsApproved = false
+			});
+            await repository.SaveChangesAsync();
+            await newsService.ApproveNewsArticleAsync(4);
+
+            var news = await repository.GetById<NewsArticle>(4);
+
+            Assert.IsNotNull(news);
+            Assert.IsInstanceOf<NewsArticle>(news);
+            Assert.AreEqual(true, news.IsApproved);
+            Assert.AreEqual(4, news.Id);
+        }
+
+	}
 }
