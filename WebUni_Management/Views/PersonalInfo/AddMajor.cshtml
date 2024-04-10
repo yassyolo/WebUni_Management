@@ -11,11 +11,16 @@
             <span asp-validation-for="Name" class="validation"></span>
 
         </div>
-
         <div class="form-member">
             <label asp-for="FacultyName">Enter existing Faculty Name</label>
             <input asp-for="FacultyName" class="form-control" placeholder="Faculty Name..">
             <span asp-validation-for="FacultyName" class="validation"></span>
+
+        </div>
+        <div class="form-member">
+            <label asp-for="Description">Description</label>
+            <input asp-for="Description" class="form-control" placeholder="Description..">
+            <span asp-validation-for="Description" class="validation"></span>
 
         </div>
         <div class="action-buttons">
@@ -30,7 +35,7 @@
 </div>
 <style>
     .edit-container {
-        height: 530px;
+        height: 470px;
         width: 900px;
         background-color: white;
         margin: auto;
@@ -57,18 +62,18 @@
         margin-bottom: 20px;
     }
 
-        .form-member label {
-            font-weight: bold;
-        }
+    .form-member label {
+        font-weight: bold;
+    }
 
-        .form-member input {
-            align-content: center;
-            justify-content: center;
-            width: 95%;
-            height: 30px;
-            border: 1px solid #e91e63;
-            border-radius: 3px;
-        }
+    .form-member input {
+        align-content: center;
+        justify-content: center;
+        width: 95%;
+        height: 30px;
+        border: 1px solid #e91e63;
+        border-radius: 3px;
+    }
 
     .form-select {
         width: 85%;
@@ -76,7 +81,7 @@
         border-radius: 3px;
     }
 
-    input.form-control[name="Content"] {
+    input.form-control[name="Description"] {
         height: 90px;
     }
 
@@ -96,10 +101,10 @@
         cursor: pointer;
     }
 
-        .btn-primary:hover {
-            background-color: #e91e63;
-            border-color: #e91e63;
-        }
+    .btn-primary:hover {
+        background-color: #e91e63;
+        border-color: #e91e63;
+    }
 
     .action-buttons {
         display: flex;

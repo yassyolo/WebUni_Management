@@ -16,6 +16,10 @@ namespace WebUni_Management.Core.Models.PersonalInfo
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         [StringLength(FacultyNameMaxLength, MinimumLength = FacultyNameMinLength, ErrorMessage = MaxLengthErrorMessage)]
-        public string Name { get; set; } = string.Empty;     
+        public string Name { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        [StringLength(FacultyDescriptionMaxLength, MinimumLength = FacultyDescriptionMinLength, ErrorMessage = MaxLengthErrorMessage)]
+        public string Description { get; set; } = string.Empty;
     }
 }

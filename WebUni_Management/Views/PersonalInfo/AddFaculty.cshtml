@@ -1,7 +1,7 @@
 ﻿@model WebUni_Management.Core.Models.PersonalInfo.FacultyFormViewModel
 @{
     ViewBag.Message = "Add Faculty";
-}<div class="edit-container">
+}<div class="add-container">
     <h2>Add new faculties here:</h2>
     <form class="post-form" method="post">
         <div class="form-member">
@@ -9,7 +9,11 @@
             <input asp-for="Name" class="form-control" placeholder="Name..">
             <span asp-validation-for="Name" class="validation"></span>
         </div>
-
+        <div class="form-member">
+            <label asp-for="Description">Description</label>
+            <input asp-for="Description" class="form-control" placeholder="Description..">
+            <span asp-validation-for="Description" class="validation"></span>
+        </div>
         <div class="action-buttons">
             <form asp-controller="PersonalInfo" asp-action="AddFaculty" method="post">
                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -23,8 +27,12 @@
 </div>
 
 <style>
-    .edit-container {
-        height: 250px;
+    h2{
+        color: #e91e63;
+    }
+
+    .add-container {
+        height: 340px;
         width: 700px;
         background-color: white;
         margin: auto;
@@ -35,7 +43,6 @@
         justify-content: center;
         padding: 10px;
     }
-
 
     .post-form {
         display: flex;
@@ -48,18 +55,18 @@
         margin-bottom: 20px;
     }
 
-        .form-member label {
-            font-weight: bold;
-        }
+    .form-member label {
+        font-weight: bold;
+    }
 
-        .form-member input {
-            align-content: center;
-            justify-content: center;
-            width: 95%;
-            height: 30px;
-            border: 1px solid #e91e63;
-            border-radius: 3px;
-        }
+    .form-member input {
+        align-content: center;
+        justify-content: center;
+        width: 95%;
+        height: 30px;
+        border: 1px solid #e91e63;
+        border-radius: 3px;
+    }
 
     .form-select {
         width: 85%;
@@ -67,16 +74,12 @@
         border-radius: 3px;
     }
 
-    input.form-control[name="Content"] {
+    input.form-control[name="Description"] {
         height: 90px;
     }
 
     .validation {
         color: red;
-    }
-
-    form[asp-controller="PersonalInfo"][asp-action="AddMajor"] {
-        width:20%;
     }
 
     .btn-primary {
@@ -87,10 +90,10 @@
         cursor: pointer;
     }
 
-        .btn-primary:hover {
-            background-color: #e91e63;
-            border-color: #e91e63;
-        }
+    .btn-primary:hover {
+        background-color: #e91e63;
+        border-color: #e91e63;
+    }
 
     .action-buttons {
         display: flex;

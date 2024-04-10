@@ -48,7 +48,7 @@ namespace WebUni_Management.Core.Models.Account
 
         public string Email { get; set; } = string.Empty;
 
-        public byte[]? QrCode { get; set; }
+        public string? QrCode { get; set; }
 
     }
 }

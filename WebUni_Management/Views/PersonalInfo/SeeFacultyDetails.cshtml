@@ -21,6 +21,12 @@
 		}
 
 		<div class="action-buttons">
+			@if (User.IsInRole("Admin"))
+			{
+				<form asp-controller="PersonalInfo" asp-action="DeleteFaculty" method="get">
+					<button type="submit" class="btn btn-primary">Delete</button>
+				</form>
+			}
 			<form asp-controller="PersonalInfo" asp-action="SearchFaculties" method="get">
 				<button type="submit" class="btn btn-primary">Back</button>
 			</form>

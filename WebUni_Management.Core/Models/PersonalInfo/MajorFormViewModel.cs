@@ -20,8 +20,13 @@ namespace WebUni_Management.Core.Models.PersonalInfo
         [StringLength(MajorNameMaxLength, MinimumLength = MajorNameMinLength, ErrorMessage = MaxLengthErrorMessage)]
         public string Name { get; set; } = string.Empty;
 
-        //[Required(ErrorMessage = RequiredErrorMessage)]
-        //[StringLength(FacultyNameMaxLength, MinimumLength = FacultyNameMinLength, ErrorMessage = MaxLengthErrorMessage)]
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        [StringLength(FacultyNameMaxLength, MinimumLength = FacultyNameMinLength, ErrorMessage = MaxLengthErrorMessage)]
         public string FacultyName { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        [StringLength(MajorDescriptionMaxLength, MinimumLength = MajorDescriptionMinLength, ErrorMessage = MaxLengthErrorMessage)]
+        public string Description { get; set; } = string.Empty;
+
     }
 }
