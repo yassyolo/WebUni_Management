@@ -25,6 +25,10 @@ namespace WebUni_Management.Infrastructure.Data.Constants
             public const int MajorDescriptionMaxLength = 600;
             public const int CourseTermNameMaxLength = 20;
             public const int CourseTermNameMinLength = 2;
+            public const int AttendanceMinValue = 0;    
+            public const int AttendanceMaxValue = 20;
+            public const double GradeMinValue = 2.0;
+            public const double GradeMaxValue = 6.0;
         }
         public class Library
         {

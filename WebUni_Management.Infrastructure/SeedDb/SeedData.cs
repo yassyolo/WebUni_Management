@@ -718,19 +718,22 @@ namespace WebUni_Management.Infrastructure.SeedDb
             {
                 SubjectId = Subject1.Id,
                 StudentId = StudentUser.Id,
-                AttendanceRecord = 5
+                AttendanceRecord = 5,
+                Grade = 5.50
             };
             Subject2ForStudent1 = new SubjectForStudent
             {
                 SubjectId = Subject2.Id,
                 StudentId = StudentUser.Id,
-                AttendanceRecord = 7
+                AttendanceRecord = 7,
+                Grade = 5.75
             };
             Subject3ForStudent1 = new SubjectForStudent
             {
                 SubjectId = Subject3.Id,
                 StudentId = StudentUser.Id,
-                AttendanceRecord = 12
+                AttendanceRecord = 12,
+                Grade = 6.00
             };
         }
         
