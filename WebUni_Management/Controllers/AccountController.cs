@@ -130,19 +130,9 @@ namespace WebUni_Management.Controllers
             else
             {
                 var model = await accountService.FillManageAccountAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
-				if (model.QrCode != null)
-				{
-					var imreBase64 = Convert.ToBase64String(model.QrCode);
-					string imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64);
-					ViewBag.ImageData = imgDataURL;
-				}
-				else
-				{
-					// Handle the case where the QR code is null, perhaps by setting a default image
-					ViewBag.ImageData = "data:image/png;base64,defaultBase64String";
-				}
-				return View("FilledManageAccount", model);
-			}           
+                ViewBag.ImageData = await accountService.GetQrCodeForStudentAsync(User.FindFirstValue(ClaimTypes.NameIdentifier)) ?? "data:image/png;base64,defaultBase64String";
+                return View("FilledManageAccount", model);
+            }
         }
         [HttpPost]
         public async Task<IActionResult> ManageAccount(ManageAccountViewModel model)

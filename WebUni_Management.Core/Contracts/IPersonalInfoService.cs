@@ -45,5 +45,7 @@ namespace WebUni_Management.Core.Contracts
         Task<bool> UserHasJoinedEventWithIdAsync(string userId);
         Task<bool> UserWithIdExistsAsync(string userId);
         Task<bool> UserWithIdHasRentedBookAsync(int id, string userId);
-    }
+        Task<IEnumerable<SubjectIndexViewModel>> GetSubjects(string userId);
+
+	}
 }

@@ -1,9 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WebUni_Management.Core.Contracts;
 using WebUni_Management.Core.Models.Account;
 using WebUni_Management.Infrastructure.Data.Models;
@@ -44,6 +39,10 @@ namespace WebUni_Management.Core.Services
         public async Task<ManageAccountViewModel> FillManageAccountAsync(string userId)
 		{
             var student = await repository.AllReadOnly<Student>().FirstOrDefaultAsync(x => x.UserId == userId);
+            if (student == null)
+            {
+                throw new InvalidOperationException("Student not found");
+            }
 			var faculty = await repository.AllReadOnly<Faculty>().FirstOrDefaultAsync(x => x.Id == student.FacultyId);
 			if (faculty == null)
 			{
@@ -59,24 +58,34 @@ namespace WebUni_Management.Core.Services
 			{
 				throw new InvalidOperationException("Course term not found");
 			}
-			var qrCode = student.QRCode;
-           
-            return await repository.AllReadOnly<Student>().Select(x => new ManageAccountViewModel
+
+            return await repository.AllReadOnly<Student>().Where(x => x.UserId == userId).Select(x => new ManageAccountViewModel
             {
-                Id = student.Id,
-				FirstName = x.FirstName,
-				LastName = x.LastName,
-				Age = x.Age,
-				PhoneNumber = x.PhoneNumber,
-				FacultyNumber = x.FacultyNumber,
-				Faculty = faculty.Name,
-				Major = major.Name,
-				Email = x.User.Email,
-				CourseTerm = courseTerm.Name,
-                QrCode = x.QRCode
-			}).FirstOrDefaultAsync();
-            
+                Id = x.Id,
+                FirstName = x.FirstName,
+                LastName = x.LastName,
+                Age = x.Age,
+                PhoneNumber = x.PhoneNumber,
+                FacultyNumber = x.FacultyNumber,
+                Faculty = faculty.Name,
+                Major = major.Name,
+                Email = x.User.Email,
+                CourseTerm = courseTerm.Name,
+            }).FirstOrDefaultAsync();          
 		}
+        public async Task<string> GetQrCodeForStudentAsync(string userId)
+        {
+            var student = await repository.AllReadOnly<Student>().FirstOrDefaultAsync(x => x.UserId == userId);
+
+            if (student == null)
+            {
+                throw new InvalidOperationException("Student not found");
+            }
+
+            var qrCode = student.QRCode;
+            string qrCodeString = qrCode != null ? Convert.ToBase64String(qrCode) : null;
+            return qrCodeString;
+        }
 
 
 		public async Task<ApplicationUser?> FindUserByIdAsync(string user)
@@ -107,13 +116,7 @@ namespace WebUni_Management.Core.Services
 
         public async Task<bool> GetStudentAsync(string userId)
         {
-            var student = await repository.AllReadOnly<Student>().FirstOrDefaultAsync(x => x.UserId == userId);
-            if (student == null)
-            {
-                return true;
-            }
-           
-            return false;
+            return await repository.AllReadOnly<Student>().AnyAsync(x => x.UserId == userId);
         }
 
         public async Task<ApplicationUser?> GetUserByUserNameAsync(string username)

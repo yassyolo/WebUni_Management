@@ -20,5 +20,6 @@ namespace WebUni_Management.Core.Contracts
 		Task<bool> StudentExistsByIdAsync(int id);
 		Task<ManageAccountViewModel?> GetEditAccountFormAsync(int id);
         Task EditAccountAsync(int id, ManageAccountViewModel model);
+        public Task<string> GetQrCodeForStudentAsync(string userId);
     }
 }

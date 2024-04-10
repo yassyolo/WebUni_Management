@@ -1,17 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WebUni_Management.Core.Contracts;
 using WebUni_Management.Core.Models.Event;
 using WebUni_Management.Core.Models.Library;
 using WebUni_Management.Core.Models.PersonalInfo;
 using WebUni_Management.Infrastructure.Data.Models;
 using WebUni_Management.Infrastructure.Repository;
-using WebUni_Management.Infrastructure.SeedDb;
-using static WebUni_Management.Infrastructure.Data.Constants.ModelConstants;
 
 namespace WebUni_Management.Core.Services
 {
@@ -65,13 +58,20 @@ namespace WebUni_Management.Core.Services
                     RentedStudyRoomsCount = x.RentedStudyRooms.Count(),
                 })
                 .FirstOrDefaultAsync();
-            var studentId = await repository.AllReadOnly<Infrastructure.Data.Models.Student>().Where(x => x.Id == id).Select(x => x.UserId).FirstOrDefaultAsync();
-            student.Subjects = await GetSubjects(studentId);
-            
-            return student;
+			if (student != null)
+			{
+				var studentId = await repository.AllReadOnly<Infrastructure.Data.Models.Student>()
+					.Where(x => x.Id == id)
+					.Select(x => x.UserId)
+					.FirstOrDefaultAsync();
+
+				student.Subjects = await GetSubjects(studentId);
+			}
+
+			return student;
         }
 
-		private async Task<IEnumerable<SubjectIndexViewModel>> GetSubjects(string userId)
+		public async Task<IEnumerable<SubjectIndexViewModel>> GetSubjects(string userId)
 		{
 			return await repository.AllReadOnly<SubjectForStudent>().Where(x => x.StudentId == userId)
 				.Select(x => new SubjectIndexViewModel()
@@ -79,9 +79,7 @@ namespace WebUni_Management.Core.Services
 					Id = x.Subject.Id,
 					Name = x.Subject.Name,
 				}).ToListAsync();
-		}
-
-		
+		}		
 
         public async Task RemoveBookRentAsync(int id, string userId)
         {
@@ -181,8 +179,7 @@ namespace WebUni_Management.Core.Services
             {
                 var professor = await repository.All<SubjectProfessor>().FirstOrDefaultAsync(x => x.Id == p.ProfessorId);
                 if(professor.Title == "Professor")
-                {
-                    
+                {                    
                     professor.Title = model.SubjectProfessor.Title;
                     professor.PhoneNumber = model.SubjectProfessor.PhoneNumber;
                     professor.Email = model.SubjectProfessor.Email;
@@ -191,14 +188,13 @@ namespace WebUni_Management.Core.Services
                     professor.Description = model.SubjectProfessor.Description;
                 }
                 else if(professor.Title == "Assistant")
-                {
-                    
-                    professor.Title = model.SubjectProfessor.Title;
-                    professor.PhoneNumber = model.SubjectProfessor.PhoneNumber;
-                    professor.Email = model.SubjectProfessor.Email;
-                    professor.FirstName = model.SubjectProfessor.FirstName;
-                    professor.LastName = model.SubjectProfessor.LastName;
-                    professor.Description = model.SubjectProfessor.Description;
+                {                    
+                    professor.Title = model.SubjectAssistant.Title;
+                    professor.PhoneNumber = model.SubjectAssistant.PhoneNumber;
+                    professor.Email = model.SubjectAssistant.Email;
+                    professor.FirstName = model.SubjectAssistant.FirstName;
+                    professor.LastName = model.SubjectAssistant.LastName;
+                    professor.Description = model.SubjectAssistant.Description;
                 }
             }
             await repository.SaveChangesAsync();
@@ -206,12 +202,12 @@ namespace WebUni_Management.Core.Services
 
         public async Task<AllFacultiesViewModel> FilterFacultiesAsync(string? searchTerm = null, int currentPage = 1, int facultiesPerPage = 4)
         {
-            var faculties = repository.AllReadOnly<Infrastructure.Data.Models.Faculty>();
+            var faculties = repository.AllReadOnly<Faculty>();
 
             if (searchTerm != null && !string.IsNullOrWhiteSpace(searchTerm))
             {
-                var normalizedSearchTerm = searchTerm.ToLower();
-                faculties = faculties.Where(x => x.Name.Contains(normalizedSearchTerm));
+                var normalizedSearchTerm = searchTerm.Trim().ToLower();
+                faculties = faculties.Where(x => x.Name.ToLower().Contains(normalizedSearchTerm));
             }
             var facultiesToShow = await faculties.Skip((currentPage - 1) * facultiesPerPage).Take(facultiesPerPage)
                 .Select(x => new FacultyIndexViewModel
@@ -232,6 +228,7 @@ namespace WebUni_Management.Core.Services
             var faculty = new Faculty()
             {
                 Name = model.Name,
+                Description = model.Description
             };
             
             await repository.AddAsync(faculty);
@@ -260,6 +257,7 @@ namespace WebUni_Management.Core.Services
                 {
                     Id = x.Id,
                     Name = x.Name,
+                    Description = x.Description,
                 }).FirstOrDefaultAsync();
         }
 
@@ -267,6 +265,7 @@ namespace WebUni_Management.Core.Services
         {
             var faculty = repository.All<Faculty>().FirstOrDefault(x => x.Id == id);
             faculty.Name = model.Name;
+            faculty.Description = model.Description;
             return repository.SaveChangesAsync();
         }
 
@@ -275,8 +274,8 @@ namespace WebUni_Management.Core.Services
             var majors = repository.AllReadOnly<Major>();
             if (searchTerm != null)
             {
-                var normalizedSearchTerm = searchTerm.ToLower();
-                majors = majors.Where(x => x.Name.Contains(normalizedSearchTerm));
+                var normalizedSearchTerm = searchTerm.ToLower().Trim();
+                majors = majors.Where(x => x.Name.ToLower().Contains(normalizedSearchTerm));
             }
             var majorsToShow = await majors.Skip((currentPage - 1) * majorsPerPage).Take(majorsPerPage)
                 .Select(x => new MajorIndexViewModel
@@ -289,8 +288,6 @@ namespace WebUni_Management.Core.Services
                 Majors = majorsToShow,
                 TotalMajors = await majors.CountAsync(),
             };
-
-
         }
 
         public async Task<bool> MajorExistsByIdAsync(int id)
@@ -324,7 +321,8 @@ namespace WebUni_Management.Core.Services
                 var major = new Major()
                 {
                     Name = model.Name,
-                    FacultyId = facultyId
+                    FacultyId = facultyId,
+                    Description = model.Description 
                 };
                 await repository.AddAsync(major);
                 await repository.SaveChangesAsync();

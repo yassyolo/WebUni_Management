@@ -339,6 +339,10 @@ namespace WebUni_Management.Controllers
 			var model = await personalInfoService.GetMajorDetailsAsync(id);
 			return View(model);
 		}
+		public IActionResult Chat()
+		{
+			return View();
+		}
 
 
     }

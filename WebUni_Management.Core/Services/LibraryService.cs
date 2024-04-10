@@ -107,6 +107,7 @@ namespace WebUni_Management.Core.Services
             book.Categories = await AllCategoriesForEditAsync();
             return book;
         }
+
         public async Task<IEnumerable<BookCategoryViewModel>> AllCategoriesForEditAsync()
         {
             return await repository.AllReadOnly<BookCategory>()
@@ -146,6 +147,7 @@ namespace WebUni_Management.Core.Services
             }
             return books;
         }
+
         public async Task<string> GetAuthor(int id)
         {
             var authorViewModels = await repository.AllReadOnly<BookByBookAuthor>()
@@ -156,7 +158,7 @@ namespace WebUni_Management.Core.Services
                     LastName = x.Author.LastName
                 })
                 .ToListAsync();
-            return string.Join(", ", authorViewModels.Select(a => $"{a.FirstName} {a.LastName}"));
+            return string.Join(", ", authorViewModels.Select(a => $"{a.FirstName} {a.LastName}")).TrimEnd();
         }
 
         public async Task<IEnumerable<StudyRoomInfo>> LastThreeStudyRoomsAsync()
