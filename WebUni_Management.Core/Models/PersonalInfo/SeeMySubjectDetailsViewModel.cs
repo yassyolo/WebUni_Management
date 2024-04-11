@@ -16,9 +16,6 @@ namespace WebUni_Management.Core.Models.PersonalInfo
 		public string Name { get; set; } = string.Empty;
 		public string Description { get; set; } = string.Empty;
 		public int TotlaAttendanceCount { get; set; }
-
-		public IEnumerable<SubjectProfessor> SubjectProfessors { get; set; } = new List<SubjectProfessor>();
-
 		public string Faculty { get; set; } = string.Empty;
 		public string Major { get; set; } = string.Empty;
 		public string CourseTerm { get; set; } = string.Empty;

@@ -1,16 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WebUni_Management.Infrastructure.Data.Models;
-
-namespace WebUni_Management.Core.Models.PersonalInfo
+﻿namespace WebUni_Management.Core.Models.PersonalInfo
 {
-    public class StudentDetailsViewModel
+	public class StudentDetailsViewModel
     {
         public int Id { get; set; }
         public string FirstName { get; set; } = string.Empty;

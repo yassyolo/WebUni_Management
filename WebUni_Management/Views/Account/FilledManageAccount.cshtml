@@ -14,9 +14,9 @@
 		<h5><strong>Faculty</strong>: @Model.Faculty</h5>
 	     <h5><strong>Major</strong>: @Model.Major</h5>
 		 <h5><strong>Course Term</strong>: @Model.CourseTerm</h5>
-		@if (Model.QrCode != null)
+		@if (!string.IsNullOrEmpty(ViewBag.QrCodeBase64))
 		{
-			<img src="@ViewBag.ImageData">
+			<img src="data:image/png;base64, @ViewBag.QrCodeBase64" alt="QR Code">
 		}
 		else
 		{
@@ -36,13 +36,16 @@
 		margin-bottom: 14px;
 	}
 
-
+	img{
+		width: 200px;
+		height: 200px;
+	}
 	strong {
 		color: #e93e63;
 	}
 
 	.details-container {
-		height: 430px;
+		height: 610px;
 		width: 680px;
 		background-color: white;
 		margin: auto;

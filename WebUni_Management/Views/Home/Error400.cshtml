@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "Error";
+}
+<div class="error-container">
+    <img src="https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg" alt="Alternative image">
+    <h5>Oops! The page you are looking for could not be found.</h5>
+    <div>Go back to <a asp-controller="Home" asp-action="Index">Home</a> Page</div>
+</div>
+<style>
+    .error-container {
+        max-width: 600px;
+        margin: auto;
+        text-align: center;
+        padding: 20px;
+        background-color: white;
+        border: 2px solid #e91e63;
+        border-radius: 8px;
+        border-radius: 5px;
+    }
+
+        .error-container img {
+            width: 300px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+
+        .error-container a {
+            color: #007bff;
+            text-decoration: none;
+        }
+</style>

@@ -1,0 +1,208 @@
+﻿@model WebUni_Management.Core.Models.PersonalInfo.EditSubjectFormViewModel
+@{
+    ViewBag.Message = "Edit subject";
+}
+<div class="edit-container">
+    <h2>Edit subject for student here:</h2>
+    <form class="post-form" method="post">
+        <div class="subject-edit">
+
+            <div class="form-member">
+                <label asp-for="Name">Name</label>
+                <input asp-for="Name" class="form-control" placeholder="Name..">
+                <span asp-validation-for="Name" class="validation"></span>
+            </div>
+            <div class="form-member">
+                <label asp-for="Description">Description</label>
+                <input asp-for="Description" class="form-control" placeholder="Description..">
+                <span asp-validation-for="Description" class="validation"></span>
+            </div>
+            <div class="form-member">
+                <label asp-for="TotalAttendanceCount">Total Attendance Count</label>
+                <input asp-for="TotalAttendanceCount" class="form-control" placeholder="Total Attendance Count..">
+                <span asp-validation-for="TotalAttendanceCount" class="validation"></span>
+            </div>
+
+        </div>
+
+        <div class="professor-edit">
+            @if (Model.SubjectProfessor.Title == "Professor")
+            {
+                <h3>Professor</h3>
+            }
+            <div class="form-member">
+                <label asp-for="@Model.SubjectProfessor.Title">Title</label>
+                <input asp-for="@Model.SubjectProfessor.Title" class="form-control" placeholder="Title..">
+                <span asp-validation-for="@Model.SubjectProfessor.Title" class="validation"></span>
+            </div>
+            <div class="names">
+                <div class="form-member">
+                    <label asp-for="@Model.SubjectProfessor.FirstName">First Name</label>
+                    <input asp-for="@Model.SubjectProfessor.FirstName" class="form-control" placeholder="First Name..">
+                    <span asp-validation-for="@Model.SubjectProfessor.FirstName" class="validation"></span>
+                </div>
+                <div class="form-member">
+                    <label asp-for="@Model.SubjectProfessor.LastName">Last Name</label>
+                    <input asp-for="@Model.SubjectProfessor.LastName" class="form-control" placeholder="Last Name..">
+                    <span asp-validation-for="@Model.SubjectProfessor.LastName" class="validation"></span>
+                </div>
+            </div>
+            <div class="contact-info">
+                <div class="form-member">
+                    <label asp-for="@Model.SubjectProfessor.Email">Email</label>
+                    <input asp-for="@Model.SubjectProfessor.Email" class="form-control" placeholder="Email..">
+                    <span asp-validation-for="@Model.SubjectProfessor.Email" class="validation"></span>
+                </div>
+                <div class="form-member">
+                    <label asp-for="@Model.SubjectProfessor.PhoneNumber">Phone Number</label>
+                    <input asp-for="@Model.SubjectProfessor.PhoneNumber" class="form-control" placeholder="Phone Number..">
+                    <span asp-validation-for="@Model.SubjectProfessor.PhoneNumber" class="validation"></span>
+                </div>
+            </div>
+            <div class="form-member">
+                <label asp-for="@Model.SubjectProfessor.Description">Description</label>
+                <input asp-for="@Model.SubjectProfessor.Description" class="form-control" placeholder="Description..">
+                <span asp-validation-for="@Model.SubjectProfessor.Description" class="validation"></span>
+            </div>
+
+        </div>
+        <div class="professor-edit">
+            @if (Model.SubjectAssistant.Title == "Assistant")
+            {
+                <h3>Professor</h3>
+            }
+            <div class="form-member">
+                <label asp-for="@Model.SubjectAssistant.Title">Title</label>
+                <input asp-for="@Model.SubjectAssistant.Title" class="form-control" placeholder="Title..">
+                <span asp-validation-for="@Model.SubjectAssistant.Title" class="validation"></span>
+            </div>
+            <div class="names">
+                <div class="form-member">
+                    <label asp-for="@Model.SubjectAssistant.FirstName">First Name</label>
+                    <input asp-for="@Model.SubjectAssistant.FirstName" class="form-control" placeholder="First Name..">
+                    <span asp-validation-for="@Model.SubjectAssistant.FirstName" class="validation"></span>
+                </div>
+                <div class="form-member">
+                    <label asp-for="@Model.SubjectAssistant.LastName">Last Name</label>
+                    <input asp-for="@Model.SubjectAssistant.LastName" class="form-control" placeholder="Last Name..">
+                    <span asp-validation-for="@Model.SubjectAssistant.LastName" class="validation"></span>
+                </div>
+            </div>
+            <div class="contact-info">
+                <div class="form-member">
+                    <label asp-for="@Model.SubjectAssistant.Email">Email</label>
+                    <input asp-for="@Model.SubjectAssistant.Email" class="form-control" placeholder="Email..">
+                    <span asp-validation-for="@Model.SubjectAssistant.Email" class="validation"></span>
+                </div>
+                <div class="form-member">
+                    <label asp-for="@Model.SubjectAssistant.PhoneNumber">Phone Number</label>
+                    <input asp-for="@Model.SubjectAssistant.PhoneNumber" class="form-control" placeholder="Phone Number..">
+                    <span asp-validation-for="@Model.SubjectAssistant.PhoneNumber" class="validation"></span>
+                </div>
+            </div>
+            <div class="form-member">
+                <label asp-for="@Model.SubjectAssistant.Description">Description</label>
+                <input asp-for="@Model.SubjectAssistant.Description" class="form-control" placeholder="Description..">
+                <span asp-validation-for="@Model.SubjectAssistant.Description" class="validation"></span>
+            </div>
+
+        </div>
+        <div class="action-buttons">
+            <form asp-controller="PersonalInfo" asp-action="EditSubjectForMajor" asp-route-id="@Model.SubjectId" method="post">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <form asp-controller="PersonalInfo" asp-action="SeeSubjects" asp-route-id="@Model.StudentId" method="get">
+                <button type="submit" class="btn btn-primary">Back</button>
+            </form>
+        </div>
+    </form>
+</div>
+<style>
+    h2 {
+        color: #e91e63;
+    }
+
+    .edit-container {
+        height: 1100px;
+        width: 930px;
+        background-color: white;
+        margin: auto;
+        border: 2px solid #e91e63;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 10px;
+    }
+
+    .post-form {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        height: 80%;
+    }
+
+    .form-member {
+        margin-bottom: 20px;
+    }
+
+        .form-member label {
+            font-weight: bold;
+        }
+
+        .form-member input {
+            align-content: center;
+            justify-content: center;
+            width: 95%;
+            height: 30px;
+            border: 1px solid #e91e63;
+            border-radius: 3px;
+        }
+
+    .form-select {
+        width: 85%;
+        border: 1px solid #e91e63;
+        border-radius: 3px;
+    }
+
+    .contact-info, .names {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+    }
+
+        .contact-info .form-member input {
+            width: 95%;
+            height: 30px;
+            border: 1px solid #e91e63;
+            border-radius: 3px;
+        }
+
+    .validation {
+        color: red;
+    }
+
+    .btn-primary {
+        background-color: #fc819e;
+        border-color: #fc819e;
+        color: black;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        .btn-primary:hover {
+            background-color: #e91e63;
+            border-color: #e91e63;
+        }
+
+    .action-buttons {
+        display: flex;
+        margin-top: auto;
+        gap: 20px;
+    }
+</style>
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}
