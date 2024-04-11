@@ -32,14 +32,14 @@ namespace WebUnii_Management.Tests
 
             dbContext.Database.EnsureCreated();
             dbContext.Database.EnsureDeleted();
-        }
+
+			repository = new Repository(dbContext);
+			newsService = new NewsService(repository);
+		}
 
         [Test]
         public async Task AddNewsAsync_ShouldAddNewsToDb()
         {
-            repository = new Repository(dbContext);
-            newsService = new NewsService(repository);
-
             await repository.AddAsync(new NewsArticle
             {
                 Id = 4,
@@ -48,9 +48,10 @@ namespace WebUnii_Management.Tests
                 ImageUrl = "Test",
                 IsApproved = true
             });
-
             await repository.SaveChangesAsync();
+
             var news = await repository.GetById<NewsArticle>(4);
+
             Assert.AreEqual(1, await dbContext.NewsArticles.CountAsync());
             Assert.AreEqual("Test", news.Title);
             Assert.AreEqual("Test", news.Content);
@@ -58,15 +59,11 @@ namespace WebUnii_Management.Tests
             Assert.AreEqual(true, news.IsApproved);
             Assert.AreEqual(4, news.Id);
             Assert.IsNotNull(news);
-
         }
 
         [Test]
         public async Task AddNewsAsync_ShouldAddNewsByModel()
         {
-            repository = new Repository(dbContext);
-            newsService = new NewsService(repository);
-
             await newsService.AddNewsAsync(new NewsFormViewModel
             {
                 Title = "Test",
@@ -74,6 +71,7 @@ namespace WebUnii_Management.Tests
                 ImageUrl = "Test",
                 PublishedOn = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
             });
+
             var news = await repository.GetById<NewsArticle>(1);
 
             Assert.AreEqual(1, await dbContext.NewsArticles.CountAsync());
@@ -84,13 +82,11 @@ namespace WebUnii_Management.Tests
             Assert.AreEqual(1, news.Id);
             Assert.IsNotNull(news);
             Assert.IsInstanceOf<NewsArticle>(news);
-
         }
+
+        [Test]
         public async Task ApproveNews_ShouldApproveNewsArticleInTheDb()
         {
-            repository = new Repository(dbContext);
-            newsService = new NewsService(repository);
-
             await repository.AddAsync(new NewsArticle
             {
                 Id = 4,
@@ -99,10 +95,9 @@ namespace WebUnii_Management.Tests
                 ImageUrl = "Test",
                 IsApproved = false
             });
-
             await repository.SaveChangesAsync();
-            await newsService.ApproveNewsArticleAsync(4);
 
+            await newsService.ApproveNewsArticleAsync(4);
             var news = await repository.GetById<NewsArticle>(4);
 
             Assert.AreEqual(true, news.IsApproved);
@@ -114,9 +109,6 @@ namespace WebUnii_Management.Tests
         [Test]
         public async Task DeleteNews_ShouldDeleteNewsArticleFromDb()
         {
-            repository = new Repository(dbContext);
-            newsService = new NewsService(repository);
-
             await repository.AddAsync(new NewsArticle
             {
                 Id = 4,
@@ -125,22 +117,18 @@ namespace WebUnii_Management.Tests
                 ImageUrl = "Test",
                 IsApproved = true
             });
-
             await repository.SaveChangesAsync();
-            await newsService.DeleteNewsArticleAsync(4);
 
+            await newsService.DeleteNewsArticleAsync(4);
             var news = await repository.GetById<NewsArticle>(4);
 
             Assert.IsNull(news);
-            Assert.AreEqual(0, await dbContext.NewsArticles.CountAsync());
-            
+            Assert.AreEqual(0, await dbContext.NewsArticles.CountAsync());            
         }
+
         [Test]
         public async Task DiscardNews_ShouldDeleteNews()
         {
-            repository = new Repository(dbContext);
-            newsService = new NewsService(repository);
-
             await repository.AddAsync(new NewsArticle
             {
                 Id = 4,
@@ -149,22 +137,18 @@ namespace WebUnii_Management.Tests
                 ImageUrl = "Test",
                 IsApproved = false
             });
-
             await repository.SaveChangesAsync();
-            await newsService.DiscardNewsArticleAsync(4);
 
+            await newsService.DiscardNewsArticleAsync(4);
             var news = await repository.GetById<NewsArticle>(4);
+
             Assert.IsNull(news);
-            Assert.AreEqual(0, await dbContext.NewsArticles.CountAsync());
-            
+            Assert.AreEqual(0, await dbContext.NewsArticles.CountAsync());            
         }
 
         [Test]
         public async Task EditNews_ShouldEditNews()
         {
-            repository = new Repository(dbContext);
-            newsService = new NewsService(repository);
-
             await repository.AddAsync(new NewsArticle
             {
                 Id = 4,
@@ -173,8 +157,8 @@ namespace WebUnii_Management.Tests
                 ImageUrl = "Test",
                 IsApproved = true
             });
-
             await repository.SaveChangesAsync();
+
             await newsService.EditNewsAsync(4, new NewsFormViewModel
             {
                 Title = "Test2",
@@ -182,8 +166,8 @@ namespace WebUnii_Management.Tests
                 ImageUrl = "Test2",
                 PublishedOn = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
             });
-
             var news = await repository.GetById<NewsArticle>(4);
+
             Assert.IsNotNull(news);
             Assert.AreEqual("Test2", news.Title);
             Assert.AreEqual("Test2", news.Content);
@@ -192,12 +176,10 @@ namespace WebUnii_Management.Tests
             Assert.AreEqual(true, news.IsApproved);
             Assert.IsInstanceOf<NewsArticle>(news);
         }
+
         [Test]
         public async Task ExistsById_ShouldReturnTrue()
         {
-            repository = new Repository(dbContext);
-            newsService = new NewsService(repository);
-
             await repository.AddAsync(new NewsArticle
             {
                 Id = 4,
@@ -207,18 +189,16 @@ namespace WebUnii_Management.Tests
                 IsApproved = true
             });
             await repository.SaveChangesAsync();
+
             var result = await newsService.ExistByIdAsync(4);  
 
             Assert.IsTrue(result);
-            Assert.IsInstanceOf<bool>(result);
-            
+            Assert.IsInstanceOf<bool>(result);           
         }
+
         [Test]
         public async Task GetEditNewsFormAsync_ShouldReturnModel()
         {
-            repository = new Repository(dbContext);
-            newsService = new NewsService(repository);
-
             await repository.AddAsync(new NewsArticle
             {
                 Id = 4,
@@ -228,6 +208,7 @@ namespace WebUnii_Management.Tests
                 IsApproved = true
             });
             await repository.SaveChangesAsync();
+
             var result = await newsService.GetEditNewsFormAsync(4);
 
             Assert.IsNotNull(result);
@@ -236,14 +217,11 @@ namespace WebUnii_Management.Tests
             Assert.AreEqual("Test", result.Content);
             Assert.AreEqual("Test", result.ImageUrl);
             Assert.AreEqual(4, result.Id);
- 
         }
+
         [Test]
         public async Task GetNewsArticleDetailsById_ShouldReturnModel()
         {
-            repository = new Repository(dbContext);
-            newsService = new NewsService(repository);
-
             await repository.AddAsync(new NewsArticle
             {
                 Id = 4,
@@ -260,6 +238,7 @@ namespace WebUnii_Management.Tests
                 ReaderId = guid,
             });
             await repository.SaveChangesAsync();
+
             var result = await newsService.GetNewsArticleDetailsById(4, guid);
 
             Assert.IsNotNull(result);
@@ -269,12 +248,10 @@ namespace WebUnii_Management.Tests
             Assert.AreEqual("Test", result.ImageUrl);
             Assert.AreEqual(4, result.Id);
         }
+
         [Test]
         public async Task GetNewsArticleDetailsById_ShouldChangeReadStatusForuser()
         {
-            repository = new Repository(dbContext);
-            newsService = new NewsService(repository);
-
             await repository.AddAsync(new NewsArticle
             {
                 Id = 4,
@@ -291,6 +268,7 @@ namespace WebUnii_Management.Tests
                 ReaderId = guid,
             });
             await repository.SaveChangesAsync();
+
             await newsService.GetNewsArticleDetailsById(4, guid);
             var readStatus = await repository.All<NewsArticleReadStatus>().Where(x=> x.NewsArticleId == 4).FirstOrDefaultAsync();
 
@@ -299,12 +277,10 @@ namespace WebUnii_Management.Tests
             Assert.AreEqual(4, readStatus.NewsArticleId);
             Assert.AreEqual(guid, readStatus.ReaderId);
         }
+
 		[Test]
 		public async Task WriteNewsAsync_ShouldAddnewsToDb()
 		{
-			var repository = new Repository(dbContext);
-			var newsService = new NewsService(repository);
-
 			var guid = Guid.NewGuid().ToString();
 			await repository.AddAsync(new Student
 			{
@@ -320,8 +296,8 @@ namespace WebUnii_Management.Tests
 				ImageUrl = "Test",
 				PublishedOn = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
 			});
-
 			var news = await repository.All<NewsArticle>().FirstOrDefaultAsync(); 
+
 			Assert.IsNotNull(news);
 			Assert.IsInstanceOf<NewsArticle>(news);
 			Assert.AreEqual("Test", news.Title);
@@ -330,12 +306,10 @@ namespace WebUnii_Management.Tests
 			Assert.IsFalse(news.IsApproved); 
 			Assert.AreEqual(2, news.AuthorId); 
 		}
+
 		[Test]
         public async Task GetNewsForApprovalAsync_ShouldReturnModel()
-        {
-            repository = new Repository(dbContext);
-            newsService = new NewsService(repository);
-
+        { 
             await repository.AddAsync(new NewsArticle
             {
                 Id = 4,
@@ -345,6 +319,7 @@ namespace WebUnii_Management.Tests
                 IsApproved = false
             });
             await repository.SaveChangesAsync();
+
             await repository.AddAsync(new NewsArticle
             {
                 Id = 5,
@@ -353,8 +328,8 @@ namespace WebUnii_Management.Tests
                 ImageUrl = "Test2",
                 IsApproved = false
             });
-
             await repository.SaveChangesAsync();
+
             var result = await newsService.GetNewsForApprovalAsync(2, 1);
             var news = await repository.GetById<NewsArticle>(4);
 
@@ -364,12 +339,10 @@ namespace WebUnii_Management.Tests
             Assert.AreEqual(4, result.News.FirstOrDefault().Id);
             Assert.AreEqual("Test", news.Title);
         }
+
         [Test]
         public async Task GetLastThreeNewsArticlesAsync_ShouldReturnModel()
         {
-            repository = new Repository(dbContext);
-            newsService = new NewsService(repository);
-
             await repository.AddAsync(new NewsArticle
             {
                 Id = 4,
@@ -397,6 +370,7 @@ namespace WebUnii_Management.Tests
                 IsApproved = true
             });
             await repository.SaveChangesAsync();
+
             var result = await newsService.GetLastThreeNewsArticlesAsync();
             var news = await repository.GetById<NewsArticle>(4);
 
@@ -406,12 +380,10 @@ namespace WebUnii_Management.Tests
             Assert.AreEqual(4, news.Id);
             Assert.AreEqual("Test", news.Title);
         }
+
         [Test]
         public async Task FilterNewsAsync_ShouldReturnAllNewsModel()
         {
-            repository = new Repository(dbContext);
-            newsService = new NewsService(repository);
-
             await repository.AddAsync(new NewsArticle
             {
                 Id = 4,
@@ -431,22 +403,19 @@ namespace WebUnii_Management.Tests
             });
             await repository.SaveChangesAsync();
 
-           var result=  await newsService.FilterNewsAsync(null, null, null, 1, 2);
-
+            var result=  await newsService.FilterNewsAsync(null, null, null, 1, 2);
             var news = await repository.GetById<NewsArticle>(4);
+
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<NewsShowcaseViewModel>(result);
             Assert.AreEqual(2, result.News.Count());
             Assert.AreEqual(4, news.Id);
-            Assert.AreEqual("Test", news.Title);
-           
+            Assert.AreEqual("Test", news.Title);           
         }
+
 		[Test]
 		public async Task FilterNewsAsync_ShouldReturnAllNewsBySearch()
 		{
-			repository = new Repository(dbContext);
-			newsService = new NewsService(repository);
-
 			await repository.AddAsync(new NewsArticle
 			{
 				Id = 4,
@@ -456,24 +425,20 @@ namespace WebUnii_Management.Tests
 				IsApproved = true,
                 PublishedOn = DateTime.Now
 			});
-			await repository.SaveChangesAsync();
-			
+			await repository.SaveChangesAsync();			
 
 			var result = await newsService.FilterNewsAsync("2024", "04", "10", 1, 2);
-
 			var news = await repository.GetById<NewsArticle>(4);
+
 			Assert.IsNotNull(result);
 			Assert.IsInstanceOf<NewsShowcaseViewModel>(result);
 			Assert.AreEqual(4, news.Id);
 			Assert.AreEqual("Test", news.Title);
-
 		}
+
 		[Test]
         public async Task ApproveNewsArticleAsync_ShouldApproveNews()
         {
-            var repository = new Repository(dbContext); 
-            var newsService = new NewsService(repository);
-
             await repository.AddAsync(new NewsArticle
             {
 				Id = 4,
@@ -483,8 +448,8 @@ namespace WebUnii_Management.Tests
 				IsApproved = false
 			});
             await repository.SaveChangesAsync();
-            await newsService.ApproveNewsArticleAsync(4);
 
+            await newsService.ApproveNewsArticleAsync(4);
             var news = await repository.GetById<NewsArticle>(4);
 
             Assert.IsNotNull(news);
@@ -493,5 +458,10 @@ namespace WebUnii_Management.Tests
             Assert.AreEqual(4, news.Id);
         }
 
+		[TearDown]
+		public void TearDown()
+		{
+			dbContext.Database.EnsureDeleted();
+		}
 	}
 }

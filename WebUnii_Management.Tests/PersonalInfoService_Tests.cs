@@ -676,12 +676,15 @@ namespace WebUnii_Management.Tests
 			{
 				Id = 10,
 				Name = "Test",
-				FacultyId = 10
+				FacultyId = 10,
+				Description = "Test"
 			});
 			await repository.SaveChangesAsync();
 
 			var result = await personalInfoService.GetEditMajorFormAsync(10);
 			Assert.IsNotNull(result);
+			Assert.AreEqual("Test", result.Name);
+			Assert.AreEqual("Test", result.Description);
 			Assert.IsInstanceOf<MajorFormViewModel>(result);
 		}
 		[Test]
@@ -694,19 +697,22 @@ namespace WebUnii_Management.Tests
 			{
 				Id = 10,
 				Name = "Test",
-				FacultyId = 10
+				FacultyId = 10,
+				Description = "Test"
 			});
 			await repository.SaveChangesAsync();
 
 			var model = new MajorFormViewModel
 			{
 				Name = "Update",
+				Description = "Update",
 			};
 			await personalInfoService.EditMajorAsync(10, model);
 
 			var result = await repository.GetById<Major>(10);
 			Assert.IsNotNull(result);
 			Assert.AreEqual("Update", result.Name);
+			Assert.AreEqual("Update", result.Description);
 			Assert.AreEqual(10, result.FacultyId);
 		}
 		[Test]
@@ -1213,6 +1219,405 @@ namespace WebUnii_Management.Tests
 			Assert.IsTrue(result);
 			Assert.IsInstanceOf<bool>(result);
 		}
+		[Test]
+		public async Task SeeMySubjectDetailsAsync_ShouldReturnModel()
+		{
+			repository= new Repository(context);
+			personalInfoService = new PersonalInfoService(repository);
 
-    }
+			var guid = Guid.NewGuid().ToString();
+			await repository.AddAsync(new ApplicationUser
+			{
+                Id = guid,
+            });
+			await repository.SaveChangesAsync();
+
+			await repository.AddAsync(new Faculty
+			{
+                Id = 10,
+                Name = "Test"
+            });
+			await repository.SaveChangesAsync();
+
+			await repository.AddAsync(new Major
+			{
+                Id = 10,
+                Name = "Test",
+                FacultyId = 10
+            });
+			await repository.SaveChangesAsync();
+
+			await repository.AddAsync(new CourseTerm
+			{
+                Id = 10,
+                Name = "Test",
+                MajorId = 10
+            });
+			await repository.SaveChangesAsync();
+
+			await repository.AddAsync(new Student
+			{
+                Id = 10,
+                FirstName = "Test",
+                MajorId = 10,
+                FacultyNumber = "12345678",
+                FacultyId = 10,
+                CourseTermId = 10,
+                UserId = guid
+            });
+
+			await repository.SaveChangesAsync();
+
+	        await repository.AddAsync(new Subject
+				{
+                Id = 10,
+                Name = "Test",
+                Description = "Test"
+            });
+			await repository.SaveChangesAsync();
+
+			await repository.AddAsync(new SubjectForStudent
+			{
+                StudentId = guid,
+                SubjectId = 10
+            });
+
+			await repository.SaveChangesAsync();
+			await repository.AddAsync(new SubjectProfessor
+			{
+                Id = 10,
+                Title = "Professor"
+            });
+			await repository.SaveChangesAsync();
+
+			await repository.AddAsync(new SubjectProfessor
+			{
+                Id = 11,
+                Title = "Assistant"
+            });
+
+			await repository.SaveChangesAsync();
+
+			await repository.AddAsync(new SubjectByProfessor
+			{
+                ProfessorId = 10,
+                SubjectId = 10
+            });
+
+			await repository.SaveChangesAsync();
+
+			await repository.AddAsync(new SubjectByProfessor
+			{
+                ProfessorId = 11,
+                SubjectId = 10
+            });
+
+			await repository.SaveChangesAsync();
+
+			var result = await personalInfoService.SeeMySubjectDetailsAsync(10, guid);
+
+			Assert.IsNotNull(result);
+
+			Assert.IsInstanceOf<SeeMySubjectDetailsViewModel>(result);
+			Assert.AreEqual("Test", result.Name);
+			Assert.AreEqual("Professor", result.Professor.Title);
+		}
+        [Test]
+        public async Task GetProfessorForSubjectAsync_ShouldReturnModel()
+        {
+            repository = new Repository(context);
+            personalInfoService = new PersonalInfoService(repository);
+
+            await repository.AddAsync(new SubjectProfessor
+            {
+                Id = 10,
+                Title = "Professor",
+                FirstName = "Test",
+                LastName = "Test",
+                PhoneNumber = "0888888888",
+            });
+            await repository.SaveChangesAsync();
+
+            await repository.AddAsync(new Subject
+            {
+                Id = 10,
+            });
+            await repository.SaveChangesAsync();
+
+            await repository.AddAsync(new SubjectByProfessor
+            {
+                ProfessorId = 10,
+                SubjectId = 10
+            });
+            await repository.SaveChangesAsync();
+
+            var result = await personalInfoService.GetProfessorForSubjectAsync(10);
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<ProfessorDetailsViewModel>(result);
+            Assert.AreEqual("Professor", result.Title); 
+            Assert.AreEqual("Test", result.FirstName);
+        }
+		[Test]
+		public async Task GetAssistantForSubjectAsync_ShouldReturnModel()
+		{
+			   repository = new Repository(context);
+			personalInfoService = new PersonalInfoService(repository);
+
+			await repository.AddAsync(new SubjectProfessor
+			{
+                Id = 10,
+                Title = "Assistant",
+                FirstName = "Test",
+                LastName = "Test",
+                PhoneNumber = "0888888888",
+            });
+			await repository.SaveChangesAsync();
+
+			await repository.AddAsync(new Subject
+			{
+                Id = 10,
+            });
+			await repository.SaveChangesAsync();
+		    
+			await repository.AddAsync(new SubjectByProfessor
+			{
+                ProfessorId = 10,
+                SubjectId = 10
+            });
+			await repository.SaveChangesAsync();
+
+			var result = await personalInfoService.GetAssistantForSubjectAsync(10);
+
+			Assert.IsNotNull(result);
+			Assert.IsInstanceOf<AssistantDetailsViewModel>(result);
+			Assert.AreEqual("Assistant", result.Title);
+			Assert.AreEqual("Test", result.FirstName);
+		}
+		[Test]
+		public async Task StudentHasSubjectAsync_ShouldReturnTrue()
+		{
+			repository = new Repository(context);
+			personalInfoService = new PersonalInfoService(repository);
+
+			var guid = Guid.NewGuid().ToString();
+			await repository.AddAsync(new ApplicationUser
+			{
+				Id = guid,
+			});
+			await repository.SaveChangesAsync();
+
+			await repository.AddAsync(new Student
+			{
+				Id = 10,
+				UserId = guid
+			});
+			await repository.SaveChangesAsync();
+			await repository.AddAsync(new Subject
+			{
+				Id = 10,
+				Name = "Test",
+				Description = "Test"
+			});
+			await repository.SaveChangesAsync();
+
+			await repository.AddAsync(new SubjectForStudent
+			{
+				StudentId = guid,
+				SubjectId = 10
+			});
+
+			await repository.SaveChangesAsync();
+
+			var result = await personalInfoService.StudentHasSubjectAsync(10, 10);
+			Assert.IsTrue(result);
+			Assert.IsInstanceOf<bool>(result);
+		}
+		[Test]
+		public async Task GetFacultyDetailsAsync_ShouldReturnModel()
+		{
+			repository = new Repository(context);
+			personalInfoService = new PersonalInfoService(repository);
+
+			await repository.AddAsync(new Faculty
+			{
+				Id = 10,
+				Name = "Test",
+				Description = "Test"
+			});
+			await repository.SaveChangesAsync();
+
+			await repository.AddAsync(new Major
+			{
+				Id = 10,
+				Name = "Test",
+				FacultyId = 10
+			});
+			await repository.SaveChangesAsync();
+			var result = await personalInfoService.GetFacultyDetailsAsync(10);
+			Assert.IsNotNull(result);
+			Assert.IsInstanceOf<FacultyDetailsViewModel>(result);
+			Assert.AreEqual("Test", result.Name);
+			Assert.AreEqual("Test", result.Description);
+
+		}
+		[Test]
+		public async Task GetMajorsForFacultyByIdAsync_ShouldReturnModel()
+		{
+			repository = new Repository(context);
+			personalInfoService = new PersonalInfoService(repository);
+
+			await repository.AddAsync(new Faculty
+			{
+				Id = 10,
+				Name = "Test",
+				Description = "Test"
+			});
+			await repository.SaveChangesAsync();
+
+			await repository.AddAsync(new Major
+			{
+				Id = 10,
+				Name = "Test",
+				FacultyId = 10
+			});
+			await repository.SaveChangesAsync();
+
+			var result = await personalInfoService.GetMajorsForFacultyByIdAsync(10);
+			Assert.IsNotNull(result);
+			Assert.IsInstanceOf<IEnumerable<MajorDetailsViewModel>>(result);
+			Assert.That(result.Any(x => x.Id == 10), Is.True);
+		}
+		[Test]
+		public async Task GetMajorDetailsAsync_ShouldReturnModel()
+		{
+			repository = new Repository(context);
+			personalInfoService = new PersonalInfoService(repository);
+
+			await repository.AddAsync(new Faculty
+			{
+				Id = 10,
+				Name = "Test",
+				Description = "Test"
+			});
+			await repository.SaveChangesAsync();
+
+			await repository.AddAsync(new Major
+			{
+				Id = 10,
+				Name = "Test",
+				Description = "Test",
+				FacultyId = 10
+			});
+			await repository.SaveChangesAsync();
+
+			var result = await personalInfoService.GetMajorDetailsAsync(10);
+			Assert.IsNotNull(result);
+			Assert.IsInstanceOf<MajorDetailsViewModel>(result);
+			Assert.AreEqual("Test", result.Name);
+			Assert.AreEqual("Test", result.Description);
+		}
+		[Test]
+		public async Task GetSubjectsForMajorAsync_ShouldReturnModel()
+		{
+			repository = new Repository(context);
+			personalInfoService = new PersonalInfoService(repository);
+
+			await repository.AddAsync(new Major
+			{
+				Id = 10,
+				Name = "Test",
+				FacultyId = 10
+			});
+			await repository.SaveChangesAsync();
+
+			await repository.AddAsync(new Subject
+			{
+				Id = 10,
+				Name = "Test",
+				Description = "Test",
+				MajorId = 10
+			});
+			await repository.SaveChangesAsync();
+
+			var result = await personalInfoService.GetSubjectsForMajorAsync(10);
+			Assert.IsNotNull(result);
+
+			Assert.IsInstanceOf<IEnumerable<SubjectIndexViewModel>>(result);
+			Assert.That(result.Any(x => x.Id == 10), Is.True);
+		}
+		[Test]
+		public async Task DeleteFacultyAsync_ShouldDelete()
+		{
+			repository = new Repository(context);
+			personalInfoService = new PersonalInfoService(repository);
+
+			await repository.AddAsync(new Faculty
+			{
+				Id = 10,
+				Name = "Test",
+				Description = "Test"
+			});
+			await repository.SaveChangesAsync();
+			await repository.AddAsync(new Major
+			{
+				Id = 10,
+				Name = "Test",
+				FacultyId = 10
+			});
+			await repository.SaveChangesAsync();
+
+			await repository.AddAsync(new CourseTerm
+			{
+				Id = 10,
+				Name = "Test",
+				MajorId = 10
+			});
+
+			await repository.SaveChangesAsync();
+
+			await repository.AddAsync(new Subject
+			{
+				Id = 10,
+				Name = "Test",
+				Description = "Test",
+				MajorId = 10
+			});
+			await repository.SaveChangesAsync();
+
+			await repository.AddAsync(new Student
+			{
+				Id = 10,
+				MajorId = 10,
+				FacultyNumber = "12345678",
+				FacultyId = 10,
+				CourseTermId = 10,
+			});
+			await repository.SaveChangesAsync();
+
+			await repository.AddAsync(new SubjectForStudent
+			{
+				StudentId = "Test",
+				SubjectId = 10
+			});	
+			await repository.SaveChangesAsync();
+
+			await personalInfoService.DeleteFacultyAsync(10);
+			var faculty = await repository.GetById<Faculty>(10);
+			var major = await repository.GetById<Major>(10);
+			//var courseTerm = await repository.GetById<CourseTerm>(10);
+			var subject = await repository.GetById<Subject>(10);
+			var subjectForStudent = await repository.All<SubjectForStudent>().FirstOrDefaultAsync(x => x.SubjectId == 10);
+
+			Assert.IsNull(faculty);
+			Assert.IsNull(major);
+			//Assert.IsNull(courseTerm);
+			Assert.IsNull(subject);
+			Assert.IsNull(subjectForStudent);
+		}
+		[TearDown]
+		public void TearDown()
+		{
+			context.Database.EnsureDeleted();
+		}
+	}
 }

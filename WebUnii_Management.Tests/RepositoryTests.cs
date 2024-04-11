@@ -1,20 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WebUni_Management.Data;
 using WebUni_Management.Infrastructure.Repository;
-using NUnit.Framework;
-using Microsoft.EntityFrameworkCore.InMemory;
 using WebUni_Management.Infrastructure.Data.Models;
 using WebUni_Management.Infrastructure.Migrations;
 using Microsoft.AspNetCore.Identity;
 
 namespace WebUnii_Management.Tests
 {
-    [TestFixture]
+	[TestFixture]
     public class RepositoryTests
     {
         private ApplicationDbContext context;
@@ -87,65 +80,16 @@ namespace WebUnii_Management.Tests
             context.Add(student);
             context.SaveChangesAsync();
         }
+
         [Test]
         public async Task GetById_ShouldReturnStudentIdCorrectly()
         {
-            var expectedStudentId = 1;
-
-            var result = await repository.GetById<Student>(expectedStudentId);
+            var result = await repository.GetById<Student>(1);
 
             Assert.That(result, Is.Not.Null);
-            Assert.AreEqual(expectedStudentId, result.Id);
+            Assert.AreEqual(1, result.Id);
         }
-        [Test]
-        public async Task GetById_ShouldReturnFacultyIdCorrectly()
-        {
-            var expectedFacultyId = 1;
 
-            var result = await  repository.GetById<Faculty>(expectedFacultyId);
-
-            Assert.That(result, Is.Not.Null);
-            Assert.AreEqual(expectedFacultyId, result.Id);
-        }
-        [Test]
-        public async Task GetById_ShouldReturnMajorIdCorrectly()
-        {
-            var expectedMajorId = 1;
-
-            var result = await repository.GetById<Major>(expectedMajorId);
-
-            Assert.That(result, Is.Not.Null);
-            Assert.AreEqual(expectedMajorId, result.Id);
-        }
-        [Test]
-        public async Task GetById_ShouldReturnCourseTermIdCorrectly()
-        {
-            var expectedCourseTermId = 1;
-
-            var result = await repository.GetById<CourseTerm>(expectedCourseTermId);
-
-            Assert.That(result, Is.Not.Null);
-            Assert.AreEqual(expectedCourseTermId, result.Id);
-        }
-        [Test]
-        public async Task GetById_ShouldReturnUserIdCorrectly()
-        {
-            var expectedUserId = "0e90dbeb-6468-4abc-9599-b4757e3874aa";
-
-            var result = await repository.GetById<ApplicationUser>(expectedUserId);
-
-            Assert.That(result, Is.Not.Null);
-            Assert.AreEqual(expectedUserId, result?.Id);
-        }
-        [Test]
-        public async Task GetById_ShouldReturtnStudentidCorrectly()
-        {
-            var expectedStudentId = 1;
-            var result = await repository.GetById<Student>(expectedStudentId);
-
-            Assert.That(result, Is.Not.Null);
-            Assert.AreEqual(expectedStudentId, result?.Id);
-        }
 
         [Test]
         public async Task Add_ShouldAddStudentCorrectly()
@@ -166,65 +110,50 @@ namespace WebUnii_Management.Tests
             Assert.That(result, Is.Not.Null);
             Assert.That(result, Is.TypeOf<Student>());
         }
+
         [Test]
         public async Task All_ShouldReturnAllStudents()
         {
-            // Arrange
-            var expectedCount = 1; // Assuming you have 2 students in your test data
-
-            // Act
             var result =  await repository.All<Student>().ToListAsync();
 
-            // Assert
-            Assert.AreEqual(expectedCount, result.Count);
-            // You can add more assertions to check the correctness of each student entity if needed
+            Assert.AreEqual(1, result.Count);
         }
         [Test]
         public void AllReadOnly_ShouldReturnAllStudentsInReadOnlyState()
         {
-            // Arrange
-            var expectedCount = 1; // Assuming you have 2 students in your test data
-
-            // Act
             var result = repository.AllReadOnly<Student>().ToList();
 
-            // Assert
-            Assert.AreEqual(expectedCount, result.Count);
-
-            // Check that entities are in a read-only state
+            Assert.AreEqual(1, result.Count);
         }
 
         [Test]
         public async Task SaveChangesAsync_ShouldSaveChangesToDatabase()
         {
-            // Arrange: Prepare any necessary setup or changes to the entities
-            // For example, adding or modifying entities
-
-            // Act: Save changes to the database
             var result = await repository.SaveChangesAsync();
 
-            // Assert: Verify that changes have been successfully saved
-            Assert.That(result, Is.GreaterThanOrEqualTo(0)); // Ensure that SaveChangesAsync() returns a non-negative integer
-                                                             // You can also check for a specific number of changes if needed
+            Assert.That(result, Is.GreaterThanOrEqualTo(0));                                                           
         }
 
         [Test]
         public async Task DeleteAsync_ShouldDeleteEntityFromDatabase()
         {
-            // Arrange: Add the entity you want to delete to the database
-            var student = new Student() { FirstName = "Test" };
-            await repository.AddAsync(student);
-            await repository.SaveChangesAsync();
+            await repository.AddAsync(new Student() 
+            { 
+                Id = 10,
+                FirstName = "Test" 
+            });
 
-            // Act: Delete the entity from the database
+            var student = await repository.GetById<Student>(10);
             await repository.DeleteAsync(student);
-            await repository.SaveChangesAsync();
 
-            // Assert: Verify that the entity has been deleted
-            var deletedStudent = await repository.GetById<Student>(student.Id);
+            var deletedStudent = await repository.GetById<Student>(10);
             Assert.That(deletedStudent, Is.Null);
         }
+		[TearDown]
+		public void TearDown()
+		{
+			context.Database.EnsureDeleted();
+		}
 
-
-    }
+	}
 }

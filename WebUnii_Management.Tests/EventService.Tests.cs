@@ -1,12 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Moq;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
 using WebUni_Management.Core.Contracts;
 using WebUni_Management.Core.Models.Event;
 using WebUni_Management.Core.Services;
@@ -17,7 +9,7 @@ using WebUni_Management.Infrastructure.Repository;
 
 namespace WebUni_Management.Tests
 {
-    [TestFixture]
+	[TestFixture]
     public class EventServiceTests
     {
         private IRepository repository;
@@ -34,14 +26,14 @@ namespace WebUni_Management.Tests
 
             dbContext.Database.EnsureDeleted();
             dbContext.Database.EnsureCreated();
-        }
+
+			repository = new Repository(dbContext);
+			eventService = new EventService(repository);
+		}
 
         [Test]
         public async Task AddEventAsync_ShouldAddEvent()
-        {
-            var repository = new Repository(dbContext);
-            eventService = new EventService(repository);
-
+        { 
             await repository.AddAsync(new Event
             {
                 Id = 15,
@@ -69,9 +61,6 @@ namespace WebUni_Management.Tests
         [Test]
         public async Task AddEventAsync_ShouldAddEventToDb()
         {
-            var repository = new Repository(dbContext);
-            eventService = new EventService(repository);
-
             await eventService.AddEventAsync(new EventFormViewModel
             {
                 Name = "Test Event",
@@ -91,12 +80,10 @@ namespace WebUni_Management.Tests
             Assert.IsNotNull(eventFromDb);
             Assert.IsInstanceOf<Event>(eventFromDb);
         }
+
         [Test]
         public async Task DeleteEventByIdAsync_ShouldDeleteEvent()
         {
-            var repository = new Repository(dbContext);
-            eventService = new EventService(repository);
-
             await repository.AddAsync(new Event
             {
                 Id = 15,
@@ -106,22 +93,18 @@ namespace WebUni_Management.Tests
                 ImageUrl = "https://www.test.com",
                 Description = "Test Description"
             });
-
             await repository.SaveChangesAsync();
 
             await eventService.DeleteEventByIdAsync(15);
 
             var eventFromDb = await repository.GetById<Event>(15);
             Assert.IsNull(eventFromDb);
-            Assert.AreEqual(3, await repository.All<Event>().CountAsync());
-            
+            Assert.AreEqual(3, await repository.All<Event>().CountAsync());            
         }
+
         [Test]
         public async Task DeleteEventParticipantByEventIdAsync_ShoulDeleteEventParticipant()
         {
-            var repository = new Repository(dbContext);
-            eventService = new EventService(repository);
-
             await repository.AddAsync(new Event
             {
                 Id = 15,
@@ -131,7 +114,6 @@ namespace WebUni_Management.Tests
                 ImageUrl = "https://www.test.com",
                 Description = "Test Description"
             });
-
             await repository.SaveChangesAsync();
             await repository.AddAsync(new EventParticipant
             {
@@ -144,15 +126,12 @@ namespace WebUni_Management.Tests
             var eventParticipant = await repository.All<EventParticipant>().Where(x => x.EventId == 15).FirstOrDefaultAsync();
             Assert.IsNull(eventParticipant);
             Assert.AreEqual(1, await repository.All<EventParticipant>().CountAsync());
-            Assert.AreEqual(3, await repository.All<Event>().CountAsync());
-            
+            Assert.AreEqual(3, await repository.All<Event>().CountAsync());           
         }
+
         [Test]
         public async Task EventParticipantByDeleteEventById_ShouldReturnNull()
         {
-            var repository = new Repository(dbContext);
-            eventService = new EventService(repository);
-
             await repository.AddAsync(new Event
             {
                 Id = 15,
@@ -169,20 +148,18 @@ namespace WebUni_Management.Tests
                 ParticipantId = Guid.NewGuid().ToString()
             });
             await repository.SaveChangesAsync();
+
             await eventService.DeleteEventByIdAsync(15);
             var eventParticipant = await repository.All<EventParticipant>().Where(x => x.EventId == 16).FirstOrDefaultAsync();
+
             Assert.IsNotNull(eventParticipant);
             Assert.AreEqual(2, await repository.All<EventParticipant>().CountAsync());
             Assert.AreEqual(3, await repository.All<Event>().CountAsync());
-
         }
 
         [Test]
         public async Task EditEventAsync_ShouldEditEvent()
         {
-               var repository = new Repository(dbContext);
-            eventService = new EventService(repository);
-
             await repository.AddAsync(new Event
             {
                 Id = 15,
@@ -203,22 +180,19 @@ namespace WebUni_Management.Tests
             });
 
             var eventFromDb = await repository.GetById<Event>(15);
+
             Assert.IsNotNull(eventFromDb);
             Assert.AreEqual("Edited Event", eventFromDb.Name);
             Assert.AreEqual(200, eventFromDb.Capacity);
             Assert.AreEqual("Edited", eventFromDb.GuestParticipant);
-            //Assert.AreEqual("https://www.edited.com", eventFromDb.ImageUrl);
             Assert.AreEqual("Edited Description", eventFromDb.Description);
             Assert.AreEqual(15, eventFromDb.Id);
             Assert.IsInstanceOf<Event>(eventFromDb);
-
         }
+
         [Test]
         public async Task EventExistsByIdAsync_ShouldReturnTrue()
         {
-               var repository = new Repository(dbContext);
-            eventService = new EventService(repository);
-
             await repository.AddAsync(new Event
             {
                 Id = 15,
@@ -228,8 +202,8 @@ namespace WebUni_Management.Tests
                 ImageUrl = "https://www.test.com",
                 Description = "Test Description"
             });
-
             await repository.SaveChangesAsync();
+
             var result = await eventService.EventExistsByIdAsync(15);
 
             Assert.IsTrue(result);
@@ -239,9 +213,6 @@ namespace WebUni_Management.Tests
         [Test]
         public async Task EventExistsByIdAsync_ShouldReturnFalse()
         {
-               var repository = new Repository(dbContext);
-            eventService = new EventService(repository);
-
             await repository.AddAsync(new Event
             {
                 Id = 15,
@@ -252,7 +223,9 @@ namespace WebUni_Management.Tests
                 Description = "Test Description"
             });
             await repository.SaveChangesAsync();
+
             var result = await eventService.EventExistsByIdAsync(16);
+
             Assert.IsFalse(result);
             Assert.IsInstanceOf<bool>(result);
         }
@@ -260,9 +233,6 @@ namespace WebUni_Management.Tests
         [Test]
         public async Task GetDetailsForEventById_ShouldReturnModel()
         {
-            var repository = new Repository(dbContext);
-            eventService = new EventService(repository);
-
             await repository.AddAsync(new Event
             {
                 Id = 15,
@@ -273,7 +243,9 @@ namespace WebUni_Management.Tests
                 Description = "Test Description"
             });
             await repository.SaveChangesAsync();
+
             var result = await eventService.GetDetailsForEventById(15);
+
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<EventDetailsViewModel>(result);
             Assert.AreEqual("Test Event", result.Name);
@@ -281,15 +253,12 @@ namespace WebUni_Management.Tests
             Assert.AreEqual("Test", result.GuestParticipant);
             Assert.AreEqual("https://www.test.com", result.ImageUrl);
             Assert.AreEqual("Test Description", result.Description);
-            Assert.AreEqual(15, result.Id);
-           
+            Assert.AreEqual(15, result.Id);          
         }
+
         [Test]
         public async Task GetDetailsForEventById_ShouldReturnNull()
         {
-               var repository = new Repository(dbContext);
-            eventService = new EventService(repository);
-
             await repository.AddAsync(new Event
             {
                 Id = 15,
@@ -300,17 +269,15 @@ namespace WebUni_Management.Tests
                 Description = "Test Description"
             });
             await repository.SaveChangesAsync();
-            var result = await eventService.GetDetailsForEventById(16);
-            Assert.IsNull(result);
 
+            var result = await eventService.GetDetailsForEventById(16);
+
+            Assert.IsNull(result);
         }
 
         [Test]
         public async Task GetEditFormById_ShouldReturnEventFormViewModel()
         {
-            var repository = new Repository(dbContext);
-            eventService = new EventService(repository);
-
             await repository.AddAsync(new Event
             {
                 Id = 15,
@@ -321,6 +288,7 @@ namespace WebUni_Management.Tests
                 Description = "Test Description"
             });
             await repository.SaveChangesAsync();
+
             var result = await eventService.GetEditEventFormAsync(15);
 
             Assert.IsNotNull(result);
@@ -331,14 +299,11 @@ namespace WebUni_Management.Tests
             Assert.AreEqual("https://www.test.com", result.ImageUrl);
             Assert.AreEqual("Test Description", result.Description);
             Assert.AreEqual(15, result.Id);
-
         }
+
         [Test]
         public async Task GetEditFormById_ShouldReturnNull()
         {
-               var repository = new Repository(dbContext);
-            eventService = new EventService(repository);
-
             await repository.AddAsync(new Event
             {
                 Id = 15,
@@ -349,16 +314,15 @@ namespace WebUni_Management.Tests
                 Description = "Test Description"
             });
             await repository.SaveChangesAsync();
+
             var result = await eventService.GetEditEventFormAsync(16);
+
             Assert.IsNull(result);
         }
 
         [Test]
         public async Task GetLastThreeEvents_ShouldReturnModel()
         {
-            var repository = new Repository(dbContext);
-            eventService = new EventService(repository);
-
             await repository.AddAsync(new Event
             {
                 Id = 15,
@@ -396,17 +360,13 @@ namespace WebUni_Management.Tests
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<IEnumerable<EventIndexViewModel>>(result);
             Assert.AreEqual(3, result.Count());
-            Assert.AreEqual("Test Event1", ev.Name);
-           
+            Assert.AreEqual("Test Event1", ev.Name);           
             Assert.AreEqual(15, ev.Id);
-
         }
+
         [Test]
         public async Task JoinEvent_ShouldAddEventParticipant()
         {
-            var repository = new Repository(dbContext);
-            eventService = new EventService(repository);
-
             await repository.AddAsync(new Event
             {
                 Id = 19,
@@ -423,24 +383,20 @@ namespace WebUni_Management.Tests
                 EventId = 19,
                 ParticipantId = guid
             });
-
             await repository.SaveChangesAsync();
 
             await eventService.JoinEventAsync(15, guid);
-
             var eventParticipant = await repository.All<EventParticipant>().Where(x => x.EventId == 19 && x.ParticipantId == guid).FirstOrDefaultAsync();
+
             Assert.IsNotNull(eventParticipant);
             Assert.AreEqual(19, eventParticipant.EventId);
             Assert.AreEqual(guid, eventParticipant.ParticipantId);
-            Assert.IsInstanceOf<EventParticipant>(eventParticipant);
-           
+            Assert.IsInstanceOf<EventParticipant>(eventParticipant);          
         }
+
         [Test]
         public async Task UserHasAlreadyJoinedEvent_ShouldReturnTrue()
         {
-            var repository = new Repository(dbContext);
-            eventService = new EventService(repository);
-
             await repository.AddAsync(new Event
             {
                 Id = 19,
@@ -458,25 +414,19 @@ namespace WebUni_Management.Tests
                 ParticipantId = guid
             });
             await repository.SaveChangesAsync();
-            var result = await eventService.UserHasAlreadyJoinedEvent(19, guid);
 
+            var result = await eventService.UserHasAlreadyJoinedEvent(19, guid);
             var eventParticipant = await repository.All<EventParticipant>().Where(x => x.EventId == 19 && x.ParticipantId == guid).FirstOrDefaultAsync();
+
             Assert.IsTrue(result);
             Assert.IsInstanceOf<bool>(result);
             Assert.IsNotNull(eventParticipant);
-
         }
+
         [Test]
         public async Task FilterEventsAsync_ShouldReturnModel()
         {
-            var searchTerm = "";
-            var eventsPerPage = 3;
-            var currentPage = 1;
-            var userId = Guid.NewGuid().ToString();
-
-            var repository = new Repository(dbContext);
-            eventService = new EventService(repository);
-
+            var guid = Guid.NewGuid().ToString();
             await repository.AddAsync(new Event
             {
                 Id = 19,
@@ -508,7 +458,7 @@ namespace WebUni_Management.Tests
             });
             await repository.SaveChangesAsync();
 
-           var result = await eventService.FilterEventsAsunc(userId, searchTerm, eventsPerPage, currentPage);
+           var result = await eventService.FilterEventsAsunc(guid, "", 3, 1);
 
             Assert.AreEqual(6, await repository.All<Event>().CountAsync());
             Assert.IsNotNull(result);
@@ -516,12 +466,11 @@ namespace WebUni_Management.Tests
             Assert.AreEqual(3, result.Events.Count());
             Assert.AreEqual(6, result.TotalEvents);
             Assert.AreEqual(1, result.CurrentPage);
-
         }
-            [TearDown]
+
+        [TearDown]
         public void TearDown()
         {
-            // Dispose the ApplicationDbContext after each test
             dbContext.Database.EnsureDeleted();
         }
     }

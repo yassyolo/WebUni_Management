@@ -30,14 +30,14 @@ namespace WebUnii_Management.Tests
 
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
-        }
+
+			repository = new Repository(context);
+			menuService = new MenuService(repository);
+		}
 
         [Test]
         public async Task GetMenuAsync_ShouldReturnModel()
         {
-            repository = new Repository(context);   
-            menuService = new MenuService(repository);
-
             await repository.AddAsync(new Dish
             {
                 Id = 7,
@@ -45,8 +45,6 @@ namespace WebUnii_Management.Tests
                 Category = "TestCategory",
                 Price = 10.00m,
             });
-            await repository.SaveChangesAsync();
-
             await repository.SaveChangesAsync();
 
             var result = await menuService.GetMenuAsync();
@@ -57,32 +55,26 @@ namespace WebUnii_Management.Tests
             Assert.AreEqual(7, dish.Id);
             Assert.AreEqual("TestMenu", dish.Name);
         }
+
         [Test]
         public async Task ChangeMenuDateAsync_ShouldChangeDate()
         {
-            var repository = new Repository(context);   
-            var menuService = new MenuService(repository);
-
             await repository.AddAsync(new Menu
             {
 				Id = 2,
 				Date = DateTime.Now.AddDays(-2).Date,
 			});
-
             await repository.SaveChangesAsync();
 
 			await menuService.ChangeMenuDateAsync(2);
-
 			var menu = await repository.GetById<Menu>(2);
 
 			Assert.AreEqual(DateTime.Now.Date, menu.Date.Date);
         }
+
         [Test]
         public async Task DishExistsById_ShouldReturnTrue()
         {
-            var repository = new Repository(context);
-            var menuService = new MenuService(repository);
-
             await repository.AddAsync(new Dish
             {
 				Id = 10,
@@ -91,18 +83,15 @@ namespace WebUnii_Management.Tests
 				Price = 10.00m,
 			});
             await repository.SaveChangesAsync();
-
             var result = await menuService.DishExistsById(10);
+
             Assert.IsTrue(result);
             Assert.IsInstanceOf<bool>(result);
-
         }
+
         [Test]
         public async Task EditDishAsync_ShouldEditDish()
         {
-			var repository = new Repository(context);
-			var menuService = new MenuService(repository);
-
             await repository.AddAsync(new Dish
             {
                 Id = 10,
@@ -111,25 +100,22 @@ namespace WebUnii_Management.Tests
                 Price = 1.00m,
             });
             await repository.SaveChangesAsync();
-
             var model = new DishFormViewModel
             {
 				Name = "UpdateDish",
 				Price = 1.00m
 			};
-            await menuService.EditDishAsync(10, model);
 
+            await menuService.EditDishAsync(10, model);
 			var dish = await repository.GetById<Dish>(10);
 
 			Assert.AreEqual("UpdateDish", dish.Name);
 			Assert.AreEqual(1.00m, dish.Price);
         }
+
         [Test]
         public async Task GetDishForEditAsync_ShouldReturnModel()
         {
-            var repository = new Repository(context);
-            var menuService = new MenuService(repository);
-
             await repository.AddAsync(new Dish
             {
 				Id = 10,
@@ -145,23 +131,26 @@ namespace WebUnii_Management.Tests
 			Assert.AreEqual("TestDish", result.Name);
 			Assert.AreEqual(1.00m, result.Price);
         }
+
         [Test]
         public async Task MenuExistsById_ShouldReturnTrue()
         {
-			var repository = new Repository(context);
-			var menuService = new MenuService(repository);
-
             await repository.AddAsync(new Menu
             {
                 Id = 10,
             });
 
             await repository.SaveChangesAsync();
-
             var result = await menuService.MenuExistsById(10);
+
             Assert.IsTrue(result);
             Assert.IsInstanceOf<bool>(result);
         }
 
+		[TearDown]
+		public void TearDown()
+		{
+			context.Database.EnsureDeleted();
+		}
 	}
 }
