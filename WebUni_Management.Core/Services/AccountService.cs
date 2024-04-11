@@ -73,6 +73,7 @@ namespace WebUni_Management.Core.Services
                 CourseTerm = courseTerm.Name,
             }).FirstOrDefaultAsync();          
 		}
+
         public async Task<string> GetQrCodeForStudentAsync(string userId)
         {
             var student = await repository.AllReadOnly<Student>().FirstOrDefaultAsync(x => x.UserId == userId);
@@ -86,7 +87,6 @@ namespace WebUni_Management.Core.Services
             string qrCodeString = qrCode != null ? Convert.ToBase64String(qrCode) : null;
             return qrCodeString;
         }
-
 
 		public async Task<ApplicationUser?> FindUserByIdAsync(string user)
         {
@@ -116,7 +116,16 @@ namespace WebUni_Management.Core.Services
 
         public async Task<bool> GetStudentAsync(string userId)
         {
-            return await repository.AllReadOnly<Student>().AnyAsync(x => x.UserId == userId);
+            var user = await repository.AllReadOnly<ApplicationUser>().FirstOrDefaultAsync(x => x.Id == userId);
+            if (user != null)
+            {
+                var student = await repository.AllReadOnly<Student>().FirstOrDefaultAsync(x => x.UserId == userId);
+                if (student != null)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public async Task<ApplicationUser?> GetUserByUserNameAsync(string username)
@@ -138,7 +147,7 @@ namespace WebUni_Management.Core.Services
                 FacultyId = await repository.AllReadOnly<Faculty>().Where(x => x.Name == model.Faculty).Select(x => x.Id).FirstOrDefaultAsync(),
                 CourseTermId = await repository.AllReadOnly<CourseTerm>().Where(x => x.Name == model.CourseTerm).Select(x => x.Id).FirstOrDefaultAsync()
             };
-            student.QRCode = GenerateQRCode(userId);
+            student.QRCode = GenerateQRCode(student.FacultyNumber);
             await repository.AddAsync(student);
             await repository.SaveChangesAsync();
         }

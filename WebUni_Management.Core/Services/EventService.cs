@@ -1,11 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
 using WebUni_Management.Core.Contracts;
 using WebUni_Management.Core.Models.Event;
 using WebUni_Management.Infrastructure.Data.Models;
@@ -13,7 +6,7 @@ using WebUni_Management.Infrastructure.Repository;
 
 namespace WebUni_Management.Core.Services
 {
-    public class EventService : IEventService
+	public class EventService : IEventService
     {
         private readonly IRepository repository;
 

@@ -243,11 +243,11 @@ namespace WebUni_Management.Core.Services
         public async Task<IEnumerable<MajorIndexViewModel>?> GetMajorsForFacultyAsync(int id)
         {
             return await repository.AllReadOnly<Major>().Where(x => x.FacultyId == id)
-                .Select(x => new MajorIndexViewModel()
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                }).ToListAsync();
+                   .Select(x => new MajorIndexViewModel()
+                   {
+                      Id = x.Id,
+                      Name = x.Name
+                   }).ToListAsync();
         }
 
         public async Task<FacultyFormViewModel?> GetEditFacultyFormAsync(int id)
@@ -302,6 +302,7 @@ namespace WebUni_Management.Core.Services
                 {
                     Id = x.Id,
                     Name = x.Name,
+                    Description = x.Description,
                 }).FirstOrDefaultAsync();
         }
 
@@ -309,6 +310,7 @@ namespace WebUni_Management.Core.Services
         {
             var major = await repository.All<Major>().FirstOrDefaultAsync(x => x.Id == id);
             major.Name = model.Name;
+            major.Description = model.Description;
             await repository.SaveChangesAsync();
         }
 
@@ -524,35 +526,7 @@ namespace WebUni_Management.Core.Services
             return result;
 		}
 
-		private Task<ProfessorDetailsViewModel> GetProfessorForSubjectAsync(int id)
-		{
-			return repository.AllReadOnly<SubjectByProfessor>().Where(x => x.SubjectId == id && x.Professor.Title == "Professor")
-				.Select(x => new ProfessorDetailsViewModel()
-                {
-					Id = x.Professor.Id,
-					FirstName = x.Professor.FirstName,
-					LastName = x.Professor.LastName,
-					Email = x.Professor.Email,
-					Title = x.Professor.Title,
-					Description = x.Professor.Description,
-					PhoneNumber = x.Professor.PhoneNumber,
-				}).FirstOrDefaultAsync();
-		}
-
-		private async Task<AssistantDetailsViewModel> GetAssistantForSubjectAsync(int id)
-		{
-			return await repository.AllReadOnly<SubjectByProfessor>().Where(x => x.SubjectId == id && x.Professor.Title == "Assistant")
-				.Select(x => new AssistantDetailsViewModel()
-                {
-					Id = x.Professor.Id,
-					FirstName = x.Professor.FirstName,
-					LastName = x.Professor.LastName,
-					Email = x.Professor.Email,
-					Title = x.Professor.Title,
-					Description = x.Professor.Description,
-					PhoneNumber = x.Professor.PhoneNumber,
-				}).FirstOrDefaultAsync();
-		}
+	
 
         public async Task<FacultyDetailsViewModel?> GetFacultyDetailsAsync(int id)
         {
@@ -567,7 +541,7 @@ namespace WebUni_Management.Core.Services
             return faculty;
         }
 
-        private async Task<IEnumerable<MajorDetailsViewModel>> GetMajorsForFacultyByIdAsync(int id)
+        public async Task<IEnumerable<MajorDetailsViewModel>> GetMajorsForFacultyByIdAsync(int id)
         {
             return await repository.AllReadOnly<Major>().Where(x => x.FacultyId == id)
                 .Select(x => new MajorDetailsViewModel()
@@ -594,7 +568,7 @@ namespace WebUni_Management.Core.Services
             return major;
         }
 
-        private async Task<IEnumerable<SubjectIndexViewModel>> GetSubjectsForMajorAsync(int id)
+        public async Task<IEnumerable<SubjectIndexViewModel>> GetSubjectsForMajorAsync(int id)
         {
             return await repository.AllReadOnly<Infrastructure.Data.Models.Subject>().Where(x => x.MajorId == id)
                 .Select(x => new SubjectIndexViewModel()
@@ -604,5 +578,135 @@ namespace WebUni_Management.Core.Services
                     Description = x.Description,
                 }).ToListAsync();
         }
-    }
+
+        public async Task DeleteFacultyAsync(int id)
+        {
+            var faculty = await repository.All<Faculty>().FirstOrDefaultAsync(x => x.Id == id);
+            var majors = await repository.All<Major>().Where(x => x.FacultyId == id).ToListAsync();
+            foreach (var major in majors)
+            {
+                var subjects = await repository.All<Infrastructure.Data.Models.Subject>().Where(x => x.MajorId == major.Id).ToListAsync();
+                foreach (var subject in subjects)
+                {
+                    var subjectForStudent = await repository.All<SubjectForStudent>().Where(x => x.SubjectId == subject.Id).ToListAsync();
+                    foreach (var sfs in subjectForStudent)
+                    {
+                        await repository.DeleteAsync(sfs);
+                    }
+                    var subjectByProfessor = await repository.All<SubjectByProfessor>().Where(x => x.SubjectId == subject.Id).ToListAsync();
+                    foreach (var sbp in subjectByProfessor)
+                    {
+                        repository.DeleteAsync(sbp);
+                    }
+                    await repository.DeleteAsync(subject);
+                }
+                var courseTerms = await repository.All<CourseTerm>().Where(x => x.MajorId == major.Id).ToListAsync();
+                foreach (var courseTerm in courseTerms)
+                {
+                    await repository.DeleteAsync(courseTerm);
+                }
+                await repository.DeleteAsync(major);
+            }
+            await repository.DeleteAsync(faculty);
+        }
+
+        public async Task<EditSubjectFormViewModel?> GetEditSubjectFormForMajorAsync(int id)
+        {
+            var subject = await repository.AllReadOnly<Infrastructure.Data.Models.Subject>().Where(x => x.Id == id)
+                .Select(x => new EditSubjectFormViewModel()
+                {
+                    SubjectId = x.Id,
+                    Name = x.Name,
+                    Description = x.Description,
+                    TotalAttendanceCount = x.TotlaAttendanceCount,
+                }).FirstOrDefaultAsync();
+            var professor = await repository.AllReadOnly<SubjectByProfessor>().Where(x => x.SubjectId == id && x.Professor.Title == "Professor")
+                .Select(x => new SubjectProfessorIndexViewModel()
+                {
+                    Id = x.Professor.Id,
+                    FirstName = x.Professor.FirstName,
+                    LastName = x.Professor.LastName,
+                    Email = x.Professor.Email,
+                    Title = x.Professor.Title,
+                    Description = x.Professor.Description,
+                    PhoneNumber = x.Professor.PhoneNumber,
+                }).FirstOrDefaultAsync();
+           var assistant = await repository.AllReadOnly<SubjectByProfessor>().Where(x => x.SubjectId == id && x.Professor.Title == "Assistant")
+                .Select(x => new SubjectAssistantIndexViewModel()
+                {
+                    Id = x.Professor.Id,
+                    FirstName = x.Professor.FirstName,
+                    LastName = x.Professor.LastName,
+                    Email = x.Professor.Email,
+                    Title = x.Professor.Title,
+                    Description = x.Professor.Description,
+                    PhoneNumber = x.Professor.PhoneNumber,
+                }).FirstOrDefaultAsync();
+            if (professor != null)
+            {
+                subject.SubjectProfessor = professor;
+            }
+            if (assistant != null)
+            {
+                subject.SubjectAssistant = assistant;
+            }
+            return subject;
+        }
+
+        public async Task<int> GetMajorIdBySubjectIdAsync(int id)
+        {
+           return await repository.AllReadOnly<Infrastructure.Data.Models.Subject>().Where(x => x.Id == id).Select(x => x.MajorId).FirstOrDefaultAsync();
+        }
+
+		public async Task<SeeMySubjectDetailsViewModel?> GetSubjectDetailsById(int id)
+		{
+            var faculty = await repository.AllReadOnly<Infrastructure.Data.Models.Faculty>().Where(x => x.Id == id).Select(x => x.Name).FirstOrDefaultAsync();
+            var major = await repository.AllReadOnly<Infrastructure.Data.Models.Major>().Where(x => x.Id == id).Select(x => x.Name).FirstOrDefaultAsync();
+            var courseTerm = await repository.AllReadOnly<Infrastructure.Data.Models.CourseTerm>().Where(x => x.Id == id).Select(x => x.Name).FirstOrDefaultAsync();
+			var result = await repository.AllReadOnly<Infrastructure.Data.Models.Subject>().Where(x => x.Id == id)
+				.Select(x => new SeeMySubjectDetailsViewModel()
+                {
+					Id = x.Id,
+					Name = x.Name,
+					Description = x.Description,
+					TotlaAttendanceCount = x.TotlaAttendanceCount,
+                    Faculty = faculty,
+					Major = major,
+					CourseTerm = courseTerm,
+				}).FirstOrDefaultAsync();
+			result.Assistant = await GetAssistantForSubjectAsync(id);
+			result.Professor = await GetProfessorForSubjectAsync(id);
+			return result;
+
+		}
+		public Task<ProfessorDetailsViewModel> GetProfessorForSubjectAsync(int id)
+		{
+			return repository.AllReadOnly<SubjectByProfessor>().Where(x => x.SubjectId == id && x.Professor.Title == "Professor")
+				.Select(x => new ProfessorDetailsViewModel()
+				{
+					Id = x.Professor.Id,
+					FirstName = x.Professor.FirstName,
+					LastName = x.Professor.LastName,
+					Email = x.Professor.Email,
+					Title = x.Professor.Title,
+					Description = x.Professor.Description,
+					PhoneNumber = x.Professor.PhoneNumber,
+				}).FirstOrDefaultAsync();
+		}
+
+		public async Task<AssistantDetailsViewModel> GetAssistantForSubjectAsync(int id)
+		{
+			return await repository.AllReadOnly<SubjectByProfessor>().Where(x => x.SubjectId == id && x.Professor.Title == "Assistant")
+				.Select(x => new AssistantDetailsViewModel()
+				{
+					Id = x.Professor.Id,
+					FirstName = x.Professor.FirstName,
+					LastName = x.Professor.LastName,
+					Email = x.Professor.Email,
+					Title = x.Professor.Title,
+					Description = x.Professor.Description,
+					PhoneNumber = x.Professor.PhoneNumber,
+				}).FirstOrDefaultAsync();
+		}
+	}
 }

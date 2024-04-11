@@ -121,8 +121,8 @@ namespace WebUni_Management.Controllers
         [HttpGet]
         public async Task<IActionResult> ManageAccount()
         {
-            bool nullStudent = await accountService.GetStudentAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            if (nullStudent)
+            bool managedStudent = await accountService.GetStudentAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (!managedStudent)
             {
                 var model = new ManageAccountViewModel();
                 return View(model);
@@ -130,7 +130,7 @@ namespace WebUni_Management.Controllers
             else
             {
                 var model = await accountService.FillManageAccountAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
-                ViewBag.ImageData = await accountService.GetQrCodeForStudentAsync(User.FindFirstValue(ClaimTypes.NameIdentifier)) ?? "data:image/png;base64,defaultBase64String";
+                ViewBag.QrCodeBase64 = await accountService.GetQrCodeForStudentAsync(User.FindFirstValue(ClaimTypes.NameIdentifier)) ?? "data:image/png;base64,defaultBase64String";
                 return View("FilledManageAccount", model);
             }
         }

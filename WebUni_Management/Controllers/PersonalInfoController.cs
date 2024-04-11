@@ -343,7 +343,60 @@ namespace WebUni_Management.Controllers
 		{
 			return View();
 		}
+		public async Task<IActionResult> DeleteFaculty(int id)
+		{
+			if (await personalInfoService.FacultyExistsByIdAsync(id) == false)
+			{
+				return BadRequest();
+			}
+			await personalInfoService.DeleteFacultyAsync(id);
 
+			return RedirectToAction(nameof(SearchFaculties));
+		}
+		public async Task<IActionResult> SeeSubjects(int id)
+		{
+			if (await personalInfoService.MajorExistsByIdAsync(id) == false)
+			{
+				return BadRequest();
+			}
+
+			var model = await personalInfoService.GetSubjectsForMajorAsync(id);
+			return View(model);
+		}
+		[HttpGet]
+		public async Task<IActionResult> EditSubjectForMajor(int id)
+		{
+			if (await personalInfoService.SubjectWithIdExistsAsync(id) == false)
+			{
+				return BadRequest();
+			}
+			var model = await personalInfoService.GetEditSubjectFormForMajorAsync(id);
+			return View(model);
+		}
+		[HttpPost]
+		public async Task<IActionResult> EditSubjectForMajor(int id, EditSubjectFormViewModel model)
+		{
+			if (await personalInfoService.SubjectWithIdExistsAsync(id) == false)
+			{
+				return BadRequest();
+			}
+			if (ModelState.IsValid == false)
+			{
+                return BadRequest();
+            }
+			await personalInfoService.EditSubjectAsync(id, model);
+
+			return RedirectToAction(nameof(SeeSubjects), new { id = id});
+		}
+		public async Task<IActionResult> SeeSubjectDetails(int id)
+		{
+			if (await personalInfoService.SubjectWithIdExistsAsync(id) == false)
+			{
+				return BadRequest();
+			}
+			var model = await personalInfoService.GetSubjectDetailsById(id);
+			return View(model);
+		}
 
     }
 }
