@@ -1,16 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static WebUni_Management.Infrastructure.Data.Constants.ModelConstants.NewsArticle;
 
 namespace WebUni_Management.Infrastructure.Data.Models
 {
-    [Comment("News article entity")]
+	[Comment("News article entity")]
     public class NewsArticle
     {
         [Key]

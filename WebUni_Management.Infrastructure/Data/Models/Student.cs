@@ -34,7 +34,6 @@ namespace WebUni_Management.Infrastructure.Data.Models
         [Comment("Student faculty identifier")]
         public int FacultyId { get; set; }
         
-
         [MaxLength(MajorNameMaxLength)]
         [Comment("Student major")]
         [ForeignKey(nameof(MajorId))]
@@ -55,8 +54,6 @@ namespace WebUni_Management.Infrastructure.Data.Models
         [MaxLength(FacultyNumberLength)]
         [Comment("Student faculty number")]
         public string FacultyNumber { get; set; } = string.Empty;
-
-
 
         [Comment("User")]
         public ApplicationUser User { get; set; } = null!;

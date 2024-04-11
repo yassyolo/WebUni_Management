@@ -1,17 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static WebUni_Management.Infrastructure.Data.Constants.ModelConstants.Student;
 
 
 namespace WebUni_Management.Infrastructure.Data.Models
 {
-    [Comment("Major entity")]
+	[Comment("Major entity")]
     public class Major
     {
         [Comment("Major identifier")]

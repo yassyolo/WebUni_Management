@@ -1,23 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WebUni_Management.Infrastructure.Data.Models;
 
 namespace WebUni_Management.Infrastructure.SeedDb
 {
-    public class DishConfiguration : IEntityTypeConfiguration<Dish>
+	public class DishConfiguration : IEntityTypeConfiguration<Dish>
     {
         public void Configure(EntityTypeBuilder<Dish> builder)
         {
             builder.HasOne(x => x.Menu)
-                .WithMany(x => x.Dishes)
-                .HasForeignKey(x => x.MenuId)
-                .OnDelete(DeleteBehavior.Restrict);
+            .WithMany(x => x.Dishes)
+            .HasForeignKey(x => x.MenuId)
+            .OnDelete(DeleteBehavior.Restrict);
+
             var data = new SeedData();
+
             builder.HasData( new Dish[] { data.Salad1, data.Salad2, data.MainDish1, data.MainDish2, data.Dessert1, data.Dessert2 });
         }
     }

@@ -1,16 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
 using static WebUni_Management.Infrastructure.Data.Constants.ModelConstants.Student;
-using System.Threading.Tasks;
 
 namespace WebUni_Management.Infrastructure.Data.Models
 {
-    [Comment("Course term entity")]
+	[Comment("Course term entity")]
     public class CourseTerm
     {
         [Key]

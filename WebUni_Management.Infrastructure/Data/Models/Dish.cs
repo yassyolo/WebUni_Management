@@ -1,16 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static WebUni_Management.Infrastructure.Data.Constants.ModelConstants.Canteen;
 
 namespace WebUni_Management.Infrastructure.Data.Models
 {
-    [Comment("Canteen dish entity")]
+	[Comment("Canteen dish entity")]
     public class Dish
     {
         [Key]
@@ -32,7 +27,6 @@ namespace WebUni_Management.Infrastructure.Data.Models
         [Column(TypeName = "decimal(18,2)")]
         [Comment("Dish price")]
         public decimal Price { get; set; }
-
 
         [Comment("Menu identifier")]
         public int MenuId { get; set; }

@@ -1,15 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static WebUni_Management.Infrastructure.Data.Constants.ModelConstants.Library;
 
 namespace WebUni_Management.Infrastructure.Data.Models
 {
-    [Comment("Book category entity")]
+	[Comment("Book category entity")]
     public class BookCategory
     {
         [Required]

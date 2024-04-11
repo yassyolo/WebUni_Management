@@ -1,16 +1,10 @@
-﻿using Microsoft.AspNetCore.Hosting.Server;
-using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity;
+using QRCoder;
 using WebUni_Management.Infrastructure.Data.Models;
 
 namespace WebUni_Management.Infrastructure.SeedDb
 {
-    public class SeedData
+	public class SeedData
     {
         public ApplicationUser AdminUser { get; set; }
         public ApplicationUser StudentUser { get; set; }
@@ -108,8 +102,7 @@ namespace WebUni_Management.Infrastructure.SeedDb
             SeedSubjectProfessors();
             SeedSubjects();
             SeedSubjectByProfessor();
-            SeedSubjectsForStudent();
-            
+            SeedSubjectsForStudent();           
         }
 
         private void SeedUsers()
@@ -141,15 +134,16 @@ namespace WebUni_Management.Infrastructure.SeedDb
             };
             StudentUser.PasswordHash = hasher.HashPassword(StudentUser, "student123");
         }
+
         private void SeedAdmin()
         {
             Admin= new Admin
             {
                 Id = 1,
-                UserId = AdminUser.Id
-                
+                UserId = AdminUser.Id               
             };
         }
+
         private void SeedFaculty()
         {
             Faculty1 = new Faculty
@@ -159,6 +153,7 @@ namespace WebUni_Management.Infrastructure.SeedDb
                 Description = "The Mathematics Faculty offers a wide range of courses in pure and applied mathematics, statistics, and computer science. Our faculty members are dedicated to providing students with a solid foundation in mathematical theory and practical skills, preparing them for successful careers in academia, industry, and research.",
             };
         }
+
         private void SeedMajor()
         {
             Major1 = new Major
@@ -169,6 +164,7 @@ namespace WebUni_Management.Infrastructure.SeedDb
                 Description = "The Computer Science major equips students with the knowledge and skills needed to excel in the rapidly evolving field of technology. Our comprehensive curriculum covers programming languages, algorithms, data structures, software engineering, and more, preparing students for diverse career opportunities in software development, cybersecurity, artificial intelligence, and beyond."
             };
         }
+
         private void SeedCourseTerm()
         {
             CourseTerm1 = new CourseTerm
@@ -178,6 +174,7 @@ namespace WebUni_Management.Infrastructure.SeedDb
                 MajorId = Major1.Id
             };
         }
+
         private void SeedStudent()
         {
             Student = new Student()
@@ -191,10 +188,22 @@ namespace WebUni_Management.Infrastructure.SeedDb
                 UserId = StudentUser.Id,
                 FacultyId = Faculty1.Id,
                 MajorId = Major1.Id,
-                CourseTermId = CourseTerm1.Id
+                CourseTermId = CourseTerm1.Id,
+                QRCode = GenerateQRCode("12345678")
             };
         }
-        private void SeedUserRoles()
+
+		private byte[] GenerateQRCode(string data)
+		{
+			QRCodeGenerator qrGenerator = new QRCodeGenerator();
+			QRCodeData qrCodeData = qrGenerator.CreateQrCode(data, QRCodeGenerator.ECCLevel.Q);
+			PngByteQRCode qrCode = new PngByteQRCode(qrCodeData);
+			byte[] qrCodeAsPngByteArr = qrCode.GetGraphic(20);
+
+			return qrCodeAsPngByteArr;
+		}
+
+		private void SeedUserRoles()
         {
             AdminUserRole = new IdentityUserRole<string>
             {
@@ -226,6 +235,7 @@ namespace WebUni_Management.Infrastructure.SeedDb
                 Name = "Chemistry",
             };
         }
+
         private void SeedBookAuthors()
         {
             BookAuthor1 = new BookAuthor
@@ -233,7 +243,6 @@ namespace WebUni_Management.Infrastructure.SeedDb
                 Id = 1,
                 FirstName = "Natasha",
                 LastName = "Maurits",
-                //Books = new List<Book> { MathBook1 }
             };
             BookAuthor2 = new BookAuthor
             {
@@ -282,7 +291,6 @@ namespace WebUni_Management.Infrastructure.SeedDb
                 Id = 1,
                 Title = "Math for Scientists: Refreshing the Essentials",
                 ImageUrl = "https://m.media-amazon.com/images/I/617vHgW8ZhL._SY522_.jpg",
-                //Author = new List<BookAuthor> {BookAuthor1, BookAuthor2 },
                 CategoryId = MathemathicsCategory.Id,
                 PublishYear = "2017",
                 Description = "'Math for Scientists: Refreshing the Essentials' offers a concise yet comprehensive review of fundamental mathematical concepts essential for scientists.Co - authored by Branislava Ćurčić - Blake and Natalia Maria, this book serves as a valuable resource for refreshing and reinforcing mathematical skills necessary for scientific inquiry.",
@@ -296,7 +304,6 @@ namespace WebUni_Management.Infrastructure.SeedDb
                 Id = 2,
                 Title = "Mathematics: A Complete Introduction",
                 ImageUrl = "https://m.media-amazon.com/images/I/71EUTt1F2vL._SY522_.jpg",
-                //Author = new List<BookAuthor> { BookAuthor3 },
                 CategoryId = MathemathicsCategory.Id,
                 PublishYear = "2018",
                 Description = "Master Math effortlessly with this comprehensive guide. Ideal for beginners and intermediates, it features step-by-step explanations, practice questions, and chapter summaries for confident learning. No separate workbooks needed!",
@@ -308,7 +315,6 @@ namespace WebUni_Management.Infrastructure.SeedDb
                 Id = 3,
                 Title = "Simplified Statistics and Probability: A Mathematics Book for High Schools and Colleges",
                 ImageUrl = "https://m.media-amazon.com/images/I/61CANeMV8wL._SY522_.jpg",
-                //Author = new List<BookAuthor> { BookAuthor4 },
                 CategoryId = MathemathicsCategory.Id,
                 PublishYear = "2018",
                 Description = "'Simplified Statistics and Probability' is a comprehensive book designed for high school and college students. It offers clear explanations, numerous examples, and practice exercises with answers for self-assessment, enhancing understanding and proficiency in the subject.",
@@ -320,7 +326,6 @@ namespace WebUni_Management.Infrastructure.SeedDb
                 Id = 4,
                 Title = "Basic Organic Chemistry",
                 ImageUrl = "https://m.media-amazon.com/images/I/813VoAjptdL._SY522_.jpg",
-                //Author = new List<BookAuthor> { BookAuthor5 },
                 CategoryId = ChemistryCategory.Id,
                 PublishYear = "2019",
                 Description = "'Basic Organic Chemistry' covers fundamental concepts, organic molecules, functional groups, nomenclature, acids/bases, stereochemistry, amino acids, proteins, carbohydrates, alcohols, ethers, and spectroscopy, offering insights for understanding organic reactions.",
@@ -332,7 +337,6 @@ namespace WebUni_Management.Infrastructure.SeedDb
                 Id = 5,
                 Title = "Engineering Physics",
                 ImageUrl = "https://m.media-amazon.com/images/I/81p+3Q5hsvL._SY522_.jpg",
-                //Author = new List<BookAuthor> { BookAuthor6 },
                 CategoryId = PhysicsCategory.Id,
                 PublishYear = "2010",
                 Description = "'Engineering Physics' caters to first-year undergraduates at Jawaharlal Nehru Technical University. Covering crystallography, quantum mechanics, metals, dielectrics, semiconductors, superconductivity, lasers, holography, nanotechnology, and optics, it employs clear pedagogy for comprehensive learning.",
@@ -399,7 +403,7 @@ namespace WebUni_Management.Infrastructure.SeedDb
                 Floor = 2,
                 ImageUrl = "https://st.hzcdn.com/simgs/pictures/home-offices/white-and-airy-jennifer-pacca-interiors-img~387173790a9ee6b8_8-4497-1-a0376b0.jpg"
             };
-           BigStudyRoom = new StudyRoom
+            BigStudyRoom = new StudyRoom
             {
                 Id = 3,
                 Name = "Elite Learning Oasis, The Grand Study Room for 10",
@@ -409,7 +413,7 @@ namespace WebUni_Management.Infrastructure.SeedDb
                 LibraryId = Library.Id,
                 Floor = 3,
                 ImageUrl = "https://st.hzcdn.com/simgs/pictures/home-offices/eclectic-and-colorful-greensboro-nc-jessica-dauray-interiors-elements-of-style-img~362195d10a0dcf59_8-0725-1-24dcf75.jpg"
-           };
+            };
             SingleStudyRoom = new StudyRoom
             {
                 Id = 4,
@@ -424,6 +428,7 @@ namespace WebUni_Management.Infrastructure.SeedDb
                 ImageUrl = "https://st.hzcdn.com/simgs/pictures/home-offices/contemporary-home-office-tazz-lighting-inc-img~259113440b895f26_8-5371-1-da12f0e.jpg"
             };
         }
+
         private void SeedMenu()
         {
             Menu = new Menu
@@ -432,6 +437,7 @@ namespace WebUni_Management.Infrastructure.SeedDb
                 Date = new DateTime(2024, 2, 20)
             };
         }
+
         private void SeedDishes()
         {
             Salad1 = new Dish
@@ -483,6 +489,7 @@ namespace WebUni_Management.Infrastructure.SeedDb
                 MenuId = Menu.Id
             };
         }
+
         private void SeedNewsArticles()
         {
             NewsArticle1 = new NewsArticle
@@ -711,7 +718,8 @@ namespace WebUni_Management.Infrastructure.SeedDb
                 SubjectId = Subject3.Id,
                 ProfessorId = SubjectProfessor6.Id
             };
-    }
+        }
+
         private void SeedSubjectsForStudent()
         {
             Subject1ForStudent1 = new SubjectForStudent
@@ -735,8 +743,7 @@ namespace WebUni_Management.Infrastructure.SeedDb
                 AttendanceRecord = 12,
                 Grade = 6.00
             };
-        }
-        
+        }       
     }
 }
 

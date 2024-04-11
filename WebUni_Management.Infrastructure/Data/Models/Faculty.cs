@@ -1,15 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static WebUni_Management.Infrastructure.Data.Constants.ModelConstants.Student;
 
 namespace WebUni_Management.Infrastructure.Data.Models
 {
-    [Comment("Faculty entity")]
+	[Comment("Faculty entity")]
     public class Faculty
     {
 
@@ -29,6 +24,7 @@ namespace WebUni_Management.Infrastructure.Data.Models
 
         [Comment("Faculty majors")]
         public IEnumerable<Major> Majors { get; set; } = new List<Major>();
+
         [Comment("Faculty students")]
         public IEnumerable<Student> Students { get; set; } = new List<Student>();
     }

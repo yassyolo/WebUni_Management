@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WebUni_Management.Infrastructure.Data.Constants
+﻿namespace WebUni_Management.Infrastructure.Data.Constants
 {
-    public static class ModelConstants
+	public static class ModelConstants
     {
-        public class Student 
+        public static class Student 
         {
             public const int NameMinLength = 2;
             public const int NameMaxLength = 15;
@@ -30,7 +24,8 @@ namespace WebUni_Management.Infrastructure.Data.Constants
             public const double GradeMinValue = 2.0;
             public const double GradeMaxValue = 6.0;
         }
-        public class Library
+
+        public static class Library
         {
             public const int BookTitleMinLength = 2;
             public const int BookTitleMaxLength = 150;
@@ -45,7 +40,8 @@ namespace WebUni_Management.Infrastructure.Data.Constants
             public const int BookImageUrlMaxLength = 255;
             public const int RentalTimeDefaultValue = 2;
         }
-        public class StudyRoom
+
+        public static class StudyRoom
         {
             public const int RoomNameMinLength = 2;
             public const int RoomNameMaxLength = 110;
@@ -58,10 +54,9 @@ namespace WebUni_Management.Infrastructure.Data.Constants
             public const int RoomCapacityMinValue = 1;
             public const int RoomCapacityMaxValue = 10;
             public const int RoomRentalTimeDefaultValue = 1;
-
-		public int RentalTime { get; set; }
 		}
-        public class Canteen
+
+        public static class Canteen
         {
             public const int DishNameMinLength = 2;
             public const int DishNameMaxLength = 70;
@@ -70,7 +65,8 @@ namespace WebUni_Management.Infrastructure.Data.Constants
             public const string DishPriceMinValue = "0.00";
             public const string DishPriceMaxValue = "10.00";
         }
-       public class NewsArticle
+
+        public static class NewsArticle
         {
             public const int NewsTitleMinLength = 2;
             public const int NewsTitleMaxLength = 200;
@@ -81,7 +77,8 @@ namespace WebUni_Management.Infrastructure.Data.Constants
             public const int NewsAuthorMaxLength = 40;
             public const int NewsAuthorMinLength = 2;
         }
-        public class Event 
+
+        public static class Event 
         { 
             public const int EventNameMinLength = 2;
             public const int EventNameMaxLength = 110;
@@ -94,7 +91,8 @@ namespace WebUni_Management.Infrastructure.Data.Constants
             public const int GuestParticipantMaxLength = 40;
             public const int GuestParticipantMinLength = 2;
         }
-        public class Subject
+
+        public static class Subject
         {
             public const int SubjectNameMaxLength = 50;
             public const int SubjectNameMinLength = 50;
@@ -112,7 +110,6 @@ namespace WebUni_Management.Infrastructure.Data.Constants
             public const int SubjectProfessorPhoneNumberMinLength = 5;
             public const int SubjectProfessorTitleMaxLength = 30;
             public const int SubjectProfessorTitleMinLength = 2;
-        }
-                    
+        }                    
     }
 }

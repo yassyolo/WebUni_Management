@@ -1,14 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WebUni_Management.Infrastructure.Data.Models
 {
-    [Comment("News article read status entity")]
+	[Comment("News article read status entity")]
     public class NewsArticleReadStatus
     {
         [Comment("News article identifier")]

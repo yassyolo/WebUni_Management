@@ -1,14 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WebUni_Management.Infrastructure.Data.Models
 {
-    [Comment("Event participant entity")]
+	[Comment("Event participant entity")]
     public class EventParticipant
     {
         [Comment("Event identifier")]
