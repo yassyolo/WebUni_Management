@@ -72,11 +72,11 @@ namespace WebUni_Management.Controllers
             }
             if (await libraryService.IsBookRentedAsync(id) == true)
             {
-                throw new BookAlreadyRentedException("Book is already rented");
+                throw new BookRentException("Book is already rented");
             }
             if(await libraryService.IsBookRentedByUserWithIdAsync(User.GetId(), id) == true)
             {
-                throw new BookAlreadyRentedException("Book is already rented by you");
+                throw new BookRentException("Book is already rented by you");
             }
 
             string userId = User.GetId();
@@ -213,7 +213,9 @@ namespace WebUni_Management.Controllers
                 ModelState.AddModelError(nameof(model.CategoryId), "Category not found");
             }
 
-            await libraryService.AddBookAsync(model);
+            var bookId = await libraryService.AddBookAsync(model);
+            var authors = await libraryService.AddAuthorsForNewBookAsync(bookId, model);
+            await libraryService.AddBookByAuthorsAsync(bookId, authors);
 
             return RedirectToAction(nameof(AllBooksShowcase));
         }
@@ -304,7 +306,7 @@ namespace WebUni_Management.Controllers
             }
             
             await libraryService.RentRoomAsync(userId, id);
-             return RedirectToAction("RentedRooms", "PersonalInfo");
+            return RedirectToAction("RentedRooms", "PersonalInfo");
         }
 
 	}

@@ -43,6 +43,14 @@ namespace WebUni_Management.Controllers
             {
                 return RedirectToAction(controllerAndAction[1], controllerAndAction[0]);
             }
+            else if(controllerAndAction.Length == 3)
+            {
+                return RedirectToAction(controllerAndAction[0], controllerAndAction[1], new { id = controllerAndAction[2] });
+            }
+            else if(controllerAndAction.Length == 5)
+            {
+				return RedirectToAction(controllerAndAction[0], controllerAndAction[1], new { id = controllerAndAction[2], previousPage = $"{controllerAndAction[3]}/{controllerAndAction[4]}" });
+			}
 
             return RedirectToAction(nameof(Index));
         }

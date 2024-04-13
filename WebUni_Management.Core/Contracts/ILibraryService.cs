@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebUni_Management.Core.Models.Library;
+using WebUni_Management.Infrastructure.Data.Models;
 
 namespace WebUni_Management.Core.Contracts
 {
@@ -26,7 +27,7 @@ namespace WebUni_Management.Core.Contracts
         Task<bool> RoomExistsByIdAsync(int id);
         Task<RoomShowcaseViewModel?> GetRoomDetailsByIdAsync(int id);
         Task<EditRoomViewModel?> GetEditRoomAsync(int id);
-        Task AddBookAsync(EditBookViewModel model);
+        Task<int> AddBookAsync(EditBookViewModel model);
         Task AddRoomAsync(EditRoomViewModel model);
         Task<ManageRentViewModel> ManageBookRentAsync();
 		Task<ManageRentViewModel> ManageRoomRentAsync();
@@ -37,5 +38,7 @@ namespace WebUni_Management.Core.Contracts
         Task<bool> IsRoomRentedByUserWithIdAsync(string userId, int id);
         Task RentRoomAsync(string userId, int id);
         Task<bool> IsBookRentedByUserWithIdAsync(string userId, int id);
+        Task<List<BookAuthor>> AddAuthorsForNewBookAsync(int id, EditBookViewModel model);
+        Task AddBookByAuthorsAsync(int bookId, List<BookAuthor> authors);
     }
 }

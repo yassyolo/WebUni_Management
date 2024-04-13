@@ -41,23 +41,23 @@ namespace WebUni_Management.Core.Services
             var student = await repository.AllReadOnly<Student>().FirstOrDefaultAsync(x => x.UserId == userId);
             if (student == null)
             {
-                throw new InvalidOperationException("Student not found");
+                throw new NotFoundException(nameof(Student));
             }
 			var faculty = await repository.AllReadOnly<Faculty>().FirstOrDefaultAsync(x => x.Id == student.FacultyId);
 			if (faculty == null)
 			{
-				throw new InvalidOperationException("Faculty not found");
+				throw new NotFoundException(nameof(Faculty));
 			}
 			var major = await repository.AllReadOnly<Major>().FirstOrDefaultAsync(x => x.Id == student.MajorId);
 			if (major == null)
 			{
-				throw new InvalidOperationException("Major not found");
+				throw new NotFoundException(nameof(Major));
 			}
 			var courseTerm = await repository.AllReadOnly<CourseTerm>().FirstOrDefaultAsync(x => x.Id == student.CourseTermId);
 			if (courseTerm == null)
 			{
-				throw new InvalidOperationException("Course term not found");
-			}
+                throw new NotFoundException(nameof(CourseTerm));
+            }
 
             return await repository.AllReadOnly<Student>().Where(x => x.UserId == userId).Select(x => new ManageAccountViewModel
             {

@@ -61,5 +61,11 @@ namespace WebUni_Management.Core.Contracts
 		Task<SubjectProfessor> AddSubjectProfessorForStudentAsync(int subjectId, EditSubjectFormViewModel model);
 		Task<SubjectProfessor> AddSubjectAssistantForStudentAsync(int subjectId, EditSubjectFormViewModel model);
 		Task AddFullSubjectForStudentAsync(int subjectId, int studentId, int professorId, int assistantId);
-	}
+        Task<bool> RoomExistsById(int id);
+        Task<bool> UserWithIdHasRentedRoomAsync(int id, string userId);
+        Task<bool> RoomIsAlreadyRentedAsync(int id);
+        Task RemoveRoomRentAsync(int id, string userId);
+        Task<bool> EventWithIdExists(int id);
+        Task<int> GetFacultyIdByMajorIdAsync(int id);
+    }
 }

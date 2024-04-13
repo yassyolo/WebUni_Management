@@ -29,11 +29,13 @@ namespace WebUni_Management.Controllers
         public IActionResult Register()
         {
             var model = new RegisterViewModel();
+
             return View(model);
         }
 
         [AllowAnonymous]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
@@ -43,19 +45,17 @@ namespace WebUni_Management.Controllers
                     UserName = model.UserName,
                     Email = model.Email,
                     IsApproved = false,
-                    InitialPassword = model.InitialPassword,
-                    
+                    InitialPassword = model.InitialPassword,                  
                 };
-
 
                 var result = await userManager.CreateAsync(user, model.InitialPassword);
 
                 if (result.Succeeded) 
                 {
                     await userManager.AddPasswordAsync(user, model.InitialPassword);
+
                     return RedirectToAction(nameof(HomeController.Index), "Home");
                 }
-
                 foreach(var error in result.Errors) 
                 {
                     ModelState.AddModelError("", error.Description);
@@ -64,14 +64,21 @@ namespace WebUni_Management.Controllers
             }
             return View(model);
         }
+
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Login()
         {
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+
             var model = new LoginViewModel();
+
             return View(model);
         }
+
         [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             
@@ -108,10 +115,12 @@ namespace WebUni_Management.Controllers
         {
             await signInManager.SignOutAsync();
             TempData["Alert"] = "You have logged out successfully!";
+
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
         [HttpGet]
+        [Authorize(Roles = "Student")]
         public async Task<IActionResult> ManageAccount()
         {
             bool managedStudent = await accountService.GetStudentAsync(User.GetId());
@@ -122,18 +131,26 @@ namespace WebUni_Management.Controllers
             }
             else
             {
-                var model = await accountService.FillManageAccountAsync(User.GetId());
-                ViewBag.QrCodeBase64 = await accountService.GetQrCodeForStudentAsync(User.GetId()) ?? "data:image/png;base64,defaultBase64String";
-                return View("FilledManageAccount", model);
+                try
+                {
+                    var model = await accountService.FillManageAccountAsync(User.GetId());
+                    ViewBag.QrCodeBase64 = await accountService.GetQrCodeForStudentAsync(User.GetId()) ?? "data:image/png;base64,defaultBase64String";
+                    return View("FilledManageAccount", model);
+                }
+                catch (NotFoundException ex)
+                {
+                    return BadRequest(ex.Message);
+                }
             }
         }
         [HttpPost]
+        [Authorize(Roles = "Student")]
         public async Task<IActionResult> ManageAccount(ManageAccountViewModel model)
         { 
             if(ModelState.IsValid)
             {
                 var userId = User.GetId();
-                var user= await accountService.FindUserByIdAsync(userId);
+                var user = await accountService.FindUserByIdAsync(userId);
 
                 if(user == null)
                 {
@@ -147,18 +164,20 @@ namespace WebUni_Management.Controllers
             }
             return RedirectToAction(nameof(ManageAccount));
         }
+
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Requests([FromQuery] AllRequestsViewModel query)
         {
             var model = await accountService.GetAllRequestsAsync(query.CurrentPage, query.RequestsPerPage);
             query.Requests = model.Requests;
-            //var model = await accountService.GetRequestsAsync();
+
             return View(query);
         }
-        [HttpPost]
+
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ApproveRequest(string username)
-        {
-            
+        {          
             var user = await userManager.FindByNameAsync(username);
             if (user == null)
             {
@@ -173,51 +192,55 @@ namespace WebUni_Management.Controllers
             }
             else if(username.StartsWith("1"))
             {
-               
-                //await accountService.StoreQRCodeAsync(user);
                 await userManager.AddToRoleAsync(user, "Student");
             }
-
 
             var result = await userManager.UpdateAsync(user);
             if (!result.Succeeded)
             {
-                throw new InvalidOperationException($"Unexpected error occurred setting IsApproved for user with ID '{user.Id}'.");
+                throw new InvalidOperationException($"Unexpected error occurred in approving user.");
             }
 
             return RedirectToAction(nameof(Requests)); 
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DiscardRequest(string username)
         {
             var user = await userManager.FindByNameAsync(username);
             if (user == null)
             {
-                return NotFound($"Unable to load user with username '{username}'.");
+                return NotFound($"Unable to find user.");
             }
 
             var result = await userManager.DeleteAsync(user);
-
-            
+           
             if (!result.Succeeded)
             {
-                throw new InvalidOperationException($"Unexpected error occurred setting IsApproved for user with ID '{user.Id}'.");
+                throw new InvalidOperationException($"Unexpected error occurred in discarding user.");
             }
 
             return RedirectToAction(nameof(Requests));
         }
+
         [HttpGet]
+        [Authorize(Roles = "Student")]
         public async Task<IActionResult> EditAccount(int id)
         {
             if (await accountService.StudentExistsByIdAsync(id) == false)
             {
 				return BadRequest();
 			}
+
 			var model = await accountService.GetEditAccountFormAsync(id);
+
 			return View(model);
 		}
+
         [HttpPost]
+        [Authorize(Roles = "Student")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditAccount(int id, ManageAccountViewModel model)
         {
             if (await accountService.StudentExistsByIdAsync(id) == false)
@@ -228,7 +251,9 @@ namespace WebUni_Management.Controllers
             {
                 return BadRequest();
             }
+
             await accountService.EditAccountAsync(id, model);
+
             return RedirectToAction(nameof(ManageAccount));
         }
         

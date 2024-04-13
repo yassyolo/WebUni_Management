@@ -36,6 +36,7 @@ namespace WebUni_Management.Core.Services
                 FacultyNumber = x.FacultyNumber,
                 Email = x.User.Email
             }).FirstOrDefaultAsync();
+
             return new SearchStudentViewModel()
             {
                 Student = studentToShow
@@ -58,6 +59,10 @@ namespace WebUni_Management.Core.Services
                     RentedStudyRoomsCount = x.RentedStudyRooms.Count(),
                 })
                 .FirstOrDefaultAsync();
+            if(student == null)
+            {
+                throw new NotFoundException(nameof(Student));
+            }
 			if (student != null)
 			{
 				var studentId = await repository.AllReadOnly<Infrastructure.Data.Models.Student>()
@@ -125,6 +130,10 @@ namespace WebUni_Management.Core.Services
         public async Task<EditSubjectFormViewModel?> GetEditSubjectFormAsync(int subjectId, int studentId)
         {
             var student = await repository.AllReadOnly<Infrastructure.Data.Models.Student>().Where(x => x.Id == studentId).Select(x => x.UserId).FirstOrDefaultAsync();
+            if (student == null)
+            {
+                throw new NotFoundException(nameof(Student));
+            }
             var subject = await repository.AllReadOnly<SubjectForStudent>().Where(x => x.SubjectId == subjectId && x.StudentId == student)
                 .Select(x => new EditSubjectFormViewModel()
                 {
@@ -151,6 +160,10 @@ namespace WebUni_Management.Core.Services
             {
                 subject.SubjectProfessor = subjectProfessor;
             }
+            else
+            {
+                throw new NotFoundException(nameof(SubjectProfessor));
+            }
             var subjectAssistant = await repository.AllReadOnly<SubjectByProfessor>().Where(x => x.SubjectId == subjectId && x.Professor.Title == "Assistant")
                 .Select(x => new SubjectAssistantIndexViewModel()
                 {
@@ -166,12 +179,20 @@ namespace WebUni_Management.Core.Services
             {
                 subject.SubjectAssistant = subjectAssistant;
             }
+            else
+            {
+                throw new NotFoundException(nameof(SubjectProfessor));
+            }
             return subject;           
         }
 
         public async Task EditSubjectAsync(int id, EditSubjectFormViewModel model)
         {
             var subject = await repository.All<Infrastructure.Data.Models.Subject>().FirstOrDefaultAsync(x => x.Id == id);
+            if (subject == null)
+            { 
+                throw new NotFoundException(nameof(Subject));
+            }
             subject.Name = model.Name;
             subject.Description = model.Description;
             subject.TotlaAttendanceCount = model.TotalAttendanceCount;
@@ -179,7 +200,11 @@ namespace WebUni_Management.Core.Services
             foreach (var p in professors)
             {
                 var professor = await repository.All<SubjectProfessor>().FirstOrDefaultAsync(x => x.Id == p.ProfessorId);
-                if(professor.Title == "Professor")
+                if (professor == null) 
+                { 
+                    throw new NotFoundException(nameof(SubjectProfessor));
+                }
+                if (professor.Title == "Professor")
                 {                    
                     professor.Title = model.SubjectProfessor.Title;
                     professor.PhoneNumber = model.SubjectProfessor.PhoneNumber;
@@ -187,6 +212,7 @@ namespace WebUni_Management.Core.Services
                     professor.FirstName = model.SubjectProfessor.FirstName;
                     professor.LastName = model.SubjectProfessor.LastName;
                     professor.Description = model.SubjectProfessor.Description;
+                    await repository.SaveChangesAsync();
                 }
                 else if(professor.Title == "Assistant")
                 {                    
@@ -196,6 +222,7 @@ namespace WebUni_Management.Core.Services
                     professor.FirstName = model.SubjectAssistant.FirstName;
                     professor.LastName = model.SubjectAssistant.LastName;
                     professor.Description = model.SubjectAssistant.Description;
+                    await repository.SaveChangesAsync();
                 }
             }
             await repository.SaveChangesAsync();
@@ -210,13 +237,15 @@ namespace WebUni_Management.Core.Services
                 var normalizedSearchTerm = searchTerm.Trim().ToLower();
                 faculties = faculties.Where(x => x.Name.ToLower().Contains(normalizedSearchTerm));
             }
-            var facultiesToShow = await faculties.Skip((currentPage - 1) * facultiesPerPage).Take(facultiesPerPage)
+            var facultiesToShow = await faculties.Skip((currentPage - 1) * facultiesPerPage)
+                .Take(facultiesPerPage)
                 .Select(x => new FacultyIndexViewModel
                 {
                     Id = x.Id,
                     Name = x.Name,
                
                 }).ToListAsync();
+
             return new AllFacultiesViewModel()
             {
                 TotalFaculties = await faculties.CountAsync(),
@@ -246,6 +275,7 @@ namespace WebUni_Management.Core.Services
             return await repository.AllReadOnly<Major>().Where(x => x.FacultyId == id)
                    .Select(x => new MajorIndexViewModel()
                    {
+                      FacultyId = x.FacultyId,
                       Id = x.Id,
                       Name = x.Name
                    }).ToListAsync();
@@ -265,6 +295,10 @@ namespace WebUni_Management.Core.Services
         public Task EditFacultyAsync(int id, FacultyFormViewModel model)
         {
             var faculty = repository.All<Faculty>().FirstOrDefault(x => x.Id == id);
+            if (faculty == null)
+            {
+                throw new NotFoundException(nameof(Faculty));
+            }
             faculty.Name = model.Name;
             faculty.Description = model.Description;
             return repository.SaveChangesAsync();
@@ -278,12 +312,14 @@ namespace WebUni_Management.Core.Services
                 var normalizedSearchTerm = searchTerm.ToLower().Trim();
                 majors = majors.Where(x => x.Name.ToLower().Contains(normalizedSearchTerm));
             }
-            var majorsToShow = await majors.Skip((currentPage - 1) * majorsPerPage).Take(majorsPerPage)
+            var majorsToShow = await majors.Skip((currentPage - 1) * majorsPerPage)
+                .Take(majorsPerPage)
                 .Select(x => new MajorIndexViewModel
                 {
                     Id = x.Id,
                     Name = x.Name,
                 }).ToListAsync();
+
             return new AllMajorsViewModel()
             {
                 Majors = majorsToShow,
@@ -298,12 +334,14 @@ namespace WebUni_Management.Core.Services
 
         public Task<MajorFormViewModel?> GetEditMajorFormAsync(int id)
         {
+            var facultyName = repository.AllReadOnly<Faculty>().Where(x => x.Id == id).Select(x => x.Name).FirstOrDefault();
             return repository.AllReadOnly<Major>().Where(x => x.Id == id)
                 .Select(x => new MajorFormViewModel()
                 {
                     Id = x.Id,
                     Name = x.Name,
                     Description = x.Description,
+                    FacultyName = facultyName
                 }).FirstOrDefaultAsync();
         }
 
@@ -317,35 +355,35 @@ namespace WebUni_Management.Core.Services
 
         public async Task AddMajorAsync(MajorFormViewModel model)
         {
-            try
+            var facultyId = await repository.AllReadOnly<Faculty>().Where(x => x.Name == model.FacultyName).Select(x => x.Id).FirstOrDefaultAsync();
+            if (facultyId == 0)
             {
-                var facultyId = await repository.AllReadOnly<Faculty>().Where(x => x.Name == model.FacultyName).Select(x => x.Id).FirstOrDefaultAsync();
+                throw new NotFoundException(nameof(Faculty));
+            }
 
-                var major = new Major()
-                {
-                    Name = model.Name,
-                    FacultyId = facultyId,
-                    Description = model.Description 
-                };
-                await repository.AddAsync(major);
-                await repository.SaveChangesAsync();
-            }
-            catch (InvalidOperationException ex)
+            var major = new Major()
             {
-                throw new InvalidCastException("Faculty does not exist", ex);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("An error occured", ex);
-            }
-                       
+                Name = model.Name,
+                FacultyId = facultyId,
+                Description = model.Description 
+            };
+            await repository.AddAsync(major);
+            await repository.SaveChangesAsync();                      
         }
 
         public async Task<ManageAttendanceViewModel?> GetAttendanceRecordForStudentAsync(int subjectId, int studentId)
         {
             var studentUserId = repository.AllReadOnly<Infrastructure.Data.Models.Student>().Where(x => x.Id == studentId).Select(x => x.UserId).FirstOrDefault();
             var student = await repository.AllReadOnly<Infrastructure.Data.Models.Student>().Where(x => x.Id == studentId).FirstOrDefaultAsync();
+            if (student == null)
+            {
+                throw new NotFoundException(nameof(Student));
+            }
             var subject = await repository.AllReadOnly<Infrastructure.Data.Models.Subject>().Where(x => x.Id == subjectId).FirstOrDefaultAsync();
+            if (subject == null)
+            {
+                throw new NotFoundException(nameof(Subject));
+            }
 
             return await repository.AllReadOnly<SubjectForStudent>().Where(x => x.SubjectId == subjectId && x.StudentId == studentUserId)
                 .Select(x => new ManageAttendanceViewModel()
@@ -366,10 +404,23 @@ namespace WebUni_Management.Core.Services
         {
             var studentUserId = await repository.AllReadOnly<Infrastructure.Data.Models.Student>().Where(x => x.Id == studentId).Select(x => x.UserId).FirstOrDefaultAsync();
             var student = await repository.AllReadOnly<Infrastructure.Data.Models.Student>().Where(x => x.Id == studentId).FirstOrDefaultAsync();
+            if (student == null)
+            {
+                throw new NotFoundException(nameof(Student));
+            }
             var subject = await repository.AllReadOnly<Infrastructure.Data.Models.Subject>().Where(x => x.Id == subjectId).FirstOrDefaultAsync();
+            if (subject == null)
+            {
+                throw new NotFoundException(nameof(Subject));
+            }
             var subjectForStudent = await repository.All<SubjectForStudent>().Where(x => x.SubjectId == subjectId && x.StudentId == studentUserId).FirstOrDefaultAsync();
+            if (subjectForStudent == null)
+            {
+                throw new NotFoundException(nameof(SubjectForStudent));
+            }
             subjectForStudent.AttendanceRecord += 1;
             await repository.SaveChangesAsync();
+
             return await repository.AllReadOnly<SubjectForStudent>().Where(x => x.SubjectId == subjectId && x.StudentId == studentUserId)
                .Select(x => new ManageAttendanceViewModel()
                {
@@ -388,13 +439,25 @@ namespace WebUni_Management.Core.Services
         public async Task<PersonalInfoViewModel?> LoadPersonalInfoAsync(string userId)
         {
             var student = await repository.AllReadOnly<Infrastructure.Data.Models.Student>().Where(x => x.UserId == userId).FirstOrDefaultAsync();
+            if (student == null)
+            {
+                throw new NotFoundException(nameof(Student));
+            }
             var faculty = await repository.AllReadOnly<Faculty>().Where(x => x.Id == student.FacultyId).Select(x => x.Name).FirstOrDefaultAsync();
             if(faculty == null)
             {
-                return null;
+                throw new NotFoundException(nameof(Faculty));
             }
             var major = await repository.AllReadOnly<Major>().Where(x => x.Id == student.MajorId).Select(x => x.Name).FirstOrDefaultAsync();
-           var courseTerm = await repository.AllReadOnly<CourseTerm>().Where(x => x.Id == student.CourseTermId).Select(x => x.Name).FirstOrDefaultAsync();
+            if (major == null)
+            {
+                throw new NotFoundException(nameof(Major));
+            }
+            var courseTerm = await repository.AllReadOnly<CourseTerm>().Where(x => x.Id == student.CourseTermId).Select(x => x.Name).FirstOrDefaultAsync();
+            if (courseTerm == null)
+            {
+                throw new NotFoundException(nameof(CourseTerm));
+            }
         
             var studentPersonalInfo = await repository.AllReadOnly<Infrastructure.Data.Models.Student>().Where(x => x.UserId == userId)
                .Select(x => new PersonalInfoViewModel()
@@ -421,16 +484,37 @@ namespace WebUni_Management.Core.Services
                 {
                     Id = x.Id,
                     Title = x.Title,
-                    Author = string.Join(", ", x.Author.Select(x => x.FirstName + " " + x.LastName)),
                     ImageUrl = x.ImageUrl,
                     Category = x.Category.Name
                 })
                 .ToListAsync();
+            foreach (var book in booksToShow)
+            {
+                book.Author = await GetAuthor(book.Id);
+            }
             return new MyRentedBooksViewModel()
             {
                 Books = booksToShow,
                 TotalBooks = await books.CountAsync(),
             };
+        }
+
+        public async Task<string> GetAuthor(int id)
+        {
+            var authorViewModels = await repository.AllReadOnly<BookByBookAuthor>()
+                .Where(x => x.BookId == id)
+                .Select(x => new AuthorViewModel
+                {
+                    FirstName = x.Author.FirstName,
+                    LastName = x.Author.LastName
+                })
+                .ToListAsync();
+            var result = string.Join(", ", authorViewModels.Select(a => $"{a.FirstName} {a.LastName}")).TrimEnd();
+            if (string.IsNullOrEmpty(result))
+            {
+                throw new NotFoundException(nameof(BookAuthor));
+            }
+            return result;
         }
 
         public async Task<bool> UserHasJoinedEventWithIdAsync(string userId)
@@ -452,6 +536,7 @@ namespace WebUni_Management.Core.Services
                     StartTime = x.Event.StartTime.ToString("MMM dd, yyyy HH:mm"),
                     EndTime = x.Event.EndTime.ToString("MMM dd, yyyy HH:mm"),
                 }).ToListAsync();
+
             return new MyJoinedEventsViewModel()
             {
                 Events = eventsToShow,
@@ -462,6 +547,11 @@ namespace WebUni_Management.Core.Services
         public async Task RemoveJoinAsync(int id, string userId)
         {
             var ev = repository.All<EventParticipant>().FirstOrDefault(x => x.EventId == id && x.ParticipantId == userId);
+            if (ev == null)
+            {
+                throw new NotFoundException(nameof(EventParticipant));
+            }
+
             repository.DeleteAsync(ev);
         }
 
@@ -469,6 +559,7 @@ namespace WebUni_Management.Core.Services
         {
             var rooms = repository.AllReadOnly<Infrastructure.Data.Models.StudyRoom>()
                 .Where(x => x.RenterId == stringId);
+
             var roomsToShow = await rooms.Skip((currentPage - 1) * roomsPerPage).Take(roomsPerPage)
                 .Select(x => new RoomShowcaseViewModel
                 {
@@ -478,6 +569,7 @@ namespace WebUni_Management.Core.Services
                     ImageUrl = x.ImageUrl,
                     Capacity = x.Capacity,
                 }).ToListAsync();
+
             return new MyRentedRoomsViewModel()
             {
                 Rooms = roomsToShow,
@@ -493,7 +585,15 @@ namespace WebUni_Management.Core.Services
         public async Task<MyAttendanceViewModel?> SeeMyAttendanceRecordAsync(int id, string studentUserId)
         {
             var student = await repository.AllReadOnly<Infrastructure.Data.Models.Student>().Where(x => x.UserId == studentUserId).FirstOrDefaultAsync();
+            if (student == null)
+            {
+                throw new NotFoundException(nameof(Student));
+            }
             var subject = await repository.AllReadOnly<Infrastructure.Data.Models.Subject>().Where(x => x.Id == id).FirstOrDefaultAsync();
+            if (subject == null)
+            {
+                throw new NotFoundException(nameof(Subject));
+            }
             return await repository.AllReadOnly<SubjectForStudent>().Where(x => x.SubjectId == id && x.StudentId == studentUserId)
                 .Select(x => new MyAttendanceViewModel()
                 {
@@ -508,9 +608,25 @@ namespace WebUni_Management.Core.Services
 		public async Task<SeeMySubjectDetailsViewModel?> SeeMySubjectDetailsAsync(int id, string userId)
 		{
             var subject = await repository.AllReadOnly<Infrastructure.Data.Models.Subject>().Where(x => x.Id == id).FirstOrDefaultAsync();
+            if (subject == null)
+            {
+                throw new NotFoundException(nameof(Subject));
+            }
             var facultyName = await repository.AllReadOnly<Faculty>().Where(x => x.Id == subject.FacultyId).Select(x => x.Name).FirstOrDefaultAsync();
+            if (facultyName == null)
+            {
+                throw new NotFoundException(nameof(Faculty));
+            }
             var majorName = await repository.AllReadOnly<Major>().Where(x => x.Id == subject.MajorId).Select(x => x.Name).FirstOrDefaultAsync();
+            if (majorName == null)
+            {
+                throw new NotFoundException(nameof(Major));
+            }
             var courseTermname = await repository.AllReadOnly<CourseTerm>().Where(x => x.Id == subject.CourseTermId).Select(x => x.Name).FirstOrDefaultAsync();
+            if (courseTermname == null)
+            {
+                throw new NotFoundException(nameof(CourseTerm));
+            }
 			var result= await  repository.AllReadOnly<SubjectForStudent>().Where(x => x.SubjectId == id && x.StudentId == userId)
 				.Select(x => new SeeMySubjectDetailsViewModel()
                 {
@@ -538,6 +654,7 @@ namespace WebUni_Management.Core.Services
                     Name = x.Name,
                     Description = x.Description,
                 }).FirstOrDefaultAsync();
+
             faculty.Majors =  await GetMajorsForFacultyByIdAsync(id);
             return faculty;
         }
@@ -556,6 +673,10 @@ namespace WebUni_Management.Core.Services
         public async Task<MajorDetailsViewModel?> GetMajorDetailsAsync(int id)
         {
             var faculty = await repository.AllReadOnly<Major>().Where(x => x.Id == id).Select(x => x.Faculty.Name).FirstOrDefaultAsync();
+            if (faculty == null)
+            {
+				throw new NotFoundException(nameof(Faculty));
+			}
             var major = await repository.AllReadOnly<Major>().Where(x => x.Id == id)
                 .Select(x => new MajorDetailsViewModel()
                 {
@@ -661,9 +782,7 @@ namespace WebUni_Management.Core.Services
 
 		public async Task<SeeMySubjectDetailsViewModel?> GetSubjectDetailsById(int id)
 		{
-            var faculty = await repository.AllReadOnly<Infrastructure.Data.Models.Faculty>().Where(x => x.Id == id).Select(x => x.Name).FirstOrDefaultAsync();
-            var major = await repository.AllReadOnly<Infrastructure.Data.Models.Major>().Where(x => x.Id == id).Select(x => x.Name).FirstOrDefaultAsync();
-            var courseTerm = await repository.AllReadOnly<Infrastructure.Data.Models.CourseTerm>().Where(x => x.Id == id).Select(x => x.Name).FirstOrDefaultAsync();
+            
 			var result = await repository.AllReadOnly<Infrastructure.Data.Models.Subject>().Where(x => x.Id == id)
 				.Select(x => new SeeMySubjectDetailsViewModel()
                 {
@@ -671,9 +790,6 @@ namespace WebUni_Management.Core.Services
 					Name = x.Name,
 					Description = x.Description,
 					TotlaAttendanceCount = x.TotlaAttendanceCount,
-                    Faculty = faculty,
-					Major = major,
-					CourseTerm = courseTerm,
 				}).FirstOrDefaultAsync();
 			result.Assistant = await GetAssistantForSubjectAsync(id);
 			result.Professor = await GetProfessorForSubjectAsync(id);
@@ -735,6 +851,10 @@ namespace WebUni_Management.Core.Services
 		{
             var studentUserId = await repository.AllReadOnly<Infrastructure.Data.Models.Student>().Where(x => x.Id == studentId).Select(x => x.UserId).FirstOrDefaultAsync();
 			var subjectGrade = await repository.All<SubjectForStudent>().FirstOrDefaultAsync(x => x.SubjectId == subjectId && x.StudentId == studentUserId);
+            if (subjectGrade == null)
+            {
+                throw new NotFoundException(nameof(SubjectForStudent));
+            }
             subjectGrade.Grade = model.Grade;
             await repository.SaveChangesAsync();
 		}
@@ -742,6 +862,10 @@ namespace WebUni_Management.Core.Services
 		public async Task<Subject> AddSubjectForStudentAsync(int id, EditSubjectFormViewModel model)
 		{
             var student = await repository.AllReadOnly<Infrastructure.Data.Models.Student>().Where(x => x.Id == id).FirstOrDefaultAsync();
+            if (student == null)
+            {
+                throw new NotFoundException(nameof(Student));
+            }
             var subject = new Subject()
             {
                 Name = model.Name,
@@ -792,6 +916,10 @@ namespace WebUni_Management.Core.Services
 		public async Task AddFullSubjectForStudentAsync(int subjectId, int studentId, int professorId, int assistantId)
 		{
 			var student = await repository.AllReadOnly<Infrastructure.Data.Models.Student>().Where(x => x.Id == studentId).FirstOrDefaultAsync();
+            if (student == null)
+            {
+                throw new NotFoundException(nameof(Student));
+            }
             var subjectForStudent = new SubjectForStudent()
             {
 				SubjectId = subjectId,
@@ -811,8 +939,43 @@ namespace WebUni_Management.Core.Services
                 SubjectId = subjectId,
                 ProfessorId = assistantId,
             };
+            await repository.AddAsync(subjectByAssistant);
             await repository.SaveChangesAsync();
 
 		}
-	}
+
+        public async Task<bool> RoomExistsById(int id)
+        {
+            return await repository.AllReadOnly<Infrastructure.Data.Models.StudyRoom>().AnyAsync(x => x.Id == id);
+        }
+
+        public async Task<bool> UserWithIdHasRentedRoomAsync(int id, string userId)
+        {
+           return await repository.AllReadOnly<Infrastructure.Data.Models.StudyRoom>().AnyAsync(x => x.Id == id && x.RenterId == userId);
+        }
+
+        public async Task<bool> RoomIsAlreadyRentedAsync(int id)
+        {
+            return await repository.AllReadOnly<Infrastructure.Data.Models.StudyRoom>().AnyAsync(x => x.Id == id && x.IsRented == true);
+        }
+
+        public async Task RemoveRoomRentAsync(int id, string userId)
+        {
+            var room = await repository.All<Infrastructure.Data.Models.StudyRoom>().FirstOrDefaultAsync(x => x.Id == id && x.RenterId == userId);
+            room.RenterId = null;
+            room.IsRented = false;
+            room.RentalDate = null;
+            await repository.SaveChangesAsync();
+        }
+
+        public async Task<bool> EventWithIdExists(int id)
+        {
+            return await repository.AllReadOnly<Event>().AnyAsync(x => x.Id == id);
+        }
+
+        public async Task<int> GetFacultyIdByMajorIdAsync(int id)
+        {
+            return await repository.AllReadOnly<Major>().Where(x => x.Id == id).Select(x => x.FacultyId).FirstOrDefaultAsync();
+        }
+    }
 }

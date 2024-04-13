@@ -290,7 +290,7 @@ namespace WebUni_Management.Core.Services
                 }).FirstOrDefaultAsync();
         }
 
-        public async Task AddBookAsync(EditBookViewModel model)
+        public async Task<int> AddBookAsync(EditBookViewModel model)
         {
             var book = new Book
             {
@@ -302,30 +302,33 @@ namespace WebUni_Management.Core.Services
                 LibraryId = 1
             };
 
-            var authors = model.Author.Split(", ").ToArray();
+            await repository.AddAsync(book);
+            await repository.SaveChangesAsync();
+            return book.Id;
+        }
+        public async Task<List<BookAuthor>> AddAuthorsForNewBookAsync(int id, EditBookViewModel model)
+        {
+            var result = new List<BookAuthor>();
+            var authors = model.Author.Split(", ");
             foreach (var author in authors)
             {
-                var names = author.Split(" ").ToArray();
+                var names = author.Split(" ");
                 var existingAuthor = await repository.All<BookAuthor>()
-                    .Where(x => x.FirstName == names[0] || x.LastName == names[1])
+                    .Where(x => x.FirstName == names[0] && x.LastName == names[1])
                     .FirstOrDefaultAsync();
-                if(existingAuthor == null)
+                if (existingAuthor == null)
                 {
                     existingAuthor = new BookAuthor
                     {
                         FirstName = names[0],
                         LastName = names[1],
-                    };
-                    var bookBybokAuthor = new BookByBookAuthor
-                    {
-                        AuthorId = existingAuthor.Id,
-                        BookId = book.Id
-                    };
+                    };                  
                     await repository.AddAsync(existingAuthor);
+                    result.Add(existingAuthor);
                 }
             }
-            await repository.AddAsync(book);
             await repository.SaveChangesAsync();
+            return result;
         }
 
         public async Task AddRoomAsync(EditRoomViewModel model)
@@ -451,9 +454,23 @@ namespace WebUni_Management.Core.Services
             await repository.SaveChangesAsync();
         }
 
-        public Task<bool> IsBookRentedByUserWithIdAsync(string userId, int id)
+        public async Task<bool> IsBookRentedByUserWithIdAsync(string userId, int id)
         {
-            throw new NotImplementedException();
+            return await repository.AllReadOnly<Book>().Where(x => x.Id == id && x.RenterId == userId).AnyAsync();
+        }
+
+        public async Task AddBookByAuthorsAsync(int bookId, List<BookAuthor> authors)
+        {
+            foreach (var author in authors)
+            {
+                var bookBybokAuthor = new BookByBookAuthor
+                {
+                    AuthorId = author.Id,
+                    BookId = bookId
+                };
+                await repository.AddAsync(bookBybokAuthor);
+            }
+            await repository.SaveChangesAsync();
         }
     }
 }
