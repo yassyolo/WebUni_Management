@@ -6,7 +6,7 @@ using WebUni_Management.Infrastructure.Repository;
 
 namespace WebUni_Management.Core.Services
 {
-	public class EventService : IEventService
+    public class EventService : IEventService
     {
         private readonly IRepository repository;
 
@@ -37,14 +37,13 @@ namespace WebUni_Management.Core.Services
             var eventParticipant = await repository.All<EventParticipant>().Where(x => x.EventId == id).ToListAsync();
 			foreach (var evp in eventParticipant)
 			{
+                if (evp == null)
+                {
+                    throw new NotFoundException(nameof(EventParticipant));
+                }
 				await repository.DeleteAsync(evp);
 			}
-			if (ev != null )
-            {
-                await repository.DeleteAsync(ev);
-            }
-           
-            await repository.SaveChangesAsync();
+            await repository.DeleteAsync<Event>(ev);                     
 		}
 
 		public async Task EditEventAsync(int id, EventFormViewModel model)
@@ -74,9 +73,13 @@ namespace WebUni_Management.Core.Services
                 var normalizedSearchTerm = searchTerm.ToLower();
                 events = events.Where(x => x.GuestParticipant.Contains(normalizedSearchTerm) || x.Name.Contains(normalizedSearchTerm));
             }
-            var joinedEvents = await repository.AllReadOnly<EventParticipant>().Where(x => x.ParticipantId  == userId).Select(x=> x.EventId).ToListAsync();
-            var eventsToShow = await events .Where(x => !joinedEvents.Contains(x.Id)).Skip((currentPage - 1) * eventsPerPage).Take(eventsPerPage)
-               
+            var joinedEvents = await repository.AllReadOnly<EventParticipant>().Where(x => x.ParticipantId  == userId)
+                .Select(x=> x.EventId)
+                .ToListAsync();
+
+            var eventsToShow = await events.Where(x => !joinedEvents.Contains(x.Id))
+                .Skip((currentPage - 1) * eventsPerPage)
+                .Take(eventsPerPage)             
                 .Select(x => new EventIndexViewModel()
                 {
                     Name = x.Name,
@@ -129,11 +132,8 @@ namespace WebUni_Management.Core.Services
         }
 
         public async Task<IEnumerable<EventIndexViewModel>> GetLastThreeEventsAsync()
-        {
-            //var eventsOfUser = await repository.AllReadOnly<EventParticipant>().Where(x => x.ParticipantId == userId).Select(x => x.EventId).ToListAsync();
-
+        {           
             return await repository.AllReadOnly<Event>()
-                //.Where(x => !eventsOfUser.Contains(x.Id))
                 .Take(3)
                 .Select(x => new EventIndexViewModel()
                 {
@@ -149,14 +149,23 @@ namespace WebUni_Management.Core.Services
 
         public async Task JoinEventAsync(int id, string userId)
         {
-            var eventParticipant = new EventParticipant()
+            var eventCapacity = await repository.AllReadOnly<Event>().Where(x => x.Id == id).Select(x => x.Capacity).FirstOrDefaultAsync();
+            var eventParticipants = await repository.AllReadOnly<EventParticipant>().Where(x => x.EventId == id).CountAsync();
+            if (eventParticipants >= eventCapacity)
             {
-                ParticipantId = userId,
-                EventId = id
-            };
-           
-            await repository.AddAsync(eventParticipant);
-            await repository.SaveChangesAsync();
+                throw new EventCapacityReachedException("Event capacity has been reached.");
+            }
+            else
+            {
+                var eventParticipant = new EventParticipant()
+                {
+                    ParticipantId = userId,
+                    EventId = id
+                };
+
+                await repository.AddAsync(eventParticipant);
+                await repository.SaveChangesAsync();
+            }
         }
 
         public async Task<bool> UserHasAlreadyJoinedEvent(int id, string userId)

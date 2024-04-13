@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 using System.Reflection.Metadata.Ecma335;
 using System.Security.Claims;
 using WebUni_Management.Core.Contracts;
@@ -396,6 +397,66 @@ namespace WebUni_Management.Controllers
 			}
 			var model = await personalInfoService.GetSubjectDetailsById(id);
 			return View(model);
+		}
+		[HttpGet]
+		public async Task<IActionResult> ManageGrade(int subjectId, int studentId)
+		{
+			if (await personalInfoService.SubjectWithIdExistsAsync(subjectId) == false)
+			{
+				return BadRequest();
+			}
+			if (await personalInfoService.StudentHasSubjectAsync(subjectId, studentId) == false)
+			{
+				return BadRequest();
+			}
+			var model = await personalInfoService.GetGradeForStudentAsync(subjectId, studentId);
+			return View(model);
+		}
+		[HttpPost]
+		public async Task<IActionResult> ManageGrade(int subjectId, int studentId, SubjectGradeViewModel model)
+		{
+			if (await personalInfoService.SubjectWithIdExistsAsync(subjectId) == false)
+			{
+				return BadRequest();
+			}
+			if (await personalInfoService.StudentHasSubjectAsync(subjectId, studentId) == false)
+			{
+				return BadRequest();
+			}
+			if (ModelState.IsValid == false)
+			{
+				return BadRequest();
+			}
+			await personalInfoService.ManageGradeForStudentAsync(subjectId, studentId, model);
+			return RedirectToAction(nameof(StudentDetails), new { id = studentId });
+		}
+		public async Task<IActionResult> AddSubjectForStudent(int id)
+		{
+			if (await personalInfoService.StudentWithIdExistsAsync(id) == false)
+			{
+				return BadRequest();
+			}
+			var model = new EditSubjectFormViewModel();
+			return View(model);
+		}
+		[HttpPost]
+		public async Task<IActionResult> AddSubjectForStudent(int id, EditSubjectFormViewModel model)
+		{
+			if (await personalInfoService.StudentWithIdExistsAsync(id) == false)
+			{
+				return BadRequest();
+			}
+			if (ModelState.IsValid == false)
+			{
+				return BadRequest();
+			}
+			var subject = await personalInfoService.AddSubjectForStudentAsync(id, model);
+			
+			var subjectId = subject.Id;
+			var profesor = await personalInfoService.AddSubjectProfessorForStudentAsync(subjectId, model);
+			var assistant = await personalInfoService.AddSubjectAssistantForStudentAsync(subjectId, model);
+			await personalInfoService.AddFullSubjectForStudentAsync(subjectId, id, profesor.Id, assistant.Id);
+			return RedirectToAction(nameof(StudentDetails), new { id = id });
 		}
 
     }

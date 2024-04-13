@@ -15,11 +15,11 @@ namespace WebUni_Management.Core.Services
             repository = _repository;
         }
 
-		public Task ChangeMenuDateAsync(int id)
+		public async Task ChangeMenuDateAsync(int id)
 		{
 			var menu = repository.All<Menu>().FirstOrDefault(x => x.Id == id);
 			menu.Date = DateTime.Now;
-			return repository.SaveChangesAsync();
+			await repository.SaveChangesAsync();
 		}
 
 		public async Task<bool> DishExistsById(int id)

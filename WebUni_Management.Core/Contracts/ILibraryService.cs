@@ -36,5 +36,6 @@ namespace WebUni_Management.Core.Contracts
         Task<bool> IsRoomRentedAsync(int id);
         Task<bool> IsRoomRentedByUserWithIdAsync(string userId, int id);
         Task RentRoomAsync(string userId, int id);
+        Task<bool> IsBookRentedByUserWithIdAsync(string userId, int id);
     }
 }

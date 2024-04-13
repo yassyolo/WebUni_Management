@@ -36,18 +36,21 @@ namespace WebUni_Management.Core.Services
             await repository.SaveChangesAsync();
         }
 
-        public async Task DeleteNewsArticleAsync(int id)
+        public async Task DeleteNewsArticleAsync(int id, string userId)
         {
             var newsArticle = await repository.All<NewsArticle>().FirstOrDefaultAsync(x => x.Id == id);
+            var newsArticleStatus = await repository.All<NewsArticleReadStatus>().Where(x => x.NewsArticleId == id && x.ReaderId == userId).ToListAsync();
+            foreach (var item in newsArticleStatus)
+            {
+                await repository.DeleteAsync<NewsArticleReadStatus>(item);
+            }
             await repository.DeleteAsync<NewsArticle>(newsArticle);
-            await repository.SaveChangesAsync();
         }
 
 		public async Task DiscardNewsArticleAsync(int id)
 		{
 			var newsArticle = await repository.All<NewsArticle>().FirstOrDefaultAsync(x => x.Id == id);
             await repository.DeleteAsync<NewsArticle>(newsArticle);
-            await repository.SaveChangesAsync();
 		}
 
 		public async Task EditNewsAsync(int id, NewsFormViewModel model)
@@ -83,7 +86,8 @@ namespace WebUni_Management.Core.Services
             {
                 news = news.Where(x => x.PublishedOn.Date.ToString() == dateSearchTerm);
             }
-            var newsToShow = await news.Skip((currentPage - 1) * newsPerPage).Take(newsPerPage)
+            var newsToShow = await news.Skip((currentPage - 1) * newsPerPage)
+                .Take(newsPerPage)
                 .Where(x => x.IsApproved != false)
                 .Select(x => new NewsDetailsViewModel()
                 {

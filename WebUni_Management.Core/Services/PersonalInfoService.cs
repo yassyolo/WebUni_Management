@@ -78,6 +78,7 @@ namespace WebUni_Management.Core.Services
 				{
 					Id = x.Subject.Id,
 					Name = x.Subject.Name,
+                    Grade = x.Grade.ToString()
 				}).ToListAsync();
 		}		
 
@@ -707,6 +708,111 @@ namespace WebUni_Management.Core.Services
 					Description = x.Professor.Description,
 					PhoneNumber = x.Professor.PhoneNumber,
 				}).FirstOrDefaultAsync();
+		}
+
+        public async Task<SubjectGradeViewModel?> GetGradeForStudentAsync(int subjectId, int studentId)
+        {
+            var studentUserId = repository.AllReadOnly<Infrastructure.Data.Models.Student>().Where(x => x.Id == studentId).Select(x => x.UserId).FirstOrDefault();
+            var subjectGrade = await repository.AllReadOnly<SubjectForStudent>().Where(x => x.SubjectId == subjectId && x.StudentId == studentUserId).FirstOrDefaultAsync();
+
+            if (subjectGrade == null)
+            {
+                return new SubjectGradeViewModel()
+                {
+                    StudentId = studentId,
+                    Grade = 0.0
+                };
+            }
+             return await repository.AllReadOnly<SubjectForStudent>().Where(x => x.SubjectId == subjectId && x.StudentId == studentUserId)
+                .Select(x => new SubjectGradeViewModel()
+                {
+                    StudentId = studentId,
+                    Grade = (double)x.Grade,
+                }).FirstOrDefaultAsync();
+        }
+
+		public async Task ManageGradeForStudentAsync(int subjectId, int studentId, SubjectGradeViewModel model)
+		{
+            var studentUserId = await repository.AllReadOnly<Infrastructure.Data.Models.Student>().Where(x => x.Id == studentId).Select(x => x.UserId).FirstOrDefaultAsync();
+			var subjectGrade = await repository.All<SubjectForStudent>().FirstOrDefaultAsync(x => x.SubjectId == subjectId && x.StudentId == studentUserId);
+            subjectGrade.Grade = model.Grade;
+            await repository.SaveChangesAsync();
+		}
+
+		public async Task<Subject> AddSubjectForStudentAsync(int id, EditSubjectFormViewModel model)
+		{
+            var student = await repository.AllReadOnly<Infrastructure.Data.Models.Student>().Where(x => x.Id == id).FirstOrDefaultAsync();
+            var subject = new Subject()
+            {
+                Name = model.Name,
+                Description = model.Description,
+                TotlaAttendanceCount = model.TotalAttendanceCount,
+                MajorId = student.MajorId,
+                FacultyId = student.FacultyId,
+                CourseTermId = student.CourseTermId,
+            };
+            await repository.AddAsync(subject);
+
+			await repository.SaveChangesAsync();   
+            return subject;
+		}
+
+		public async Task<SubjectProfessor> AddSubjectProfessorForStudentAsync(int subjectId, EditSubjectFormViewModel model)
+		{
+			var professor = new SubjectProfessor()
+            {
+				FirstName = model.SubjectProfessor.FirstName,
+				LastName = model.SubjectProfessor.LastName,
+				Email = model.SubjectProfessor.Email,
+				PhoneNumber = model.SubjectProfessor.PhoneNumber,
+				Title = model.SubjectProfessor.Title,
+				Description = model.SubjectProfessor.Description,
+			};
+            await repository.AddAsync(professor);
+            await repository.SaveChangesAsync();
+            return professor;
+		}
+
+		public async Task<SubjectProfessor> AddSubjectAssistantForStudentAsync(int subjectId, EditSubjectFormViewModel model)
+		{
+			var assistant = new SubjectProfessor()
+            {
+				FirstName = model.SubjectAssistant.FirstName,
+				LastName = model.SubjectAssistant.LastName,
+				Email = model.SubjectAssistant.Email,
+				PhoneNumber = model.SubjectAssistant.PhoneNumber,
+				Title = model.SubjectAssistant.Title,
+				Description = model.SubjectAssistant.Description,
+			};
+			await repository.AddAsync(assistant);
+			await repository.SaveChangesAsync();
+            return assistant;
+		}
+
+		public async Task AddFullSubjectForStudentAsync(int subjectId, int studentId, int professorId, int assistantId)
+		{
+			var student = await repository.AllReadOnly<Infrastructure.Data.Models.Student>().Where(x => x.Id == studentId).FirstOrDefaultAsync();
+            var subjectForStudent = new SubjectForStudent()
+            {
+				SubjectId = subjectId,
+				StudentId = student.UserId,
+				AttendanceRecord = 0,
+				Grade = 0.0,
+			};
+            await repository.AddAsync(subjectForStudent);
+            var subjectByProfessor = new SubjectByProfessor()
+            {
+				SubjectId = subjectId,
+				ProfessorId = professorId,
+			};
+            await repository.AddAsync(subjectByProfessor);
+            var subjectByAssistant = new SubjectByProfessor()
+            {
+                SubjectId = subjectId,
+                ProfessorId = assistantId,
+            };
+            await repository.SaveChangesAsync();
+
 		}
 	}
 }

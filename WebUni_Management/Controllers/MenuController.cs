@@ -16,19 +16,21 @@ namespace WebUni_Management.Controllers
         {
             menuService = _menuService;
         }
+
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var model = await menuService.GetMenuAsync();
             return View(model);
         }
-        
+
         [WordDocument(DefaultFilename = "MenuDocument")]
         public async Task<IActionResult> DownloadMenu()
         {
             var model = await menuService.GetMenuAsync();
             return View("DownloadMenu", model);
         }
+
         [HttpGet]
         [AutoValidateAntiforgeryToken]
         [Authorize(Roles = "Admin")]
@@ -41,6 +43,7 @@ namespace WebUni_Management.Controllers
 			var model = await menuService.GetDishForEditAsync(id);
             return View(model);
 		}
+
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         [Authorize(Roles = "Admin")]
@@ -50,13 +53,14 @@ namespace WebUni_Management.Controllers
             {
 				return BadRequest();
 			}
-			if (ModelState.IsValid)
+			if (ModelState.IsValid == false)
             {
-				await menuService.EditDishAsync(id, model);
-				return RedirectToAction(nameof(Index));
+				return View(model);
 			}
-			return View(model);
+			await menuService.EditDishAsync(id, model);
+			return RedirectToAction(nameof(Index));
 		}
+
 		[Authorize(Roles = "Admin")]
         public async Task<IActionResult> ChangeDate(int id)
         {

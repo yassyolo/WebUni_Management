@@ -1,24 +1,15 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 using WebUni_Management.Core.Contracts;
 using WebUni_Management.Infrastructure.Data.Models;
 using WebUni_Management.Core.Models.Account;
 using Microsoft.AspNetCore.Authentication;
-using ZXing.Common;
-using ZXing;
-using System.Drawing.Imaging;
-using System.Diagnostics.CodeAnalysis;
-using QRCoder;
-using QRCoder;
-using System;
-using System.Drawing;
-using System.IO;
-using ZXing.QrCode.Internal;
+using WebUni_Management.Extenstions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebUni_Management.Controllers
 {
-
+    [Authorize]
     public class AccountController : Controller
     {
         private readonly IAccountService accountService;
@@ -33,6 +24,7 @@ namespace WebUni_Management.Controllers
             this.signInManager = signInManager;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Register()
         {
@@ -40,6 +32,7 @@ namespace WebUni_Management.Controllers
             return View(model);
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
@@ -121,7 +114,7 @@ namespace WebUni_Management.Controllers
         [HttpGet]
         public async Task<IActionResult> ManageAccount()
         {
-            bool managedStudent = await accountService.GetStudentAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            bool managedStudent = await accountService.GetStudentAsync(User.GetId());
             if (!managedStudent)
             {
                 var model = new ManageAccountViewModel();
@@ -129,8 +122,8 @@ namespace WebUni_Management.Controllers
             }
             else
             {
-                var model = await accountService.FillManageAccountAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
-                ViewBag.QrCodeBase64 = await accountService.GetQrCodeForStudentAsync(User.FindFirstValue(ClaimTypes.NameIdentifier)) ?? "data:image/png;base64,defaultBase64String";
+                var model = await accountService.FillManageAccountAsync(User.GetId());
+                ViewBag.QrCodeBase64 = await accountService.GetQrCodeForStudentAsync(User.GetId()) ?? "data:image/png;base64,defaultBase64String";
                 return View("FilledManageAccount", model);
             }
         }
@@ -139,7 +132,7 @@ namespace WebUni_Management.Controllers
         { 
             if(ModelState.IsValid)
             {
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userId = User.GetId();
                 var user= await accountService.FindUserByIdAsync(userId);
 
                 if(user == null)

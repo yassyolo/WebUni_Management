@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebUni_Management.Core.Models.Library;
 using WebUni_Management.Core.Models.PersonalInfo;
+using WebUni_Management.Infrastructure.Data.Models;
 
 namespace WebUni_Management.Core.Contracts
 {
@@ -46,6 +47,19 @@ namespace WebUni_Management.Core.Contracts
         Task<bool> UserWithIdExistsAsync(string userId);
         Task<bool> UserWithIdHasRentedBookAsync(int id, string userId);
         Task<IEnumerable<SubjectIndexViewModel>> GetSubjects(string userId);
-
+        Task DeleteFacultyAsync(int id);
+        Task<ProfessorDetailsViewModel> GetProfessorForSubjectAsync(int id);
+        Task<AssistantDetailsViewModel> GetAssistantForSubjectAsync(int id);
+        Task<IEnumerable<MajorDetailsViewModel>> GetMajorsForFacultyByIdAsync(int id);
+        Task<IEnumerable<SubjectIndexViewModel>> GetSubjectsForMajorAsync(int id);
+        Task<EditSubjectFormViewModel?> GetEditSubjectFormForMajorAsync(int id);
+        Task<int> GetMajorIdBySubjectIdAsync(int id);
+		Task<SeeMySubjectDetailsViewModel?> GetSubjectDetailsById(int id);
+        Task<SubjectGradeViewModel?> GetGradeForStudentAsync(int subjectId, int studentId);
+		Task ManageGradeForStudentAsync(int subjectId, int studentId, SubjectGradeViewModel model);
+		Task<Subject> AddSubjectForStudentAsync(int id, EditSubjectFormViewModel model);
+		Task<SubjectProfessor> AddSubjectProfessorForStudentAsync(int subjectId, EditSubjectFormViewModel model);
+		Task<SubjectProfessor> AddSubjectAssistantForStudentAsync(int subjectId, EditSubjectFormViewModel model);
+		Task AddFullSubjectForStudentAsync(int subjectId, int studentId, int professorId, int assistantId);
 	}
 }

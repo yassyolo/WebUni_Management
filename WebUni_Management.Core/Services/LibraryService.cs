@@ -6,7 +6,7 @@ using WebUni_Management.Infrastructure.Repository;
 
 namespace WebUni_Management.Core.Services
 {
-	public class LibraryService : ILibraryService
+    public class LibraryService : ILibraryService
     {
         private readonly IRepository repository;
 
@@ -28,12 +28,13 @@ namespace WebUni_Management.Core.Services
                 var searchTermToLower = searchTerm.ToLower();
                 books = books.Where(x => x.Title.Contains(searchTermToLower) || x.Author.Any(x => x.FirstName.Contains(searchTermToLower) || x.LastName.Contains(searchTermToLower)) || x.PublishYear.Contains(searchTermToLower));
             }
-            var booksToShow = await books.Skip((currentPage - 1) * booksPerPage).Take(booksPerPage).OrderByDescending(x => x.Id)
+            var booksToShow = await books.Skip((currentPage - 1) * booksPerPage)
+                .Take(booksPerPage)
+                .OrderByDescending(x => x.Id)
                 .Select(x => new BookShowcaseViewModel
                 {
                     Id = x.Id,
                     Title = x.Title,
-                    Author = string.Join(", ", x.Author.Select(x => x.FirstName + " " + x.LastName)),
                     ImageUrl = x.ImageUrl,
                     Category = x.Category.Name,
                     Description = x.Description,
@@ -42,7 +43,7 @@ namespace WebUni_Management.Core.Services
                 }).ToListAsync();
             foreach (var book in booksToShow)
             {
-                await GetAuthor(book.Id);
+                book.Author = await GetAuthor(book.Id);
             }
             return new AllBooksQueryModel
             {
@@ -94,10 +95,6 @@ namespace WebUni_Management.Core.Services
                     CategoryId = x.CategoryId,
                     Author = author
                 }).FirstOrDefaultAsync();
-            if(book == null)
-            {
-                throw new InvalidOperationException("Book not found");
-            }
             
             book.Categories = await AllCategoriesForEditAsync();
             return book;
@@ -120,24 +117,25 @@ namespace WebUni_Management.Core.Services
 		}
 
 		public async Task<IEnumerable<BookInfoViewModel>> LastThreeBooksAsync()
-        {
-            
+        {          
            var books= await repository.AllReadOnly<Book>()
-
                 .OrderByDescending(x => x.Id)
                 .Take(3)
                 .Select(x => new BookInfoViewModel
                 {
                     Id = x.Id,
-                    Title = x.Title,
-                   
+                    Title = x.Title,                  
                     Category = x.Category.Name,
                     ImageUrl = x.ImageUrl
-                })
-                
+                })                
                 .ToListAsync();
+
             foreach (var book in books)
             {
+                if (book == null)
+                {
+                    throw new NotFoundException(nameof(Book));
+                }
                 book.Author = await GetAuthor(book.Id);
             }
             return books;
@@ -153,7 +151,12 @@ namespace WebUni_Management.Core.Services
                     LastName = x.Author.LastName
                 })
                 .ToListAsync();
-            return string.Join(", ", authorViewModels.Select(a => $"{a.FirstName} {a.LastName}")).TrimEnd();
+            var result = string.Join(", ", authorViewModels.Select(a => $"{a.FirstName} {a.LastName}")).TrimEnd();
+            if (string.IsNullOrEmpty(result))
+            {
+                throw new NotFoundException(nameof(BookAuthor));
+            }
+            return result;
         }
 
         public async Task<IEnumerable<StudyRoomInfo>> LastThreeStudyRoomsAsync()
@@ -175,10 +178,6 @@ namespace WebUni_Management.Core.Services
         public async Task RentBookAsync(int id, string userId)
 		{
 			var book = await repository.GetById<Book>(id);
-            if(book == null)
-            {
-				throw new InvalidOperationException("Book not found");
-			}
             book.RenterId = userId;
             book.RentalDate= DateTime.Now;
             book.IsRented = true;
@@ -194,10 +193,6 @@ namespace WebUni_Management.Core.Services
         public async Task EditBookAsync(int id, EditBookViewModel model)
         {
             var book = repository.All<Book>().FirstOrDefault(x => x.Id == id);
-            if(book == null)
-            {
-                throw new InvalidOperationException("Book not found");
-            }
             var authors = model.Author.Split(", ");
             foreach (var author in authors)
             {
@@ -408,10 +403,8 @@ namespace WebUni_Management.Core.Services
             {
 				await repository.DeleteAsync(ba);
 			}
-            if (book != null)
-            {
-				await repository.DeleteAsync(book);
-			}
+
+		    await repository.DeleteAsync(book);
 			await repository.SaveChangesAsync();
 		}
 
@@ -428,16 +421,14 @@ namespace WebUni_Management.Core.Services
 		public async Task EditRoomAsync(int id, EditRoomViewModel model)
 		{
 			var room = repository.All<StudyRoom>().FirstOrDefault(x => x.Id == id);
-			if (room == null)
-            {
-				throw new InvalidOperationException("Room not found");
-			}
+
 			room.Name = model.Name;
 			room.Description = model.Description;
 			room.Capacity = model.Capacity;
 			room.Floor = model.Floor;
 			room.ImageUrl = model.ImageUrl;
 			room.IsRented = model.IsRented;
+
 			await repository.SaveChangesAsync();
 		}
 
@@ -458,6 +449,11 @@ namespace WebUni_Management.Core.Services
             room.RenterId = userId;
             room.RentalDate = DateTime.Now;
             await repository.SaveChangesAsync();
+        }
+
+        public Task<bool> IsBookRentedByUserWithIdAsync(string userId, int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -9,15 +9,14 @@ using WebUni_Management.Core.Models.Home;
 
 namespace WebUni_Management.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> logger;
         private readonly INewsService newsService;
         private readonly IEventService eventService;
 
-        public HomeController(ILogger<HomeController> _logger, INewsService _newsService, IEventService _eventService)
+        public HomeController(INewsService _newsService, IEventService _eventService)
         {
-            logger = _logger;
             newsService = _newsService;
             eventService = _eventService;
         }
@@ -32,7 +31,25 @@ namespace WebUni_Management.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> Error(int statusCode)
+        public IActionResult Back(string previousPage)
+        {
+            if (string.IsNullOrEmpty(previousPage))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var controllerAndAction = previousPage.Split("/");
+            if (controllerAndAction.Length == 2)
+            {
+                return RedirectToAction(controllerAndAction[1], controllerAndAction[0]);
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        [AllowAnonymous]
+        public IActionResult Error(int statusCode)
         {
             if (statusCode == 400)
             {
@@ -44,7 +61,7 @@ namespace WebUni_Management.Controllers
             }
             else if (statusCode == 500)
             {
-                return View("ServerError");
+                return View("Error500");
             }
             return View();
         }

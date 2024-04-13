@@ -11,7 +11,7 @@ namespace WebUni_Management.Core.Contracts
     {
         Task AddNewsAsync(NewsFormViewModel model);
         Task ApproveNewsArticleAsync(int id);
-        Task DeleteNewsArticleAsync(int id);
+        Task DeleteNewsArticleAsync(int id, string userId);
 		Task DiscardNewsArticleAsync(int id);
 		Task EditNewsAsync(int id, NewsFormViewModel model);
         Task<bool> ExistByIdAsync(int id);
