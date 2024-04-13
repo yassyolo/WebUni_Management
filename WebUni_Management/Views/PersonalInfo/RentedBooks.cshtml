@@ -50,11 +50,13 @@
                     </div>
                     <div class="flip-card-back">
                         <h6><strong>Title</strong>: @book.Title</h6>
+                        <h6><strong>Author</strong>: @book.Author</h6>
                         <h6><strong>Category</strong>: @book.Category</h6>
                         <form asp-controller="PersonalInfo" asp-action="RemoveRent" asp-route-id="@book.Id" method="get">
                             <button type="submit" class="btn btn-danger">Remove Rent</button>
                         </form>
                         <form asp-controller="Library" asp-action="Details" asp-route-id="@book.Id" method="get">
+                            <input type="hidden" name="previousPage" value="PersonalInfo/RentedBooks" />
                             <button type="submit" class="btn btn-danger">Details</button>
                         </form>
                     </div>

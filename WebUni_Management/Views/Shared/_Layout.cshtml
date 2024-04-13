@@ -23,86 +23,79 @@
             </div>
             <nav class="nav-menu">
                 <ul class="menu">
-                        <li class="menu-item menu-item-has-children">
-                            <a>Home<i class="plus"></i></a>
-                            <ul class="sub-menu">
-                                <li class="menu-item"><a asp-controller="Home" asp-action="Index">Our University</a></li>
-                                
-                            </ul>
-                    </li>
-                        <li class="menu-item menu-item-has-children">
-                            <a>News<i class="plus"></i></a>
-                            <ul class="sub-menu">
-                                <li class="menu-item"><a asp-controller="News" asp-action="Index">Search News</a></li>
-                                @if (User.IsInRole("Admin"))
-                                {
-                                    <li class="menu-item"><a asp-controller="News" asp-action="Add">Add News</a></li>
-                                    <li class="menu-item"><a asp-controller="News" asp-action="ApproveNews">Approve News</a></li>
-                                }
-                                else if(User.Identity.IsAuthenticated && User.IsInRole("Student"))
-								{
-									<li class="menu-item"><a asp-controller="News" asp-action="WriteNews">Write News</a></li>
-								}
-                            </ul>
+                    <li class="menu-item menu-item-has-children">
+                        <a>Home<i class="plus"></i></a>
+                        <ul class="sub-menu">
+                            <li class="menu-item"><a asp-controller="Home" asp-action="Index">Our University</a></li>                               
+                        </ul>
                     </li>
                     <li class="menu-item menu-item-has-children">
-                        <a>Events<i class="plus"></i></a>
+                        <a>News<i class="plus"></i></a>
+                        <ul class="sub-menu">
+                            <li class="menu-item"><a asp-controller="News" asp-action="Index">Search News</a></li>
+                            @if (User.IsInRole("Admin"))
+                            {
+                               <li class="menu-item"><a asp-controller="News" asp-action="Add">Add News</a></li>
+                               <li class="menu-item"><a asp-controller="News" asp-action="ApproveNews">Approve News</a></li>
+                            }
+                            else if(User.Identity.IsAuthenticated && User.IsInRole("Student"))
+						    {
+								<li class="menu-item"><a asp-controller="News" asp-action="WriteNews">Write News</a></li>
+							}
+                        </ul>
+                    </li>
+                    <li class="menu-item menu-item-has-children">
+                       <a>Events<i class="plus"></i></a>
                        <ul class="sub-menu">
-                                <li class="menu-item"><a asp-controller="Event" asp-action="AllEvents">All Events</a></li>
+                           <li class="menu-item"><a asp-controller="Event" asp-action="AllEvents">All Events</a></li>
                            @if(User.IsInRole("Admin"))
                            {
                                <li class="menu-item"><a asp-controller="Event" asp-action="Add">Add Event</a></li>
-                           }
-                               
+                           }                               
                        </ul>
                     </li>
-                        <li class="menu-item menu-item-has-children">
-                            <a>Canteen<i class="plus"></i></a>
-                            <ul class="sub-menu">
-                                <li class="menu-item"><a asp-controller="Menu" asp-action="Index">Our Canteen</a></li>
-                            </ul>
-                        </li>
                     <li class="menu-item menu-item-has-children">
-                            <a>Library<i class="plus"></i></a>
-                            <ul class="sub-menu">
-                                <li class="menu-item"><a asp-controller="Library" asp-action="Index">Our Library</a></li>
-                                <li class="menu-item"><a asp-controller="Library" asp-action="AllBooksShowcase">Books</a></li>
-                                <li class="menu-item"><a asp-controller="Library" asp-action="AllRoomsShowcase">Study Rooms</a></li>
-                                @if (User.IsInRole("Admin"))
-                                {
-                                <li class="menu-item"><a asp-controller="Library" asp-action="ManageIndex">Manage Items</a></li>
-                                }
-                            </ul>
+                       <a>Canteen<i class="plus"></i></a>
+                       <ul class="sub-menu">
+                              <li class="menu-item"><a asp-controller="Menu" asp-action="Index">Our Canteen</a></li>
+                       </ul>
                     </li>
-                        <li class="menu-item menu-item-has-children">
-                            <a>Personal info<i class="plus"></i></a>
-                            <ul class="sub-menu">
-                                @if (User.Identity.IsAuthenticated && User.IsInRole("Student"))
-                                {
-                                    <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="SeePersonalInfo">Personal Info</a></li>
-                                    <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="RentedBooks">My Books</a></li>
-                                    <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="RentedRooms">My Rooms</a></li>
-                                    <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="JoinedEvents">My Events</a></li>
-                                    <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="Chat">Chat</a></li>
-                                }                               
-                                @if(User.IsInRole("Admin"))
-                                {
-                                    <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="SearchStudentIndex">Search Students</a></li>
-                                   
-
-                                }
-                                <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="SearchFaculties" method="get">Search Faculties</a></li>
-                                <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="SearchMajors" method="get">Search Majors</a></li>
-
-                            </ul>
+                    <li class="menu-item menu-item-has-children">
+                       <a>Library<i class="plus"></i></a>
+                       <ul class="sub-menu">
+                             <li class="menu-item"><a asp-controller="Library" asp-action="Index">Our Library</a></li>
+                             <li class="menu-item"><a asp-controller="Library" asp-action="AllBooksShowcase">Books</a></li>
+                             <li class="menu-item"><a asp-controller="Library" asp-action="AllRoomsShowcase">Study Rooms</a></li>
+                       @if (User.IsInRole("Admin"))
+                       {
+                             <li class="menu-item"><a asp-controller="Library" asp-action="ManageIndex">Manage Items</a></li>
+                       }
+                       </ul>
+                    </li>
+                    <li class="menu-item menu-item-has-children">
+                        <a>Personal info<i class="plus"></i></a>
+                        <ul class="sub-menu">
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Student"))
+                        {
+                             <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="SeePersonalInfo">Personal Info</a></li>
+                             <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="RentedBooks">My Books</a></li>
+                             <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="RentedRooms">My Rooms</a></li>
+                             <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="JoinedEvents">My Events</a></li>
+                        }                               
+                        @if(User.IsInRole("Admin"))
+                        {
+                             <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="SearchStudentIndex">Search Students</a></li>
+                        }
+                        <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="SearchFaculties" method="get">Search Faculties</a></li>
+                        <li class="menu-item"><a asp-controller="PersonalInfo" asp-action="SearchMajors" method="get">Search Majors</a></li>
+                        </ul>
                     </li>
                     <li class="menu-item menu-item-has-children">
                         <a>Account<i class="plus"></i></a>
                         <ul class="sub-menu">
                             @if(!SignInManager.IsSignedIn(User))
                             {
-                               <li class="menu-item"><a asp-controller="Account" asp-action="Register">Register</a></li>
-                                    
+                               <li class="menu-item"><a asp-controller="Account" asp-action="Register">Register</a></li>                                    
                             }
                             else 
                             {
@@ -115,11 +108,10 @@
                                    <li class="menu-item"><a asp-controller="Account" asp-action="ManageAccount">Manage Account</a></li>
                                }
                             }
-                                <li class="menu-item"><a asp-controller="Account" asp-action="Login">Login</a></li>
+                            <li class="menu-item"><a asp-controller="Account" asp-action="Login">Login</a></li>
                             @if (SignInManager.IsSignedIn(User))
                             {
                                 <li class="menu-item"><a asp-controller="Account" asp-action="Logout">Logout</a></li>
-
                             }
                         </ul>
                     </li>
@@ -135,11 +127,6 @@
     </header>
    <section class="home-section"></section>
     
-    @*@<footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - WebApplication7 
-        </div>
-    </footer>*@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

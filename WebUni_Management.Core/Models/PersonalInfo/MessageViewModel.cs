@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace WebUni_Management.Core.Models.PersonalInfo
 {
-    public class MajorIndexViewModel
+    public class MessageViewModel
     {
-        public int FacultyId { get; set; }  
-        public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
+        public string StudentUserName { get; set; } = string.Empty;
+        public string Message { get; set; } = string.Empty;
     }
 }

@@ -29,42 +29,38 @@
                                     @if (User.IsInRole("Admin"))
                                     {
                                         <form asp-controller="PersonalInfo" asp-action="EditMajor" asp-route-id="@major.Id" method="get">
-                                            <input type="hidden" name="id" value="@major.Id" />
+                                            <input type="hidden" name="previousPage" value="PersonalInfo/SeeMajors/" />
                                             <button type="submit" class="btn btn-primary">Edit</button>
                                         </form>
                                     }
-                                    <form asp-controller="PersonalInfo" asp-action="SeeMajorDetails" asp-route-id="@major.Id" method="get">
-                                        <input type="hidden" name="id" value="@major.Id" />
-                                        <button type="submit" class="btn btn-primary">See Details</button>
+                                    <form asp-controller="PersonalInfo" asp-action="SeeMajorDetails" asp-route-id="@major.Id" method="get">                               
+                                        <button type="submit" class="btn btn-primary">Details</button>
                                     </form>
-                                    <form asp-controller="PersonalInfo" asp-action="SeeSubjects" asp-route-id="@major.Id" method="get">
-                                        <input type="hidden" name="id" value="@major.Id" />
-                                        <button type="submit" class="btn btn-primary">See Subjects</button>
-                                    </form>
-                                   
-                                    <form asp-controller="PersonalInfo" asp-action="SearchFaculties" method="get">
-                                        <input type="hidden" name="id" value="@major.Id" />
-                                        <button type="submit" class="btn btn-primary">Back</button>
+                                    <form asp-controller="Home" asp-action="Back" method="get">
+				                        <input type="hidden" name="previousPage" value="@ViewBag.PreviousPage" />
+				                        <button type="submit" class="btn btn-primary">Back</button>
+			                        </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    }
+                    @if(User.IsInRole("Admin"))
+                    {
+                        <tbody>
+                            <tr>
+                                <td><strong>ADD MAJOR</strong></td>
+
+                                <td class="action-buttons">
+
+                                    <form asp-controller="PersonalInfo" asp-action="AddMajor" method="get">
+
+                                        <button type="submit" class="btn btn-primary">+</button>
                                     </form>
                                 </td>
                             </tr>
-
                         </tbody>
-
                     }
-                    <tbody>
-                        <tr>
-                            <td><strong>ADD MAJOR</strong></td>
-
-                            <td class="action-buttons">
-
-                                <form asp-controller="PersonalInfo" asp-action="AddMajor" method="get">
-
-                                    <button type="submit" class="btn btn-primary">+</button>
-                                </form>
-                            </td>
-                        </tr>
-                    </tbody>
+                    
                 </table>
             </div>
         </div>

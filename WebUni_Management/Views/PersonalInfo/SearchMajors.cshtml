@@ -74,7 +74,6 @@
                                     @if (User.IsInRole("Admin"))
                                     {
                                         <form asp-controller="PersonalInfo" asp-action="EditMajor" asp-route-id="@major.Id" method="get">
-                                            <input type="hidden" name="id" value="@major.Id" />
                                             <button type="submit" class="btn btn-primary">Edit</button>
                                         </form>
                                     }
@@ -82,10 +81,10 @@
                                         <input type="hidden" name="id" value="@major.Id" />
                                         <button type="submit" class="btn btn-primary">See Subjects</button>
                                     </form>
-                                    <form asp-controller="PersonalInfo" asp-action="SeeMajorDetails" method="get">
-                                        <input type="hidden" name="id" value="@major.Id" />
-                                        <button type="submit" class="btn btn-primary">See Details</button>
-                                    </form>                                    
+                                    <form asp-controller="PersonalInfo" asp-action="SeeMajorDetails" asp-route-id="@major.Id" method="get">
+                                        <input type="hidden" name="previousPage" value="PersonalInfo/SearchMajors" />
+                                        <button type="submit" class="btn btn-primary">Details</button>
+                                    </form>
                                 </td>
                             </tr>
                         </tbody>

@@ -45,17 +45,24 @@
             <input asp-for="CourseTerm" class="form-control" />
             <span asp-validation-for="CourseTerm" class="text-danger"></span>
         </div>
+        <div class="action-buttons">
         <form asp-controller="Account" asp-action="EditAccount" method="post">
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
         <form asp-controller="Account" asp-action="ManageAccount" asp-route-id="@Model.Id" method="get">
             <button type="submit" class="btn btn-primary">Back</button>
         </form>
+        </div>
     </form>
 </div>
 <style>
+    .action-buttons {
+        display: flex;
+        gap: 20px;
+    }
+
     .manage-account-container {
-        height: 880px;
+        height: 890px;
         width: 550px;
         background-color: white;
         margin: auto;
@@ -101,15 +108,20 @@
         cursor: pointer;
     }
 
-        .btn-primary:hover {
-            background-color: #e91e63;
-            border-color: #e91e63;
-        }
+    .btn-primary:hover {
+        background-color: #e91e63;
+        border-color: #e91e63;
+    }
 
     h1 {
         color: #e91e63;
-        ;
         text-align: center;
         margin-bottom: 10px;
     }
 </style>
+
+@section Scripts
+{
+    <script src="~/js/Account/Register.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+}

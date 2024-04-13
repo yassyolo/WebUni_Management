@@ -64,34 +64,37 @@
     {
         <h2 class="text-center">No news found by the given criteria!</h2>
     }
-
-    <div class="flip-card-container">
-        @foreach (var article in Model.News)
-        {
-            <div class="flip-card">
-                <div class="flip-card-inner">
-                    <div class="flip-card-front">
-                        <img src="@article.ImageUrl" alt="News Cover">
-                    </div>
-                    <div class="flip-card-back">
-                        <h6><strong>Title</strong>: @article.Title</h6>
-                        <h6><strong>Published on</strong>: @article.PublishedOn</h6>
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <form asp-controller="News" asp-action="Edit" asp-route-id="@article.Id" method="get">
+    else
+    {      
+        <div class="flip-card-container">
+            @foreach (var article in Model.News)
+            {
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <img src="@article.ImageUrl" alt="News Cover">
+                        </div>
+                        <div class="flip-card-back">
+                            <h6><strong>Title</strong>: @article.Title</h6>
+                            <h6><strong>Published on</strong>: @article.PublishedOn</h6>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <form asp-controller="News" asp-action="Edit" asp-route-id="@article.Id" method="get">
+                                    <input type="hidden" name="previousPage" value="News/Index" />
+                                    <button type="submit" class="btn btn-danger">Edit</button>
+                                </form>
+                            }
+                            <form asp-controller="News" asp-action="Details" asp-route-id="@article.Id" method="get">
                                 <input type="hidden" name="previousPage" value="News/Index" />
-                                <button type="submit" class="btn btn-danger">Edit</button>
+                                <button type="submit" class="btn btn-danger">Details</button>
                             </form>
-                        }
-                        <form asp-controller="News" asp-action="Details" asp-route-id="@article.Id" method="get">
-                            <input type="hidden" name="previousPage" value="News/Index" />
-                            <button type="submit" class="btn btn-danger">Details</button>
-                        </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-        }
-    </div>
+            }
+        </div>
+    }
+
 </div>
 <style>
     .all-showcase-message {
@@ -209,6 +212,7 @@
         border-radius: 4px;
         cursor: pointer;
     }
+
     .btn-danger{
         background-color: #D20062;
         border-color: #D20062;
@@ -217,10 +221,10 @@
         cursor: pointer;
     }
 
-     .btn-primary:hover, .btn-danger:hover {
+    .btn-primary:hover, .btn-danger:hover {
         background-color: #e91e63;
         border-color: #e91e63;
-     }
+    }
 
     .bold-label {
         font-weight: bold;

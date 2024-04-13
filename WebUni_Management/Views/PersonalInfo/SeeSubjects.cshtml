@@ -37,24 +37,14 @@
                                         <input type="hidden" name="id" value="@subject.Id" />
                                         <button type="submit" class="btn btn-primary">See Details</button>
                                     </form>
-                                    <form asp-controller="PersonalInfo" asp-action="SeeMajors" method="get">
-                                        <input type="hidden" name="id" value="@subject.Id" />
+                                    <form asp-controller="PersonalInfo" asp-action="SearchMajors" method="get">
                                         <button type="submit" class="btn btn-primary">Back</button>
                                     </form>
                                 </td>
                             </tr>
                         </tbody>
                     }
-                    <tbody>
-                        <tr>
-                            <td><strong>ADD SUBJECT</strong></td>
-                            <td class="action-buttons">
-                                <form asp-controller="PersonalInfo" asp-action="AddSubject" method="get">
-                                    <button type="submit" class="btn btn-primary">+</button>
-                                </form>
-                            </td>
-                        </tr>
-                    </tbody>
+                   
                 </table>
             </div>
         </div>

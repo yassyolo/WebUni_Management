@@ -56,6 +56,7 @@
                             </form>
                         }
                         <form asp-controller="Library" asp-action="DetailsRoom" asp-route-id="@room.Id" method="get">
+                            <input type="hidden" name="previousPage" value="PersonalInfo/RentedRooms" />
                             <button type="submit" class="btn btn-danger">Details</button>
                         </form>
                     </div>

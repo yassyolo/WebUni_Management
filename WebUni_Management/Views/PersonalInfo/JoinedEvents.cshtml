@@ -52,6 +52,7 @@
                     <h5><strong>Lecturer</strong>:@ev.GuestParticipant</h5>
                     <h5><strong>Date</strong>:@ev.StartTime - @ev.EndTime</h5>
                     <form asp-controller="Event" asp-action="Details" asp-route-id="@ev.Id" method="get">
+                        <input type="hidden" name="previousPage" value="PersonalInfo/JoinedEvents" />
                         <button type="submit" class="btn btn-primary">Details</button>
                     </form>
                     <form asp-controller="PersonalInfo" asp-action="RemoveJoin" asp-route-id="@ev.Id" method="get">

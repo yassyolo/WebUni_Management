@@ -10,6 +10,11 @@
             <span asp-validation-for="Name" class="validation"></span>
         </div>
         <div class="form-member">
+            <label asp-for="FacultyName">Enter existing Faculty Name</label>
+            <input asp-for="FacultyName" class="form-control" placeholder="Faculty Name..">
+            <span asp-validation-for="FacultyName" class="validation"></span>
+        </div>
+        <div class="form-member">
             <label asp-for="Description">Description</label>
             <input asp-for="Description" class="form-control" placeholder="Description..">
             <span asp-validation-for="Description" class="validation"></span>
@@ -28,7 +33,7 @@
 
 <style>
     .edit-container {
-        height: 350px;
+        height: 450px;
         width: 700px;
         background-color: white;
         margin: auto;

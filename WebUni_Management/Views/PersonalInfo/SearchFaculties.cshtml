@@ -71,15 +71,15 @@
                                                 <input type="hidden" name="id" value="@faculty.Id" />
                                                 <button type="submit" class="btn btn-primary">Edit</button>
                                             </form>
-                                            <form asp-controller="PersonalInfo" asp-action="SeeMajors" method="get">
-                                                <input type="hidden" name="id" value="@faculty.Id" />
-                                                <button type="submit" class="btn btn-primary">See Majors</button>
-                                            </form>
                                         }                                       
-                                         <form asp-controller="PersonalInfo" asp-action="SeeFacultyDetails" method="get">
-                                            <input type="hidden" name="id" value="@faculty.Id" />
-                                            <button type="submit" class="btn btn-primary">See Details</button>
-                                         </form>                                      
+                                        <form asp-controller="PersonalInfo" asp-action="SeeFacultyDetails" asp-route-id="@faculty.Id" method="get">
+                                            <input type="hidden" name="previousPage" value="PersonalInfo/SearchFaculties" />
+                                            <button type="submit" class="btn btn-primary">Details</button>
+                                        </form>
+                                        <form asp-controller="PersonalInfo" asp-action="SeeMajors" asp-route-id="@faculty.Id" method="get">
+                                            <input type="hidden" name="previousPage" value="PersonalInfo/SearchFaculties" />
+                                            <button type="submit" class="btn btn-primary">See Majors</button>
+                                        </form>
                                     </td>
                                 </tr>
                             }
