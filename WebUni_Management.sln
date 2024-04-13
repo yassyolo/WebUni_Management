@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebUni_Management", "WebUni_Management\WebUni_Management.csproj", "{4BD9DD55-8C04-4E4B-B1E5-2CD78FF2B8DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebUni_Management", "WebUni_Management\WebUni_Management.csproj", "{4BD9DD55-8C04-4E4B-B1E5-2CD78FF2B8DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebUni_Management.Infrastructure", "WebUni_Management.Infrastructure\WebUni_Management.Infrastructure.csproj", "{861547C3-CC86-4850-84D0-CEE275183305}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebUni_Management.Infrastructure", "WebUni_Management.Infrastructure\WebUni_Management.Infrastructure.csproj", "{861547C3-CC86-4850-84D0-CEE275183305}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebUni_Management.Core", "WebUni_Management.Core\WebUni_Management.Core.csproj", "{E4601B19-D968-4D5F-B1B9-CD6454C42E27}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebUni_Management.Core", "WebUni_Management.Core\WebUni_Management.Core.csproj", "{E4601B19-D968-4D5F-B1B9-CD6454C42E27}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebUnii_Management.Tests", "WebUnii_Management.Tests\WebUnii_Management.Tests.csproj", "{7760837D-B608-456B-B219-AE0DB93646AA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{E4601B19-D968-4D5F-B1B9-CD6454C42E27}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4601B19-D968-4D5F-B1B9-CD6454C42E27}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4601B19-D968-4D5F-B1B9-CD6454C42E27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7760837D-B608-456B-B219-AE0DB93646AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7760837D-B608-456B-B219-AE0DB93646AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7760837D-B608-456B-B219-AE0DB93646AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7760837D-B608-456B-B219-AE0DB93646AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

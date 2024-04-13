@@ -6,7 +6,6 @@ namespace WebUni_Management.Attributes
 {
 	public class WordDocumentAttribute : ActionFilterAttribute
 	{
-
         public string DefaultFilename { get; set; }
 
         public override void OnActionExecuted(ActionExecutedContext context)
