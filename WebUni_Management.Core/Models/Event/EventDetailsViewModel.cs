@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace WebUni_Management.Core.Models.Event
 {
     public class EventDetailsViewModel
-    {
+    {   
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;

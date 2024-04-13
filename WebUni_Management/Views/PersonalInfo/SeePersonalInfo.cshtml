@@ -16,12 +16,9 @@
 		@foreach (var subject in Model.Subjects)
 		{
 			<div class="subject-div">
-				<h5><strong>Name:</strong> @subject.Name</h5>
+				<h5><strong>Name:</strong> @subject.Name <strong>Grade:</strong> @subject.Grade</h5>
 				<form asp-controller="PersonalInfo" asp-action="SeeMyAttendance" asp-route-id="@subject.Id" method="get">	
 					<button type="submit" class="btn btn-primary">See Attendance</button>
-				</form>
-				<form asp-controller="PersonalInfo" asp-action="SeeGrades" asp-route-id="@subject.Id" method="get">
-					<button type="submit" class="btn btn-primary">See Grades</button>
 				</form>
 				<form asp-controller="PersonalInfo" asp-action="SeeMySubjectDetails" asp-route-id="@subject.Id" method="get">
 					<button type="submit" class="btn btn-primary">See Details</button>
