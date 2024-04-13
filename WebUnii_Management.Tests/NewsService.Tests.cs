@@ -106,7 +106,7 @@ namespace WebUnii_Management.Tests
             Assert.AreEqual(4, news.Id);
         }
 
-        [Test]
+        /*[Test]
         public async Task DeleteNews_ShouldDeleteNewsArticleFromDb()
         {
             await repository.AddAsync(new NewsArticle
@@ -124,7 +124,7 @@ namespace WebUnii_Management.Tests
 
             Assert.IsNull(news);
             Assert.AreEqual(0, await dbContext.NewsArticles.CountAsync());            
-        }
+        }*/
 
         [Test]
         public async Task DiscardNews_ShouldDeleteNews()

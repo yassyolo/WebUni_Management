@@ -1604,13 +1604,11 @@ namespace WebUnii_Management.Tests
 			await personalInfoService.DeleteFacultyAsync(10);
 			var faculty = await repository.GetById<Faculty>(10);
 			var major = await repository.GetById<Major>(10);
-			//var courseTerm = await repository.GetById<CourseTerm>(10);
 			var subject = await repository.GetById<Subject>(10);
 			var subjectForStudent = await repository.All<SubjectForStudent>().FirstOrDefaultAsync(x => x.SubjectId == 10);
 
 			Assert.IsNull(faculty);
 			Assert.IsNull(major);
-			//Assert.IsNull(courseTerm);
 			Assert.IsNull(subject);
 			Assert.IsNull(subjectForStudent);
 		}
