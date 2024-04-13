@@ -50,7 +50,8 @@
                     <h5><strong>Author</strong>:@article.Title</h5>
                     <h5><strong>Publish Date</strong>:@article.PublishedOn</h5>
                     <form asp-controller="News" asp-action="Details" asp-route-id="@article.Id" method="get">
-                        <button type="submit" class="btn btn-danger">Details</button>
+                        <input type="hidden" name="previousPage" value="News/ApproveNews" />
+                        <button type="submit" class="btn btn-primary">Details</button>
                     </form>
                     <div class="approve-btns">
                     <form asp-controller="News" asp-action="Approve" asp-route-id="@article.Id" method="get">

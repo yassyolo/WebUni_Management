@@ -2,7 +2,7 @@
 @{
     ViewBag.Message = "Add Events";
 }
-<div class="edit-container">
+<div class="add-container">
     <h2>Add new events here:</h2>
     <form class="post-form" method="post">
         <div class="form-member">
@@ -41,17 +41,14 @@
             <span asp-validation-for="ImageUrl" class="validation"></span>
         </div>
         <div class="action-buttons">
-        <form asp-controller="News" asp-action="Add" asp-route-id="@Model.Id" method="post">
+        <form asp-controller="Event" asp-action="Add" asp-route-id="@Model.Id" method="post">
             <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-        <form asp-controller="News" asp-action="Index" method="get">
-            <button type="submit" class="btn btn-primary">Back</button>
         </form>
         </div>
     </form>
 </div>
 <style>
-    .edit-container {
+    .add-container {
         height: 750px;
         width: 900px;
         background-color: white;

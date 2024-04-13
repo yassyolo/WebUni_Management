@@ -12,7 +12,6 @@
             <h5>Explore our vast collection of books covering a wide range of topics and genres. Whether you're a student, a researcher, or an avid reader, our library has something for everyone. Enjoy browsing through our catalog and discovering new knowledge. Happy reading and don't hesitate to ask our knowledgeable staff for recommendations or assistance.</h5>
         </div>
     </div>
-
     <div class="message">
         <h6>Check our recent books in the collection:</h6>
         <p>*Flip the image to unleash details</p>
@@ -31,7 +30,8 @@
                         <h6><strong>AUTHOR:</strong> @item.Author </h6>
                         <br />
                         <form asp-controller="Library" asp-action="Details" asp-route-id="@item.Id" method="get">
-                            <button type="submit" class="btn">Details</button>
+                            <input type="hidden" name="previousPage" value="Library/Index" />
+                            <button type="submit" class="btn btn-danger">Details</button>
                         </form>
                     </div>
                 </div>
@@ -50,15 +50,15 @@
                 <div class="flip-card-inner">
                     <div class="flip-card-front">
                         <img src="@item.ImageUrl" alt="Study Room" />
-
                     </div>
                     <div class="flip-card-back">
                         <h6><strong>NAME:</strong> @item.Name</h6>
                         <br />
                         <h6><strong>CAPACITY:</strong> @item.Capacity</h6>
                         <br />
-                        <form asp-controller="Library" asp-action="Details" asp-route-id="@item.Id" method="get">
-                            <button type="submit" class="btn btn-primary">Details</button>
+                        <form asp-controller="Library" asp-action="DetailsRoom" asp-route-id="@item.Id" method="get">
+                            <input type="hidden" name="previousPage" value="Library/Index" />
+                            <button type="submit" class="btn btn-danger">Details</button>
                         </form>
                     </div>
                 </div>

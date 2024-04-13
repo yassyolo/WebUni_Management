@@ -41,10 +41,11 @@
             <span asp-validation-for="ImageUrl" class="validation"></span>
         </div>
         <div class="action-buttons">
-            <form asp-controller="News" asp-action="Edit" asp-route-id="@Model.Id" method="post">
+            <form asp-controller="Event" asp-action="Edit" asp-route-id="@Model.Id" method="post">
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
-            <form asp-controller="News" asp-action="Index" method="get">
+            <form asp-controller="Home" asp-action="Back" method="get">
+                <input type="hidden" name="previousPage" value="@ViewBag.PreviousPage" />
                 <button type="submit" class="btn btn-primary">Back</button>
             </form>
         </div>

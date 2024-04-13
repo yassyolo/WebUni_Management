@@ -29,7 +29,8 @@
         <form asp-controller="News" asp-action="Edit" asp-route-id="@Model.Id" method="post">
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
-            <form asp-controller="News" asp-action="Index" method="get">
+            <form asp-controller="Home" asp-action="Back" method="get">
+                <input type="hidden" name="previousPage" value="@ViewBag.PreviousPage" />
                 <button type="submit" class="btn btn-primary">Back</button>
             </form>
         </div>
@@ -38,7 +39,7 @@
 <style>
     .edit-container {
         height: 530px;
-        width: 1130px;
+        width: 930px;
         background-color: white;
         margin: auto;
         border: 2px solid #e91e63;

@@ -89,6 +89,7 @@
                             </form>
                         }
                         <form asp-controller="Library" asp-action="DetailsRoom" asp-route-id="@room.Id" method="get">
+                            <input type="hidden" name="previousPage" value="Library/Index" />
                             <button type="submit" class="btn btn-danger">Details</button>
                         </form>
                     </div>

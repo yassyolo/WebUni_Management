@@ -2,7 +2,7 @@
 @{
     ViewBag.Message = "Add News";
 }
-<div class="edit-container">
+<div class="add-container">
     <h2>Add new news here:</h2>
     <form class="post-form" method="post">
         <div class="form-member">
@@ -29,16 +29,13 @@
         <form asp-controller="News" asp-action="Add" asp-route-id="@Model.Id" method="post">
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
-        <form asp-controller="News" asp-action="Index" method="get">
-            <button type="submit" class="btn btn-primary">Back</button>
-        </form>
         </div>
     </form>
 </div>
 <style>
-    .edit-container {
+    .add-container {
         height: 530px;
-        width: 900px;
+        width: 930px;
         background-color: white;
         margin: auto;
         border: 2px solid #e91e63;

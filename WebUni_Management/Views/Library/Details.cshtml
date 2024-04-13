@@ -30,9 +30,10 @@
 				<button type="submit" class="btn btn-primary">Delete</button>
 			</form>
 		}
-		<form asp-controller="Library" asp-action="AllBooksShowcase" method="post">
-			<button type="submit" class="btn btn-primary">Back</button>
-		</form>
+			<form asp-controller="Home" asp-action="Back" method="get">
+				<input type="hidden" name="previousPage" value="@ViewBag.PreviousPage" />
+				<button type="submit" class="btn btn-primary">Back</button>
+			</form>
 		</div>
 	</div>
 </div>
@@ -50,6 +51,7 @@
 		padding-top: 5px;
 		padding: 10px;
 	}
+
 	.book-img {
 		margin-top:20px;
 		margin-right: 30px;
@@ -58,12 +60,14 @@
 		height: 430px;
 		float: left;
 	}
+
 	.book-img img {
 		width: 100%;
 		height: 100%;
-			border: 1px solid #e91e63;
-			border-radius: 3px;
+		border: 1px solid #e91e63;
+		border-radius: 3px;
 	}
+
 	.book-description {
 		margin-top: 20px;
 		width: 600px;
@@ -71,13 +75,14 @@
 		float: right;
 	}
 
-		.book-description b {
-			color: #e91e63; /* Change only the color of <b> elements */
-		}
+	.book-description b {
+		color: #e91e63; 
+	}
 
-		.book-description h5 {
-			color: black; /* Keep the color of other elements black */
-		}
+	.book-description h5 {
+		color: black; 
+	}
+
 	.book-description button {
 		margin-top: 10px;
 	}
@@ -91,10 +96,10 @@
 		cursor: pointer;
 	}
 
-		.btn-primary:hover {
-			background-color: #e91e63;
-			border-color: #e91e63;
-		}
+	.btn-primary:hover {
+		background-color: #e91e63;
+		border-color: #e91e63;
+	}
 
 	.action-buttons {
 		display: flex;

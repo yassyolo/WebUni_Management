@@ -19,15 +19,18 @@
 			@if (User.IsInRole("Admin"))
 			{
 				<form asp-controller="Event" asp-action="Edit" asp-route-id="@Model.Id" method="get">
+					<input type="hidden" name="previousPage" value="Event/Details" />
 					<button type="submit" class="btn btn-primary">Edit</button>
 				</form>
 				<form asp-controller="Event" asp-action="Delete" asp-route-id="@Model.Id" method="get">
 					<button type="submit" class="btn btn-primary">Delete</button>
 				</form>
 			}
-			<form asp-controller="Event" asp-action="AllEvents" method="get">
+			<form asp-controller="Home" asp-action="Back" method="get">
+				<input type="hidden" name="previousPage" value="@ViewBag.PreviousPage" />
 				<button type="submit" class="btn btn-primary">Back</button>
 			</form>
+
 		</div>
 	</div>
 </div>

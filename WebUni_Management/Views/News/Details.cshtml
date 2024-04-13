@@ -19,17 +19,18 @@
 		<div class="action-buttons">
 		@if (User.IsInRole("Admin"))
 		{
-			<form asp-controller="News" asp-action="Edit" asp-route-id="@Model.Id" method="get">
-				<button type="submit" class="btn btn-primary">Edit</button>
-			</form>
+				<form asp-controller="News" asp-action="Edit" asp-route-id="@Model.Id" method="get">
+					<input type="hidden" name="previousPage" value="News/Index" />
+					<button type="submit" class="btn btn-danger">Edit</button>
+				</form>
 		    <form asp-controller="News" asp-action="Delete" asp-route-id="@Model.Id" method="get">
 				<button type="submit" class="btn btn-primary">Delete</button>
 			</form>
 		}
-
-		<form asp-controller="News" asp-action="Index" method="get">
-			<button type="submit" class="btn btn-primary">Back</button>
-		</form>
+			<form asp-controller="Home" asp-action="Back" method="get">
+				<input type="hidden" name="previousPage" value="@ViewBag.PreviousPage" />
+				<button type="submit" class="btn btn-primary">Back</button>
+			</form>
 		</div>
 	</div>
 </div>

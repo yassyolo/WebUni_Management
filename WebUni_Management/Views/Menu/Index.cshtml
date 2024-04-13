@@ -110,7 +110,7 @@ ViewBag.Message = "Check out our canteen!";
 		}
 		</div>
 		<div class="download">
-			@if (User.IsInRole("Admin") && User.IsInRole("Student"))
+			@if (User.IsInRole("Admin") || User.IsInRole("Student"))
 			{
 				<form asp-controller="Menu" asp-action="DownloadMenu" method="get">
 					<button type="submit" class="btn btn-primary">Download Menu</button>
@@ -124,8 +124,9 @@ ViewBag.Message = "Check out our canteen!";
 	.row{
 		margin-bottom:10px;
 	}
+
     .menu-index-container {
-        height: 750px;
+        height: 890px;
         width: 960px;
         background-color: white;
         margin: auto;

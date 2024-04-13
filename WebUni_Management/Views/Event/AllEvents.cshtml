@@ -65,20 +65,22 @@
                 <h5><strong>Name</strong>:@ev.Name</h5>
                 <h5><strong>Lecturer</strong>:@ev.GuestParticipant</h5>
                     <h5><strong>Date</strong>:@ev.StartTime - @ev.EndTime</h5>
-                <form asp-controller="Event" asp-action="Details" asp-route-id="@ev.Id" method="get">
-                    <button type="submit" class="btn btn-primary">Details</button>
-                </form>
+                    <form asp-controller="Event" asp-action="Details" asp-route-id="@ev.Id" method="get">
+                        <input type="hidden" name="previousPage" value="Event/AllEvents" />
+                        <button type="submit" class="btn btn-primary">Details</button>
+                    </form>
                 @if (User.IsInRole("Student"))
                 {
-                        <form asp-controller="Event" asp-action="Join" asp-route-id="@ev.Id" method="get">
-                            <button type="submit" class="btn btn-primary">Join</button>
+                    <form asp-controller="Event" asp-action="Join" asp-route-id="@ev.Id" method="get">
+                         <button type="submit" class="btn btn-primary">Join</button>
                     </form>
                 }
                 else if (User.IsInRole("Admin"))
                 {
-                    <form asp-controller="Event" asp-action="Edit" asp-route-id="@ev.Id" method="get">
-                        <button type="submit" class="btn btn-primary">Edit</button>
-                    </form>
+                        <form asp-controller="Event" asp-action="Edit" asp-route-id="@ev.Id" method="get">
+                            <input type="hidden" name="previousPage" value="Event/AllEvents" />
+                            <button type="submit" class="btn btn-primary">Edit</button>
+                        </form>
                 }
 
             </div>

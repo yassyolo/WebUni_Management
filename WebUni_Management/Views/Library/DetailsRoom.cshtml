@@ -29,9 +29,10 @@
 				<button type="submit" class="btn btn-primary">Delete</button>
 			</form>
 		}
-		<form asp-controller="Library" asp-action="AllRoomsShowcase" method="get">
-			<button type="submit" class="btn btn-primary">Back</button>
-		</form>
+			<form asp-controller="Home" asp-action="Back" method="get">
+				<input type="hidden" name="previousPage" value="@ViewBag.PreviousPage" />
+				<button type="submit" class="btn btn-primary">Back</button>
+			</form>
 		</div>
 	</div>
 </div>

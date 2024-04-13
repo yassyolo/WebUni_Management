@@ -79,10 +79,12 @@
                         @if (User.IsInRole("Admin"))
                         {
                             <form asp-controller="News" asp-action="Edit" asp-route-id="@article.Id" method="get">
+                                <input type="hidden" name="previousPage" value="News/Index" />
                                 <button type="submit" class="btn btn-danger">Edit</button>
                             </form>
                         }
                         <form asp-controller="News" asp-action="Details" asp-route-id="@article.Id" method="get">
+                            <input type="hidden" name="previousPage" value="News/Index" />
                             <button type="submit" class="btn btn-danger">Details</button>
                         </form>
                     </div>

@@ -78,6 +78,7 @@
                     </div>
                     <div class="flip-card-back">
                         <h6><strong>Title</strong>: @book.Title</h6>
+                        <h6><strong>Author</strong>: @book.Author</h6>
                         <h6><strong>Category</strong>: @book.Category</h6>
                         @if (book.IsRented == false && User.IsInRole("Student"))
                         {
@@ -92,6 +93,7 @@
                             </form>
                         }
                         <form asp-controller="Library" asp-action="Details" asp-route-id="@book.Id" method="get">
+                            <input type="hidden" name="previousPage" value="Library/AllBooksShowcase" />
                             <button type="submit" class="btn btn-danger">Details</button>
                         </form>
                     </div>

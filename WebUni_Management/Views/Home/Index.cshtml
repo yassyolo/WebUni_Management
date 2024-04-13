@@ -21,7 +21,6 @@
             <h5><a href="@Url.Action("AllEvents", "Event")"><strong>Join Events</strong></a>: Stay up-to-date with the latest events, seminars and guest lectures. Engage with peers, expand your knowledge, and make meaningful connections.</h5>
             <h5><a href="@Url.Action("Index", "Menu")"><strong>Check the Canteen Menu</strong></a>: Hungry for delicious meal? Check out the daily canteen menu.</h5>
             <h5><a href="@Url.Action("SeePersonalInfo", "PersonalInfo")"><strong>View Personal Information</strong></a>: Access your grades, attendance records, course schedules, and other personal information. Stay organized and on track with your academic progress.</h5>
-
         }
         else
         {
@@ -46,6 +45,7 @@
                         <div class="flip-card-back">
                             <h6 class="name"><strong>Title:</strong> @article.Title</h6>
                             <form asp-controller="News" asp-action="Details" asp-route-id="@article.Id" method="get">
+                                <input type="hidden" name="previousPage" value="Home/Index" />
                                 <button type="submit" class="btn btn-primary">Details</button>
                             </form>
                         </div>
@@ -66,6 +66,7 @@
                             <h6 class="name"><strong>Name:</strong> @e.Name</h6>
                             <h6 class="name"><strong>Date:</strong> @e.StartTime - @e.EndTime</h6>
                             <form asp-controller="Event" asp-action="Details" asp-route-id="@e.Id" method="get">
+                                <input type="hidden" name="previousPage" value="Home/Index" />
                                 <button type="submit" class="btn btn-primary">Details</button>
                             </form>
                         </div>
@@ -87,33 +88,41 @@
         flex-direction: row;
         padding: 15px;
     }
+
     .home-introduction{
         width: 65%;
         float: right;
     }
+
     h2, h6, a{
         color: #e91e63;
     }
+
     h2, h4, h5{
         padding-bottom: 20px;
     }
+
     .name{
         color:black;
     }
+
     .news-events-container{
         padding-top: 50px;
         width:35%;
         float:left;
         gap:20px;
     }
+
     .name-tag{
         color:#e91e63;
         margin-bottom: 20px;
     }
+
     .news-container{
         width:50%;
         float: left;
     }
+
     .flip-card-container {
         display: flex;
         justify-content: center;
@@ -137,9 +146,9 @@
         perspective: 1000px;
     }
 
-     .flip-card-room:hover .flip-card-inner {
-        transform: rotateY(180deg);
-     }
+    .flip-card-room:hover .flip-card-inner {
+       transform: rotateY(180deg);
+    }
 
     .flip-card-front img {
         width: 100%;
@@ -190,8 +199,8 @@
         background-color: #e91e63;
         border-color: #e91e63;
     }
-   .events-container{
+    .events-container{
         width: 50%;
         float: left;
-   }
+    }
 </style>

@@ -1,23 +1,14 @@
 ﻿@model WebUni_Management.Core.Models.Menu.MenuIndexViewModeltest
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>Menu</title>
-    <style>
-    </style>
-</head>
-<body>
-    <div class="menu-content">
-        <h4>@Model.Date</h4>
-        @foreach (var item in Model.Dishes)
-        {
-            <div class="menu-item">
-                <h2>@item.Name</h2>
-                <p>Price: @item.Price</p>
-                <p>Category: @item.Category</p>
-            </div>
-        }
-    </div>
-</body>
-</html>
+
+
+<div class="menu-content">
+   <h4>@Model.Date</h4>
+   @foreach (var item in Model.Dishes)
+   {
+       <div class="menu-item">
+           <h2>@item.Name</h2>
+           <p>Price: @item.Price</p>
+           <p>Category: @item.Category</p>
+       </div>
+   }
+</div>
