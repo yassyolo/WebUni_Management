@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using WebUni_Management.Core.Contracts;
@@ -12,7 +13,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext(builder.Configuration);
 builder.Services.AddApplicationIdentity(builder.Configuration);
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+});
 
 builder.Services.AddServices();
 
@@ -20,15 +24,15 @@ builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.UseMigrationsEndPoint();
 }
 else
 {
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseExceptionHandler("/Home/Error/500");
+    app.UseStatusCodePagesWithRedirects("/Home/Error?statusCode={0}");
     app.UseHsts();
 }
 
@@ -67,6 +71,22 @@ app.MapControllerRoute(
     pattern: "PersonalInfo/ManageAttendance/{subjectId}/{studentId}",
     defaults: new { controller = "PersonalInfo", action = "ManageAttendance" }
 );
+app.MapControllerRoute(
+	name: "ManageGrade",
+	pattern: "PersonalInfo/ManageGrade/{subjectId}/{studentId}",
+	defaults: new { controller = "PersonalInfo", action = "ManageGrade" }
+);
+app.MapControllerRoute(
+    	name: "Chat",
+        pattern: "PersonalInfo/Chat/{id?}",
+        defaults: new { controller = "PersonalInfo", action = "Chat" }
+);
+app.MapControllerRoute(
+        name: "Back",
+        pattern: "Home/Back/{previousPage}",
+        defaults: new { controller = "Home", action = "Back" }
+);
+
 
 app.MapRazorPages();
 

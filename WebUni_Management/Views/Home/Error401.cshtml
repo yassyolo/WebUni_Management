@@ -1,3 +1,34 @@
 ﻿@{
-	ViewData["Title"] = "Error";
-} <div class="row"> <div class="col-3"></div> <div class="col-6"> <br> <div class="row"> <div class="col-10"> <img src="https://media.istockphoto.com/photos/rubber-stamp-picture-id545992942?k=6&m=545992942&s=612x612&w=0&h=XD1kddQeDrbG9DEQQxGNf6_3snw4gdFZv8GqSFta6Is=" alt="Alternative image" class="img-thumbnail"> <div class="text-left h4"> <p>Oops, you don't have access here.</p> </div> <div class="text-left h4"> Go back to <a asp-controller="Home" asp-action="Index">Home</a> Page</div> </div> </div> </div> <div class="col-3"></div> </div>
+    ViewData["Title"] = "Unauthorized";
+}
+
+<div class="error-container">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Bundesstra%C3%9Fe_401_number.svg/1200px-Bundesstra%C3%9Fe_401_number.svg.png" alt="Unauthorized Image">
+    <h5>Oops! You are not authorized to access this page.</h5>
+    <div>Please log in with proper credentials or contact the administrator for assistance.</div>
+    <div>Go back to <a asp-controller="Home" asp-action="Index">Home</a> Page</div>
+</div>
+
+<style>
+    .error-container {
+        max-width: 600px;
+        margin: auto;
+        text-align: center;
+        padding: 20px;
+        background-color: white;
+        border: 2px solid #e91e63;
+        border-radius: 8px;
+        border-radius: 5px;
+    }
+
+        .error-container img {
+            width: 300px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .error-container a {
+            color: #007bff;
+            text-decoration: none;
+        }
+</style>
