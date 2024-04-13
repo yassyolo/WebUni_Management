@@ -768,9 +768,17 @@ namespace WebUni_Management.Core.Services
             {
                 subject.SubjectProfessor = professor;
             }
+            else
+            {
+                throw new NotFoundException(nameof(SubjectProfessor));
+            }
             if (assistant != null)
             {
                 subject.SubjectAssistant = assistant;
+            }
+            else
+            {
+                throw new NotFoundException(nameof(SubjectProfessor));
             }
             return subject;
         }

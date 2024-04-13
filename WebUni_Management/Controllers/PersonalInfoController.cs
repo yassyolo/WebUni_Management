@@ -542,17 +542,30 @@ namespace WebUni_Management.Controllers
 			var model = await personalInfoService.GetSubjectsForMajorAsync(id);
 			return View(model);
 		}
+
 		[HttpGet]
+		[Authorize(Roles = "Admin")]
 		public async Task<IActionResult> EditSubjectForMajor(int id)
 		{
 			if (await personalInfoService.SubjectWithIdExistsAsync(id) == false)
 			{
 				return BadRequest();
 			}
-			var model = await personalInfoService.GetEditSubjectFormForMajorAsync(id);
-			return View(model);
+			try
+			{
+                var model = await personalInfoService.GetEditSubjectFormForMajorAsync(id);
+
+                return View(model);
+            }
+			catch (NotFoundException ex)
+			{
+				return BadRequest(ex.Message);
+			}
 		}
+
 		[HttpPost]
+		[Authorize(Roles = "Admin")]
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> EditSubjectForMajor(int id, EditSubjectFormViewModel model)
 		{
 			if (await personalInfoService.SubjectWithIdExistsAsync(id) == false)
@@ -563,9 +576,17 @@ namespace WebUni_Management.Controllers
 			{
                 return BadRequest();
             }
-			await personalInfoService.EditSubjectAsync(id, model);
 
-			return RedirectToAction(nameof(SearchMajors));
+			try
+			{
+                await personalInfoService.EditSubjectAsync(id, model);
+
+                return RedirectToAction(nameof(SearchMajors));
+            }
+			catch (NotFoundException ex)
+			{
+				return BadRequest(ex.Message);
+			}
 		}
 
 		[AllowAnonymous]	
@@ -605,7 +626,9 @@ namespace WebUni_Management.Controllers
 
 			return View(model);
 		}
-		[HttpPost]
+
+		[Authorize(Roles = "Admin")]
+        [HttpPost]
 		public async Task<IActionResult> ManageGrade(int subjectId, int studentId, SubjectGradeViewModel model)
 		{
 			if (await personalInfoService.SubjectWithIdExistsAsync(subjectId) == false)
@@ -649,6 +672,7 @@ namespace WebUni_Management.Controllers
 
 		[HttpPost]
         [Authorize(Roles = "Admin")]
+		[ValidateAntiForgeryToken]
         public async Task<IActionResult> AddSubjectForStudent(int id, EditSubjectFormViewModel model)
 		{
 			if (await personalInfoService.StudentWithIdExistsAsync(id) == false)
