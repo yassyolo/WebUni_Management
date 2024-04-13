@@ -15,6 +15,7 @@ namespace WebUni_Management.Infrastructure.Data.Models
         [MaxLength(SubjectProfessorNameMaxLength)]
         [Comment("Professor first name")]
         public string FirstName { get; set; } = string.Empty;
+
         [Required]
         [MaxLength(SubjectProfessorNameMaxLength)]
         [Comment("Professor last name")]
